@@ -67,8 +67,8 @@ macos-build:
     - cmake --build $BUILD_DIR --target install
   needs:
     - project: flightgear/macos-3rd-party
-      job: macos_12_xcode_14_build
-      ref: master
+      job: macos-build
+      ref: main
       artifacts: true
   artifacts:
     paths:
