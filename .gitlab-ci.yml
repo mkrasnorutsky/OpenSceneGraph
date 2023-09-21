@@ -60,6 +60,8 @@ macos-build:
   rules:
     - if: $CI_PIPELINE_SOURCE != "schedule"
   before_script:
+      - export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
+      - export HOMEBREW_NO_INSTALL_CLEANUP=1
       - brew install ninja cmake 
   script:
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=$PREFIX_DIR
