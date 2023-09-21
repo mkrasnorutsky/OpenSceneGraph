@@ -74,7 +74,7 @@ macos-build:
       artifacts: true
   artifacts:
     paths:
-      - $PREFIX_DIR
+      - dist
   cache:
     paths:
       - $BUILD_DIR
