@@ -6,20 +6,18 @@
 variables:
   BUILD_DIR: "$CI_PROJECT_DIR/build"
   PREFIX_DIR: "$CI_PROJECT_DIR/dist"
-  NUGET_PACKAGES_DIRECTORY: '.nuget'
+  # FIXME detect this using vswhere 
+  VS160COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\Common7\\Tools"
+  VCVARSALL: "${VS160COMNTOOLS}\\..\\..\\VC\\Auxiliary\\Build\\vcvarsall.bat"
+  VCVARSPLATFORM: "x64"
+  VCVARSVERSION: "14.35.32215"
 
 windows_build:
   stage: build
   tags:
     - windows
-  allow_failure: true
   before_script:
-    - cl
-    - msbuild
-    - dir
-   # - 'nuget restore --packages $NUGET_PACKAGES_DIRECTORY'
- #   - nuget install cmake 
-#    - nuget install autom8ed.com.tools.ninja
+    - Invoke-Expression -Command .gitlab\vcvarsall.ps1
   script:
     - cmake
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo
@@ -39,7 +37,6 @@ macos-build:
   tags:
     - saas-macos-medium-m1
   image: macos-12-xcode-14
-  allow_failure: true
   rules:
     - if: $CI_PIPELINE_SOURCE != "schedule"
   before_script:
