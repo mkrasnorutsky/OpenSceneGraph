@@ -1066,9 +1066,15 @@ ELSEIF(MSVC)
         #C4589: Constructor of abstract class 'osgGA::CameraManipulator' ignores initializer for virtual base class 'osg::Object'
         SET(OSG_AGGRESSIVE_WARNING_FLAGS /W4 /wd4589 /wd4706 /wd4127 /wd4100)
 
-        # FlightGear: force O3 for RelWithDebInfo builds
-        set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/Zi /O2 /Ob2 /D NDEBUG")
-        set(CMAKE_C_FLAGS_RELWITHDEBINFO "/Zi /O2 /Ob2 /D NDEBUG")
+        # FlightGear: force some optimisation flags as RELEASE for RELWITHDEBINFO
+
+        message(STATUS "Original CXXFLAGS for RelWithDebinfo are: ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+        message(STATUS "Original CXXFLAGS for Release are: ${CMAKE_CXX_FLAGS_RELEASE}")
+
+        # to avoid issue, use the same settings as RELEASE, just add /Zi to
+        # generate debug info
+        set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
+        set(CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELEASE} /Zi")
         #endif
 ELSEIF(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         SET(OSG_AGGRESSIVE_WARNING_FLAGS  -Wall -Wparentheses -Wno-long-long -Wno-import -pedantic -Wreturn-type -Wmissing-braces -Wunknown-pragmas -Wunused -Wno-overloaded-virtual)
