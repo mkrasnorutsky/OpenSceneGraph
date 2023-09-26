@@ -26,6 +26,7 @@ windows_build:
         -DOSG_USE_UTF8_FILENAME:BOOL=ON
         -DACTUAL_3RDPARTY_DIR:PATH=$CI_PROJECT_DIR\msvc140\3rdparty.x64 
         -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX_DIR
+        -DCMAKE_RELWITHDEBINFO_POSTFIX=
     - cmake --build $BUILD_DIR
     - cmake --build $BUILD_DIR --target install
   needs:
