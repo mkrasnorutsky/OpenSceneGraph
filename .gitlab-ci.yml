@@ -51,6 +51,7 @@ macos-build:
       - brew install ninja cmake 
   script:
   # FontConfig disabled for now: we find it via HomeBrew and it's not UB
+  # JPEG disabled becuase we use CoreImageIO loader anyway on macOS
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -Wno-dev
         -DCMAKE_BUILD_TYPE=RelWithDebInfo 
         -DCMAKE_INSTALL_PREFIX=$PREFIX_DIR 
@@ -59,6 +60,8 @@ macos-build:
         -DCMAKE_RELWITHDEBINFO_POSTFIX=
         -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
         -DOSG_TEXT_USE_FONTCONFIG=0
+        -DBUILD_OSG_PLUGIN_JPEG=0
+        -DBUILD_OSG_PLUGIN_TIFF=0
     - cmake --build $BUILD_DIR
     - cmake --build $BUILD_DIR --target install
   needs:
