@@ -50,6 +50,9 @@ macos-build:
       - export HOMEBREW_NO_INSTALL_CLEANUP=1
       - brew install ninja cmake 
   script:
+  # ensure we use our FreeType and not the one from Homebrew
+  # ours is UB, HomeBrew's is not
+    - export FREETYPE_DIR=$CI_PROJECT_DIR/dist
   # FontConfig disabled for now: we find it via HomeBrew and it's not UB
   # JPEG disabled becuase we use CoreImageIO loader anyway on macOS
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -Wno-dev
