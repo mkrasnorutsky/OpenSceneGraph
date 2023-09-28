@@ -50,6 +50,7 @@ macos-build:
       - export HOMEBREW_NO_INSTALL_CLEANUP=1
       - brew install ninja cmake 
   script:
+  # FontConfig disabled for now: we find it via HomeBrew and it's not UB
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -Wno-dev
         -DCMAKE_BUILD_TYPE=RelWithDebInfo 
         -DCMAKE_INSTALL_PREFIX=$PREFIX_DIR 
@@ -57,6 +58,7 @@ macos-build:
         -DOSG_USE_QT=0 
         -DCMAKE_RELWITHDEBINFO_POSTFIX=
         -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+        -DOSG_TEXT_USE_FONTCONFIG=0
     - cmake --build $BUILD_DIR
     - cmake --build $BUILD_DIR --target install
   needs:
