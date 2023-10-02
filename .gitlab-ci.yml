@@ -12,6 +12,9 @@ variables:
   VCVARSPLATFORM: "x64"
   VCVARSVERSION: "14.29.30133"
 
+  WIN_FG_DIR: $CI_BUILDS_DIR\flightgear
+  WIN_PREFIX_DIR: $WIN_FG_DIR\dist
+
 windows_build:
   stage: build
   tags:
@@ -25,7 +28,7 @@ windows_build:
         -DCMAKE_BUILD_TYPE=RelWithDebInfo
         -DOSG_USE_UTF8_FILENAME:BOOL=ON
         -DACTUAL_3RDPARTY_DIR:PATH=$CI_PROJECT_DIR\msvc140\3rdparty.x64 
-        -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX_DIR
+        -DCMAKE_INSTALL_PREFIX:PATH=$WIN_PREFIX_DIR
         -DCMAKE_RELWITHDEBINFO_POSTFIX=
     - cmake --build $BUILD_DIR
     - cmake --build $BUILD_DIR --target install
@@ -36,7 +39,7 @@ windows_build:
       artifacts: true
   artifacts:
     paths:
-      - $PREFIX_DIR
+      - $WIN_PREFIX_DIR
 
 macos-build:
   stage: build
