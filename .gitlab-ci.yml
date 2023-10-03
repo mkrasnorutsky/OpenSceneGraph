@@ -12,8 +12,6 @@ variables:
   VCVARSPLATFORM: "x64"
   VCVARSVERSION: "14.29.30133"
 
-  WIN_FG_DIR: $CI_BUILDS_DIR\flightgear
-
 
 windows_build:
   stage: build
@@ -39,9 +37,9 @@ windows_build:
       artifacts: true
   artifacts:
     paths:
-      - $PREFIX_DIR
+      - osg-dist
     exclude:
-      - $PREFIX_DIR/lib/pkgconfig/*
+      - osg-dist\lib\pkgconfig\*
 
 macos-build:
   stage: build
@@ -79,9 +77,9 @@ macos-build:
       artifacts: true
   artifacts:
     paths:
-      - $PREFIX_DIR
+      - osg-dist
     exclude:
-      - $PREFIX_DIR/lib/pkgconfig/*
+      - osg-dist/lib/pkgconfig/*
   cache:
     paths:
       - $BUILD_DIR
