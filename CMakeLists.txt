@@ -1037,6 +1037,10 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
     # to be the workaround.
     SET(OSG_AGGRESSIVE_WARNING_FLAGS -Wall -Wparentheses -Wno-long-long -Wno-import -pedantic -Wreturn-type -Wmissing-braces -Wunknown-pragmas -Wunused)
 
+    # FlightGear: Do not spam warnings in modern compilers
+    SET(OSG_AGGRESSIVE_WARNING_FLAGS ${OSG_AGGRESSIVE_WARNING_FLAGS} -Wno-inconsistent-missing-override)
+    # End of FlightGear
+
     MESSAGE( STATUS "g++ version ${CMAKE_CXX_COMPILER_VERSION} ")
     IF(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.6)
         SET(OSG_AGGRESSIVE_WARNING_FLAGS ${OSG_AGGRESSIVE_WARNING_FLAGS} -Wmaybe-uninitialized -Wextra)
@@ -1078,6 +1082,10 @@ ELSEIF(MSVC)
         #endif
 ELSEIF(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         SET(OSG_AGGRESSIVE_WARNING_FLAGS  -Wall -Wparentheses -Wno-long-long -Wno-import -pedantic -Wreturn-type -Wmissing-braces -Wunknown-pragmas -Wunused -Wno-overloaded-virtual)
+
+        # FlightGear: Do not spam warnings in modern compilers
+        SET(OSG_AGGRESSIVE_WARNING_FLAGS ${OSG_AGGRESSIVE_WARNING_FLAGS} -Wno-inconsistent-missing-override)
+        # End of FlightGear
 
         # CMake lacks an elseif, so other non-gcc, non-VS compilers need
         # to be listed below. If unhandled, OSG_AGGRESSIVE_WARNING_FLAGS should
