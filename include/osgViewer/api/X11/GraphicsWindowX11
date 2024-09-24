@@ -43,6 +43,7 @@ class OSGVIEWER_EXPORT GraphicsWindowX11 : public osgViewer::GraphicsWindow, pub
             #else
             _fbConfig(0),
             #endif
+            _mouseCursor(InheritCursor),
             _currentCursor(0),
             _initialized(false),
             _realized(false),
@@ -172,6 +173,7 @@ class OSGVIEWER_EXPORT GraphicsWindowX11 : public osgViewer::GraphicsWindow, pub
         int getModifierMask() const;
         void syncLocks();
         void flushKeyEvents();
+        bool isXWayland(Display* display) const;
 
         bool            _valid;
         Display*        _eventDisplay;
@@ -186,6 +188,7 @@ class OSGVIEWER_EXPORT GraphicsWindowX11 : public osgViewer::GraphicsWindow, pub
         GLXFBConfig     _fbConfig;
         #endif
 
+        MouseCursor     _mouseCursor;
         Cursor          _currentCursor;
 
         Atom            _deleteWindow;
@@ -201,6 +204,8 @@ class OSGVIEWER_EXPORT GraphicsWindowX11 : public osgViewer::GraphicsWindow, pub
 
         char            _keyMap[32];
         std::map<MouseCursor,Cursor> _mouseCursorMap;
+
+        bool            _isXWayland;
 };
 
 }

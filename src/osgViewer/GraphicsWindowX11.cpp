@@ -612,6 +612,7 @@ void GraphicsWindowX11::setCursor(MouseCursor mouseCursor)
     Cursor newCursor = getOrCreateCursor(mouseCursor);
     if (newCursor == _currentCursor) return;
 
+    _mouseCursor = mouseCursor;
     _currentCursor = newCursor;
     if (!_window) return;
     Display* display = getDisplayToUse();
@@ -978,6 +979,9 @@ void GraphicsWindowX11::init()
             _eventDisplay = 0;
         }
     }
+
+    // Query for XWayland support
+    _isXWayland = isXWayland(_display);
 
     getEventQueue()->syncWindowRectangleWithGraphicsContext();
 }
@@ -1904,6 +1908,13 @@ void GraphicsWindowX11::requestWarpPointer(float x,float y)
 
     Display* display = _eventDisplay; // getDisplayToUse();
 
+    // XWayland will only warp the cursor if it is hidden
+    // Cache the current mouse cursor and hide it
+    MouseCursor cursor = _mouseCursor;
+    if (_isXWayland) {
+        setCursor(NoCursor);
+    }
+
     XWarpPointer( display,
                   None,
                   _window,
@@ -1913,7 +1924,18 @@ void GraphicsWindowX11::requestWarpPointer(float x,float y)
     XFlush(display);
     XSync(display, 0);
 
+    // Restore the mouse cursor
+    if (_isXWayland) {
+        setCursor(cursor);
+    }
+
     getEventQueue()->mouseWarped(x,y);
+}
+
+bool GraphicsWindowX11::isXWayland(Display* display) const
+{
+    int opcode, event, error;
+    return XQueryExtension(display, "XWAYLAND", &opcode, &event, &error) == True;
 }
 
 extern "C"
