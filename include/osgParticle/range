@@ -56,7 +56,7 @@ namespace osgParticle
         /// Get a random value between min and max.
         ValueType get_random() const
         {
-            return minimum + (maximum - minimum) * rand() / RAND_MAX;
+            return minimum + (maximum - minimum) * static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
         }
 
         /// Get a random square root value between min and max.
