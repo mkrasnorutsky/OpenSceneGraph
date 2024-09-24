@@ -6,20 +6,13 @@
 variables:
   BUILD_DIR: "$CI_PROJECT_DIR/build"
   PREFIX_DIR: "$CI_PROJECT_DIR/osg-dist"
-  # FIXME detect this using vswhere 
-  VS160COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\Common7\\Tools"
-  VCVARSALL: "${VS160COMNTOOLS}\\..\\..\\VC\\Auxiliary\\Build\\vcvarsall.bat"
-  VCVARSPLATFORM: "x64"
-  VCVARSVERSION: "14.29.30133"
-
 
 windows_build:
   stage: build
   tags:
-    - windows
+    - saas-windows-medium-amd64
   before_script:
-  #  - ls "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\MSVC\\"
-    - Invoke-Expression -Command .gitlab\vcvarsall.ps1
+    - C:\"Program Files (x86)\Microsoft Visual Studio"\2022\BuildTools\Common7\Tools\Launch-VsDevShell -SkipAutomaticLocation -Arch amd64
   script:
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja
         -Wno-dev
@@ -45,7 +38,7 @@ macos-build:
   stage: build
   tags:
     - saas-macos-medium-m1
-  image: macos-12-xcode-14
+  image: macos-14-xcode-15
   rules:
     - if: $CI_PIPELINE_SOURCE != "schedule"
   before_script:
