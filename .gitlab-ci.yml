@@ -16,12 +16,9 @@ linux-build:
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -Wno-dev
       -D CMAKE_BUILD_TYPE=RelWithDebInfo 
       -D CMAKE_INSTALL_PREFIX=$PREFIX_DIR
-      -D OSG_USE_UTF8_FILENAME:BOOL=ON
       -D OSG_USE_QT=0 
       -D CMAKE_RELWITHDEBINFO_POSTFIX=
       -D OSG_TEXT_USE_FONTCONFIG=0
-      -D BUILD_OSG_PLUGIN_JPEG=0
-      - DBUILD_OSG_PLUGIN_TIFF=0
 
     - cmake --build $BUILD_DIR
     - cmake --build $BUILD_DIR --target install
@@ -76,15 +73,15 @@ macos-build:
   # FontConfig disabled for now: we find it via HomeBrew and it's not UB
   # JPEG disabled becuase we use CoreImageIO loader anyway on macOS
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -Wno-dev
-        -DCMAKE_BUILD_TYPE=RelWithDebInfo 
-        -DCMAKE_INSTALL_PREFIX=$PREFIX_DIR 
-        -DOSG_WINDOWING_SYSTEM=Cocoa 
-        -DOSG_USE_QT=0 
-        -DCMAKE_RELWITHDEBINFO_POSTFIX=
-        -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
-        -DOSG_TEXT_USE_FONTCONFIG=0
-        -DBUILD_OSG_PLUGIN_JPEG=0
-        -DBUILD_OSG_PLUGIN_TIFF=0
+        -D CMAKE_BUILD_TYPE=RelWithDebInfo 
+        -D CMAKE_INSTALL_PREFIX=$PREFIX_DIR 
+        -D OSG_WINDOWING_SYSTEM=Cocoa 
+        -D OSG_USE_QT=0 
+        -D CMAKE_RELWITHDEBINFO_POSTFIX=
+        -D CMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+        -D OSG_TEXT_USE_FONTCONFIG=0
+        -D BUILD_OSG_PLUGIN_JPEG=0
+        -D BUILD_OSG_PLUGIN_TIFF=0
     - cmake --build $BUILD_DIR
     - cmake --build $BUILD_DIR --target install
   needs:
