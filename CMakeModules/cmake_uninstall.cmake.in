@@ -29,3 +29,9 @@ FOREACH(file ${files})
         MESSAGE(STATUS "File \"${file}\" does not exist.")
     ENDIF()
 ENDFOREACH()
+
+##### FlightGgear change: remove plugins dir if empty  #########
+
+file(REMOVE @CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_BINDIR@/@OSG_PLUGINS@)
+
+###############################
