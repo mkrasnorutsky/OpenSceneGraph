@@ -491,7 +491,14 @@ OPTION(OSG_ENVVAR_SUPPORTED "Set to ON to build OpenSceneGraph with the #define 
 
 
 # Map the OPENGL_PROFILE to OSG_GL*_AVAILABLE settings
-SET(OPENGL_PROFILE "GL2" CACHE STRING "OpenGL Profile to use, choose from GL1, GL2, GL3, GLES1, GLES2, GLES3")
+#### FlightGear: Set the GL core profile as default.
+#### Also set the location of the headers for Windows. On Linux and Mac OpenGL
+#### core profile headers are included automatically by FindOpenGL, but on
+#### Windows they need to be explicitly included or we would be stuck with
+#### OpenGL 1.2.
+SET(OPENGL_PROFILE "GLCORE" CACHE STRING "OpenGL Profile to use, choose from GL1, GL2, GL3, GLES1, GLES2, GLES3")
+SET(GLCORE_ROOT ${PROJECT_SOURCE_DIR}/glcore)
+#### End FlightGear
 
 IF ((OPENGL_PROFILE STREQUAL "GL1") OR (OPENGL_PROFILE STREQUAL "GL2"))
     OPTION(OSG_GL1_AVAILABLE "Set to OFF to disable use of OpenGL 1.x functions library." ON )
