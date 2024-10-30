@@ -140,6 +140,7 @@ class OSG_EXPORT Array : public BufferData
             _dataSize(dataSize),
             _dataType(dataType),
             _binding(binding),
+            _divisor(0),
             _normalize(false),
             _preserveDataType(false) {}
 
@@ -149,6 +150,7 @@ class OSG_EXPORT Array : public BufferData
             _dataSize(array._dataSize),
             _dataType(array._dataType),
             _binding(array._binding),
+            _divisor(array._divisor),
             _normalize(array._normalize),
             _preserveDataType(array._preserveDataType) {}
 
@@ -192,6 +194,15 @@ class OSG_EXPORT Array : public BufferData
         Binding getBinding() const { return _binding; }
 
 
+        /** Modifies the rate at which vertex attributes advance when rendering
+            multiple instances. It is passed to glVertexAttribDivisor(). */
+        void setDivisor(GLuint divisor) { _divisor = divisor; }
+
+        /** Get the rate at which vertex attributes advance when rendering
+            multiple instances. */
+        GLuint getDivisor() const { return _divisor; }
+
+
         /** Specify whether the array data should be normalized by OpenGL.*/
         void setNormalize(bool normalize) { _normalize = normalize; }
 
@@ -226,6 +237,7 @@ class OSG_EXPORT Array : public BufferData
         GLint   _dataSize;
         GLenum  _dataType;
         Binding _binding;
+        GLuint  _divisor;
         bool    _normalize;
         bool    _preserveDataType;
 };

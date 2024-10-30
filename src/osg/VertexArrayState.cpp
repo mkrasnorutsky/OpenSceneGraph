@@ -475,6 +475,8 @@ struct VertexAttribArrayDispatch : public VertexArrayState::ArrayDispatch
 
         ext->glEnableVertexAttribArray( unit );
         callVertexAttribPointer(ext, new_array, new_array->getDataPointer());
+        if (new_array->getDivisor() > 0 && ext->glVertexAttribDivisor)
+            ext->glVertexAttribDivisor(unit, new_array->getDivisor());
     }
 
     virtual void enable_and_dispatch(osg::State& state, const osg::Array* new_array, const osg::GLBufferObject* vbo)
@@ -483,6 +485,8 @@ struct VertexAttribArrayDispatch : public VertexArrayState::ArrayDispatch
 
         ext->glEnableVertexAttribArray( unit );
         callVertexAttribPointer(ext, new_array, (const GLvoid *)(vbo->getOffset(new_array->getBufferIndex())));
+        if (new_array->getDivisor() > 0 && ext->glVertexAttribDivisor)
+            ext->glVertexAttribDivisor(unit, new_array->getDivisor());
     }
 
     virtual void enable_and_dispatch(osg::State& state, GLint size, GLenum type, GLsizei stride, const GLvoid *ptr, GLboolean normalized)

@@ -297,12 +297,14 @@ void Geometry::setTexCoordArrayList(const ArrayList& arrayList)
     }
 }
 
-void Geometry::setVertexAttribArray(unsigned int index, Array* array, osg::Array::Binding binding)
+void Geometry::setVertexAttribArray(unsigned int index, Array* array, osg::Array::Binding binding, unsigned int divisor)
 {
     if (_vertexAttribList.size()<=index)
         _vertexAttribList.resize(index+1);
 
     if (array && binding!=osg::Array::BIND_UNDEFINED) array->setBinding(binding);
+
+    if (array) array->setDivisor(divisor);
 
     _vertexAttribList[index] = array;
 

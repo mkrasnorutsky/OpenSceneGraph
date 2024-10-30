@@ -86,8 +86,8 @@ class OSG_EXPORT Geometry : public Drawable
         ArrayList& getTexCoordArrayList() { return _texCoordList; }
         const ArrayList& getTexCoordArrayList() const { return _texCoordList; }
 
-        void setVertexAttribArray(unsigned int index, Array* array) { setVertexAttribArray(index, array, osg::Array::BIND_UNDEFINED); }
-        void setVertexAttribArray(unsigned int index, Array* array, osg::Array::Binding binding);
+        void setVertexAttribArray(unsigned int index, Array* array, unsigned int divisor = 0) { setVertexAttribArray(index, array, osg::Array::BIND_UNDEFINED, divisor); }
+        void setVertexAttribArray(unsigned int index, Array* array, osg::Array::Binding binding, unsigned int divisor = 0);
         Array *getVertexAttribArray(unsigned int index);
         const Array *getVertexAttribArray(unsigned int index) const;
 
