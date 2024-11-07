@@ -785,25 +785,38 @@ ELSE()
     ####
 
     FIND_PACKAGE(ilmbase)
-    FIND_PACKAGE(Inventor)
-    FIND_PACKAGE(Jasper)
-    FIND_PACKAGE(OpenEXR)
-    FIND_PACKAGE(OpenCascade)
-    FIND_PACKAGE(COLLADA)
+
+
     FIND_PACKAGE(FBX)
     FIND_PACKAGE(ZLIB)
     FIND_PACKAGE(GDAL)
     FIND_PACKAGE(GTA)
     FIND_PACKAGE(CURL)
     FIND_PACKAGE(LibVNCServer)
-    FIND_PACKAGE(DCMTK)
-    FIND_PACKAGE(FFmpeg)
-    FIND_PACKAGE(GStreamer COMPONENTS app pbutils)
-    FIND_PACKAGE(GLIB COMPONENTS gobject)
+
+    ##### FlightGear: disable some problematic checks ######
+    ##### Some are just un-needed but the GLIb one is failing on macOS CI
+
+    # FIND_PACKAGE(GStreamer COMPONENTS app pbutils)
+    # FIND_PACKAGE(GLIB COMPONENTS gobject)
+
+
+    # FIND_PACKAGE(Inventor)
+    # FIND_PACKAGE(Jasper)
+    # FIND_PACKAGE(DCMTK)
+    # FIND_PACKAGE(FFmpeg)
+
+    # FIND_PACKAGE(OpenEXR)
+    # FIND_PACKAGE(OpenCascade)
+    # FIND_PACKAGE(COLLADA)
+    # FIND_PACKAGE(Poppler-glib)
+
+    ####################################
+
     FIND_PACKAGE(DirectShow)
     FIND_PACKAGE(SDL2)
     FIND_PACKAGE(SDL)
-    FIND_PACKAGE(Poppler-glib)
+
     FIND_PACKAGE(RSVG)
     FIND_PACKAGE(GtkGl)
     FIND_PACKAGE(DirectInput)
