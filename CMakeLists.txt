@@ -6,6 +6,12 @@ SET(OPENSCENEGRAPH_MINOR_VERSION 6)
 SET(OPENSCENEGRAPH_PATCH_VERSION 5)
 SET(OPENSCENEGRAPH_SOVERSION 162)
 
+#### FlightGear: Set our target version. Used by SG and FG to check if the found
+#### OSG libraries are valid.
+set(OPENSCENEGRAPH_FG_MAJOR_VERSION 2024)
+set(OPENSCENEGRAPH_FG_MINOR_VERSION 2)
+set(OPENSCENEGRAPH_FG_PATCH_VERSION 0)
+#### End FlightGear
 
 # set to 0 when not a release candidate, non zero means that any generated
 # git tags will be treated as release candidates of given number
