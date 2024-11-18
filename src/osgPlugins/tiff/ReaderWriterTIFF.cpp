@@ -810,8 +810,8 @@ class ReaderWriterTIFF : public osgDB::ReaderWriter
             int r = 1;
 
             unsigned int pixelFormat =
-                numComponents_ret == 1 ? GL_LUMINANCE :
-                numComponents_ret == 2 ? GL_LUMINANCE_ALPHA :
+                numComponents_ret == 1 ? GL_RED :
+                numComponents_ret == 2 ? GL_RG :
                 numComponents_ret == 3 ? GL_RGB :
                 numComponents_ret == 4 ? GL_RGBA : (GLenum)-1;
 
@@ -823,19 +823,19 @@ class ReaderWriterTIFF : public osgDB::ReaderWriter
 
             int internalFormat = 0;
             switch (pixelFormat) {
-                case GL_LUMINANCE: {
+                case GL_RED: {
                     switch (dataType) {
-                        case GL_UNSIGNED_BYTE: internalFormat = GL_LUMINANCE8; break;
-                        case GL_UNSIGNED_SHORT: internalFormat = GL_LUMINANCE16; break;
-                        case GL_FLOAT : internalFormat = GL_LUMINANCE32F_ARB; break;
+                        case GL_UNSIGNED_BYTE: internalFormat = GL_R8; break;
+                        case GL_UNSIGNED_SHORT: internalFormat = GL_R16; break;
+                        case GL_FLOAT : internalFormat = GL_R32F; break;
                     }
                     break;
                 }
-                case GL_LUMINANCE_ALPHA: {
+                case GL_RG: {
                     switch (dataType) {
-                        case GL_UNSIGNED_BYTE: internalFormat = GL_LUMINANCE_ALPHA8UI_EXT; break;
-                        case GL_UNSIGNED_SHORT: internalFormat = GL_LUMINANCE_ALPHA16UI_EXT; break;
-                        case GL_FLOAT: internalFormat = GL_LUMINANCE_ALPHA32F_ARB; break;
+                        case GL_UNSIGNED_BYTE: internalFormat = GL_RG8; break;
+                        case GL_UNSIGNED_SHORT: internalFormat = GL_RG16; break;
+                        case GL_FLOAT: internalFormat = GL_RG32F; break;
                     }
                     break;
                 }
@@ -843,7 +843,7 @@ class ReaderWriterTIFF : public osgDB::ReaderWriter
                     switch (dataType) {
                         case GL_UNSIGNED_BYTE: internalFormat = GL_RGB8; break;
                         case GL_UNSIGNED_SHORT: internalFormat = GL_RGB16; break;
-                        case GL_FLOAT: internalFormat = GL_RGB32F_ARB; break;
+                        case GL_FLOAT: internalFormat = GL_RGB32F; break;
                     }
                     break;
                 }
@@ -851,7 +851,7 @@ class ReaderWriterTIFF : public osgDB::ReaderWriter
                     switch (dataType) {
                         case GL_UNSIGNED_BYTE: internalFormat = GL_RGBA8; break;
                         case GL_UNSIGNED_SHORT: internalFormat = GL_RGBA16; break;
-                        case GL_FLOAT: internalFormat = GL_RGBA32F_ARB; break;
+                        case GL_FLOAT: internalFormat = GL_RGBA32F; break;
                     }
                     break;
                 }

@@ -675,8 +675,7 @@ class ReaderWriterJPEG : public osgDB::ReaderWriter
             // Only cater for gray, alpha and RGB for now
             switch(img.getPixelFormat()) {
               case(GL_DEPTH_COMPONENT):
-              case(GL_LUMINANCE):
-              case(GL_ALPHA): {
+              case(GL_RED): {
                   image_color_space = JCS_GRAYSCALE;
                   image_components = 1;
                   break;
@@ -846,14 +845,14 @@ class ReaderWriterJPEG : public osgDB::ReaderWriter
 
             //int internalFormat = numComponents_ret;
             int internalFormat =
-                numComponents_ret == 1 ? GL_LUMINANCE :
-                numComponents_ret == 2 ? GL_LUMINANCE_ALPHA :
-                numComponents_ret == 3 ? GL_RGB :
-                numComponents_ret == 4 ? GL_RGBA : (GLenum)-1;
+                numComponents_ret == 1 ? GL_R8 :
+                numComponents_ret == 2 ? GL_RG8 :
+                numComponents_ret == 3 ? GL_RGB8 :
+                numComponents_ret == 4 ? GL_RGBA8 : (GLenum)-1;
 
             unsigned int pixelFormat =
-                numComponents_ret == 1 ? GL_LUMINANCE :
-                numComponents_ret == 2 ? GL_LUMINANCE_ALPHA :
+                numComponents_ret == 1 ? GL_RED :
+                numComponents_ret == 2 ? GL_RG :
                 numComponents_ret == 3 ? GL_RGB :
                 numComponents_ret == 4 ? GL_RGBA : (GLenum)-1;
 

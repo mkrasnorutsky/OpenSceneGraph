@@ -825,13 +825,17 @@ class ReaderWriterTGA : public osgDB::ReaderWriter
             int t = height_ret;
             int r = 1;
 
+            int internalFormat =
+                numComponents_ret == 1 ? GL_R8 :
+                numComponents_ret == 2 ? GL_RG8 :
+                numComponents_ret == 3 ? GL_RGB8 :
+                numComponents_ret == 4 ? GL_RGBA8 : (GLenum)-1;
+
             unsigned int pixelFormat =
-                numComponents_ret == 1 ? GL_LUMINANCE :
-                numComponents_ret == 2 ? GL_LUMINANCE_ALPHA :
+                numComponents_ret == 1 ? GL_RED :
+                numComponents_ret == 2 ? GL_RG :
                 numComponents_ret == 3 ? GL_RGB :
                 numComponents_ret == 4 ? GL_RGBA : (GLenum)-1;
-
-            int internalFormat = pixelFormat;
 
             unsigned int dataType = GL_UNSIGNED_BYTE;
 

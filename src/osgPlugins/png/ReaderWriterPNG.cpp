@@ -115,9 +115,8 @@ class ReaderWriterPNG : public osgDB::ReaderWriter
 
             switch(img.getPixelFormat()) {
                 case(GL_DEPTH_COMPONENT): color = PNG_COLOR_TYPE_GRAY; break;
-                case(GL_LUMINANCE): color = PNG_COLOR_TYPE_GRAY; break;
-                case(GL_ALPHA): color = PNG_COLOR_TYPE_GRAY; break; //Couldn't find a color type for pure alpha, using gray instead
-                case(GL_LUMINANCE_ALPHA): color = PNG_COLOR_TYPE_GRAY_ALPHA ; break;
+                case(GL_RED): color = PNG_COLOR_TYPE_GRAY; break;
+                case(GL_RG): color = PNG_COLOR_TYPE_GRAY_ALPHA ; break;
                 case(GL_RGB): color = PNG_COLOR_TYPE_RGB; break;
                 case(GL_RGBA): color = PNG_COLOR_TYPE_RGB_ALPHA; break;
                 case(GL_BGR): color = PNG_COLOR_TYPE_RGB; png_set_bgr(png); break;
@@ -288,10 +287,10 @@ class ReaderWriterPNG : public osgDB::ReaderWriter
                 GLenum dataType = depth<=8?GL_UNSIGNED_BYTE:GL_UNSIGNED_SHORT;
                 switch(color)
                 {
-                  case(PNG_SOLID): pixelFormat = GL_LUMINANCE; break;
-                  case(PNG_ALPHA): pixelFormat = GL_ALPHA; break;
-                  case(PNG_COLOR_TYPE_GRAY): pixelFormat =GL_LUMINANCE ; break;
-                  case(PNG_COLOR_TYPE_GRAY_ALPHA): pixelFormat = GL_LUMINANCE_ALPHA; break;
+                  case(PNG_SOLID): pixelFormat = GL_RED; break;
+                  case(PNG_ALPHA): pixelFormat = GL_RED; break;
+                  case(PNG_COLOR_TYPE_GRAY): pixelFormat = GL_RED ; break;
+                  case(PNG_COLOR_TYPE_GRAY_ALPHA): pixelFormat = GL_RG; break;
                   case(PNG_COLOR_TYPE_RGB): pixelFormat = GL_RGB; break;
                   case(PNG_COLOR_TYPE_PALETTE): pixelFormat = GL_RGB; break;
                   case(PNG_COLOR_TYPE_RGB_ALPHA): pixelFormat = GL_RGBA; break;
@@ -306,16 +305,24 @@ class ReaderWriterPNG : public osgDB::ReaderWriter
                 if (pixelFormat == GL_RGB && png_get_channels(png, info) == 4)
                     pixelFormat = GL_RGBA;
 
-                int internalFormat = pixelFormat;
+                int internalFormat = 0;
                 if (depth > 8)
                 {
-                    switch(color)
+                    switch(pixelFormat)
                     {
-                      case(GL_LUMINANCE): internalFormat = GL_LUMINANCE16; break;
-                      case(GL_ALPHA): internalFormat = GL_ALPHA16; break;
-                      case(GL_LUMINANCE_ALPHA): internalFormat = GL_LUMINANCE16_ALPHA16; break;
+                      case(GL_RED): internalFormat = GL_R16; break;
+                      case(GL_RG): internalFormat = GL_RG16; break;
                       case(GL_RGB): internalFormat = GL_RGB16; break;
                       case(GL_RGBA): internalFormat = GL_RGBA16; break;
+                      default: break;
+                    }
+                } else {
+                    switch(pixelFormat)
+                    {
+                      case(GL_RED): internalFormat = GL_R8; break;
+                      case(GL_RG): internalFormat = GL_RG8; break;
+                      case(GL_RGB): internalFormat = GL_RGB8; break;
+                      case(GL_RGBA): internalFormat = GL_RGBA8; break;
                       default: break;
                     }
                 }

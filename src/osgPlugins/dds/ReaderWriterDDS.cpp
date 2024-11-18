@@ -53,15 +53,6 @@
 
 #endif
 
-#if defined(OSG_GLES1_AVAILABLE) || defined(OSG_GLES2_AVAILABLE)
-    #define GL_RED                  0x1903
-    #define GL_LUMINANCE4_ALPHA4    0x8043
-#endif
-
-#if defined(OSG_GL3_AVAILABLE)
-    #define GL_LUMINANCE4_ALPHA4    0x8043
-#endif
-
 // NOTICE ON _WIN32:
 // typedef DWORD unsigned long;
 // sizeof(DWORD) = 4
@@ -913,30 +904,35 @@ osg::Image* ReadDDSFile(std::istream& _istream, bool flipDDSRead)
     }
     else if(ddsd.ddpfPixelFormat.dwFlags & DDPF_LUMINANCE)
     {
-            internalFormat = usingAlpha ? GL_LUMINANCE_ALPHA : GL_LUMINANCE;
-            pixelFormat    = usingAlpha ? GL_LUMINANCE_ALPHA : GL_LUMINANCE;
+            pixelFormat = usingAlpha ? GL_RG : GL_RED;
             if ( usingAlpha && ddsd.ddpfPixelFormat.dwLuminanceBitDepth == 8 )
             {
                 OSG_INFO << "ReadDDSFile info : format = L4A4" << std::endl;
-                pixelFormat = GL_LUMINANCE4_ALPHA4; // invalid enumerant?
+                // XXX: GL_LUMINANCE4_ALPHA4 has no equivalent in modern OpenGL
+                // pixelFormat = GL_LUMINANCE4_ALPHA4; // invalid enumerant?
+                internalFormat = GL_RG8;
             }
             else if ( usingAlpha && ddsd.ddpfPixelFormat.dwLuminanceBitDepth == 32 )
             {
                 OSG_INFO << "ReadDDSFile info : format = L16A16" << std::endl;
                 dataType = GL_UNSIGNED_SHORT;
+                internalFormat = GL_RG16;
             }
             else if ( !usingAlpha && ddsd.ddpfPixelFormat.dwLuminanceBitDepth == 16 )
             {
                 OSG_INFO << "ReadDDSFile info : format = L16" << std::endl;
                 dataType = GL_UNSIGNED_SHORT;
+                internalFormat = GL_R16;
             }
             else if ( usingAlpha )
             {
                 OSG_INFO << "ReadDDSFile info : format = L8A8" << std::endl;
+                internalFormat = GL_RG8;
             }
             else
             {
                 OSG_INFO << "ReadDDSFile info : format = L8" << std::endl;
+                internalFormat = GL_R8;
             }
 //             else if ( ddsd.ddpfPixelFormat.dwLuminanceBitDepth == (usingAlpha ? 64 : 32) )
 //             {
@@ -1158,7 +1154,7 @@ bool WriteDDSFile(const osg::Image *img, std::ostream& fout, bool autoFlipDDSWri
             SD_flags |= DDSD_PITCH;
         }
         break;
-    case GL_LUMINANCE_ALPHA:
+    case GL_RG:
         {
             ddpf.dwRBitMask         = 0x000000ff;
             ddpf.dwRGBAlphaBitMask  = 0x0000ff00;
@@ -1190,20 +1186,11 @@ bool WriteDDSFile(const osg::Image *img, std::ostream& fout, bool autoFlipDDSWri
             SD_flags |= DDSD_PITCH;
         }
         break;
-    case GL_LUMINANCE:
+    case GL_RED:
     case GL_DEPTH_COMPONENT:
         {
             ddpf.dwRBitMask         = 0x000000ff;
             PF_flags |= DDPF_LUMINANCE;
-            ddpf.dwRGBBitCount = pixelSize;
-            ddsd.lPitch = img->getRowSizeInBytes();
-            SD_flags |= DDSD_PITCH;
-        }
-        break;
-    case GL_ALPHA:
-        {
-            ddpf.dwRGBAlphaBitMask  = 0x000000ff;
-            PF_flags |= DDPF_ALPHA;
             ddpf.dwRGBBitCount = pixelSize;
             ddsd.lPitch = img->getRowSizeInBytes();
             SD_flags |= DDSD_PITCH;

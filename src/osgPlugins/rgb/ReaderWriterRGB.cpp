@@ -506,12 +506,16 @@ class ReaderWriterRGB : public osgDB::ReaderWriter
             int r = 1;
 
             unsigned int pixelFormat =
-                raw->sizeZ == 1 ? GL_LUMINANCE :
-                raw->sizeZ == 2 ? GL_LUMINANCE_ALPHA :
+                raw->sizeZ == 1 ? GL_RED :
+                raw->sizeZ == 2 ? GL_RG :
                 raw->sizeZ == 3 ? GL_RGB :
                 raw->sizeZ == 4 ? GL_RGBA : (GLenum)-1;
 
-            int internalFormat = pixelFormat;
+            int internalFormat =
+                raw->sizeZ == 1 ? GL_R8 :
+                raw->sizeZ == 2 ? GL_RG8 :
+                raw->sizeZ == 3 ? GL_RGB8 :
+                raw->sizeZ == 4 ? GL_RGBA8 : (GLenum)-1;
 
             unsigned int dataType = raw->bpc == 1 ? GL_UNSIGNED_BYTE :
               GL_UNSIGNED_SHORT;
@@ -597,15 +601,11 @@ class ReaderWriterRGB : public osgDB::ReaderWriter
             raw.sizeZ =
                 pixelFormat == GL_COLOR_INDEX? 1 :
                 pixelFormat == GL_RED? 1 :
-                pixelFormat == GL_GREEN? 1 :
-                pixelFormat == GL_BLUE? 1 :
-                pixelFormat == GL_ALPHA? 1 :
+                pixelFormat == GL_RG ? 2 :
                 pixelFormat == GL_RGB? 3 :
                 pixelFormat == GL_BGR ? 3 :
                 pixelFormat == GL_RGBA? 4 :
-                pixelFormat == GL_BGRA? 4 :
-                pixelFormat == GL_LUMINANCE? 1 :
-                pixelFormat == GL_LUMINANCE_ALPHA ? 2 : 1;
+                pixelFormat == GL_BGRA? 4 : 1;
             raw.min = 0;
             raw.max = 0xFF;
             raw.wasteBytes = 0;
