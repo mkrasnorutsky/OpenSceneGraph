@@ -2422,10 +2422,10 @@ HCURSOR GraphicsWindowWin32::getOrCreateCursor(MouseCursor mouseCursor)
         _mouseCursorMap[mouseCursor] = LoadCursor( NULL, IDC_SIZEWE );
         break;
     case TopSideCursor:
-        _mouseCursorMap[mouseCursor] = LoadCursor( NULL, IDC_UPARROW );
+        _mouseCursorMap[mouseCursor] = LoadCursor( NULL, IDC_SIZENS );
         break;
     case BottomSideCursor:
-        _mouseCursorMap[mouseCursor] = LoadCursor( NULL, IDC_UPARROW );
+        _mouseCursorMap[mouseCursor] = LoadCursor( NULL, IDC_SIZENS );
         break;
     case LeftSideCursor:
         _mouseCursorMap[mouseCursor] = LoadCursor( NULL, IDC_SIZEWE);
