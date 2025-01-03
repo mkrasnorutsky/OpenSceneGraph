@@ -160,8 +160,20 @@ public:
                 this->operator()(*(vlast),_vertexArrayPtr[first],false);
                 break;
             }
-            default:
+            case(GL_PATCHES): {
+                const Vec3* vptr = &_vertexArrayPtr[first];
+                for(GLsizei i=3;i<count;i+=16,vptr+=16)
+                {
+                    // Rather than do a full bicubic interpolation, we will just take the middle 4 values.  Close enough...
+                    this->operator()(*(vptr+5),*(vptr+6),*(vptr+9),*(vptr+10),false);
+                }
                 break;
+            }
+            default:
+            {
+                // can't be converted into to triangles.
+                break;
+            }
             }
     }
 
@@ -259,8 +271,21 @@ public:
                                     false);
                 break;
             }
-            default:
+            case(GL_PATCHES): {
+                IndexPointer iptr = indices;
+                for(GLsizei i=15;i<count;i+=16,iptr+=16)
+                {
+                    // Rather than do a full bicubic interpolation, we will just take the middle 4 values.  Close enough...
+                    this->operator()(_vertexArrayPtr[*(iptr+9)],_vertexArrayPtr[*(iptr+6)], _vertexArrayPtr[*(iptr+5)], false);
+                    this->operator()(_vertexArrayPtr[*(iptr+9)],_vertexArrayPtr[*(iptr+10)], _vertexArrayPtr[*(iptr+6)], false);
+                }
                 break;
+            }
+            default:
+            {
+                // can't be converted into to triangles.
+                break;
+            }
             }
     }
 

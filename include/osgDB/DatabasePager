@@ -272,6 +272,9 @@ class OSGDB_EXPORT DatabasePager : public osg::NodeVisitor::DatabaseRequestHandl
         /** Get the average time between the first request for a tile to be loaded and the time of its merge into the main scene graph.*/
         double getAverageTimeToMergeTiles() const { return (_numTilesMerges > 0) ? _totalTimeToMergeTiles/static_cast<double>(_numTilesMerges) : 0; }
 
+        /** Get the number of PagedLOD nodes that are currently active so the state can be monitored */
+        unsigned int getActivePagedLODCount() const { return static_cast<unsigned int>(_activePagedLODList->size()); }
+        
         /** Reset the Stats variables.*/
         void resetStats();
 

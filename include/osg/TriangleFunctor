@@ -132,6 +132,16 @@ public:
                 }
                 break;
             }
+            case(GL_PATCHES):
+            {
+                const Vec3* vptr = &_vertexArrayPtr[first];
+                for(GLsizei i=15;i<count;i+=16,vptr+=16)
+                {
+                    this->operator()(*(vptr+10),*(vptr+6),*(vptr+5));
+                    this->operator()(*(vptr+9),*(vptr+10),*(vptr+5));
+                }
+                break;
+            }
             case(GL_POINTS):
             case(GL_LINES):
             case(GL_LINE_STRIP):
@@ -196,6 +206,16 @@ public:
                 for(GLsizei i=2;i<count;++i,++iptr)
                 {
                     this->operator()(vfirst,_vertexArrayPtr[*(iptr)],_vertexArrayPtr[*(iptr+1)]);
+                }
+                break;
+            }
+            case(GL_PATCHES):
+            {
+                IndexPointer iptr = indices;
+                for(GLsizei i=15;i<count;i+=16,iptr+=16)
+                {
+                    this->operator()(_vertexArrayPtr[*(iptr+10)],_vertexArrayPtr[*(iptr+6)],_vertexArrayPtr[*(iptr+5)]);
+                    this->operator()(_vertexArrayPtr[*(iptr+9)],_vertexArrayPtr[*(iptr+10)],_vertexArrayPtr[*(iptr+5)]);
                 }
                 break;
             }
@@ -268,6 +288,16 @@ public:
                 }
                 break;
             }
+            case(GL_PATCHES):
+            {
+                IndexPointer iptr = indices;
+                for(GLsizei i=15;i<count;i+=16,iptr+=16)
+                {
+                    this->operator()(_vertexArrayPtr[*(iptr+10)],_vertexArrayPtr[*(iptr+6)],_vertexArrayPtr[*(iptr+5)]);
+                    this->operator()(_vertexArrayPtr[*(iptr+9)],_vertexArrayPtr[*(iptr+10)],_vertexArrayPtr[*(iptr+5)]);
+                }
+                break;
+            }
             case(GL_POINTS):
             case(GL_LINES):
             case(GL_LINE_STRIP):
@@ -332,6 +362,16 @@ public:
                 for(GLsizei i=2;i<count;++i,++iptr)
                 {
                     this->operator()(vfirst,_vertexArrayPtr[*(iptr)],_vertexArrayPtr[*(iptr+1)]);
+                }
+                break;
+            }
+            case(GL_PATCHES):
+            {
+                IndexPointer iptr = indices;
+                for(GLsizei i=15;i<count;i+=16,iptr+=16)
+                {
+                    this->operator()(_vertexArrayPtr[*(iptr+10)],_vertexArrayPtr[*(iptr+6)],_vertexArrayPtr[*(iptr+5)]);
+                    this->operator()(_vertexArrayPtr[*(iptr+9)],_vertexArrayPtr[*(iptr+10)],_vertexArrayPtr[*(iptr+5)]);
                 }
                 break;
             }
