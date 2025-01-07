@@ -105,3 +105,5 @@ _CPack_Packages/
 #packages
 *.tar.gz
 *.zip
+
+compile_commands.json
