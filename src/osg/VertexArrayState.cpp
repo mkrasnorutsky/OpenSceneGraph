@@ -571,7 +571,7 @@ bool VertexArrayState::correctArrayDispatchAssigned(const ArrayDispatch* ad)
 namespace {
     VertexArrayState::ArrayDispatch* getOrCreateVertexAttributeDispatch(VertexArrayState::ArrayDispatchList& list, int slot)
     {
-        if (list.size() <= slot)
+        if (slot >= 0 && list.size() <= (size_t)slot)
             list.resize(slot + 1);
         osg::ref_ptr<VertexArrayState::ArrayDispatch>& ad = list[slot];
         if (!ad.valid())
