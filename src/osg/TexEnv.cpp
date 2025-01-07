@@ -48,6 +48,7 @@ void TexEnv::apply(State& state) const
         }
     }
 #else
+    OSG_UNUSED(state);
     OSG_NOTICE<<"Warning: TexEnv::apply(State&) - not supported."<<std::endl;
 #endif
 }

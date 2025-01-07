@@ -105,6 +105,7 @@ void TexEnvCombine::apply(State& state) const
         glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     }
 #else
+    OSG_UNUSED(state);
     OSG_NOTICE<<"Warning: TexEnvCombine::apply(State&) - not supported."<<std::endl;
 #endif
 }

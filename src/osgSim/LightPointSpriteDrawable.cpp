@@ -126,6 +126,7 @@ void LightPointSpriteDrawable::drawImplementation(osg::RenderInfo& renderInfo) c
     // restore the state afterwards.
     state.apply();
 #else
+    OSG_UNUSED(renderInfo);
     OSG_NOTICE<<"Warning: LightPointDrawable not supported."<<std::endl;
 #endif
 }

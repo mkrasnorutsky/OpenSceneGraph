@@ -2937,6 +2937,7 @@ Texture::GenerateMipmapMode Texture::mipmapBeforeTexImage(const State& state, bo
     if (hardwareMipmapOn)
     {
 #if defined( OSG_GLES2_AVAILABLE ) || defined( OSG_GLES3_AVAILABLE ) || defined( OSG_GL3_AVAILABLE )
+        OSG_UNUSED(state);
         return GENERATE_MIPMAP;
 #else
 

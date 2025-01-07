@@ -94,6 +94,7 @@ void Point::apply(State& state) const
     extensions->glPointParameterf(GL_POINT_SIZE_MIN, _minSize);
     extensions->glPointParameterf(GL_POINT_SIZE_MAX, _maxSize);
 #else
+    OSG_UNUSED(state);
     OSG_NOTICE<<"Warning: Point::apply(State&) - not supported."<<std::endl;
 #endif
 }

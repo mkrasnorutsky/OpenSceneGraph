@@ -68,6 +68,7 @@ void Fog::apply(State& state) const
     }
 
 #else
+    OSG_UNUSED(state);
     OSG_NOTICE<<"Warning: Fog::apply(State&) - not supported."<<std::endl;
 #endif
 }

@@ -102,6 +102,7 @@ public:
 
         availableTime -= elapsedTime;
     #else
+        OSG_UNUSED(availableTime);
         OSG_INFO<<"Warning: Drawable::flushDeletedDisplayLists(..) - not supported."<<std::endl;
     #endif
     }
@@ -147,6 +148,8 @@ public:
             _displayListMap.insert(DisplayListMap::value_type(sizeHint,globj));
         }
     #else
+        OSG_UNUSED(globj);
+        OSG_UNUSED(sizeHint);
         OSG_INFO<<"Warning: Drawable::deleteDisplayList(..) - not supported."<<std::endl;
     #endif
     }
@@ -183,6 +186,7 @@ public:
             }
         }
     #else
+        OSG_UNUSED(sizeHint);
         OSG_INFO<<"Warning: Drawable::generateDisplayList(..) - not supported."<<std::endl;
         return 0;
     #endif
@@ -653,6 +657,8 @@ void Drawable::compileGLObjects(RenderInfo& renderInfo) const
 
         glEndList();
     }
+#else
+    OSG_UNUSED(renderInfo);
 #endif
 }
 

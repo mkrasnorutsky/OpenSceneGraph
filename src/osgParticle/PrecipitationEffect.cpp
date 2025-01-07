@@ -968,6 +968,7 @@ if (!_geometry) return;
 
     glPopMatrix();
 #else
+    OSG_UNUSED(renderInfo);
     OSG_NOTICE<<"Warning: ParticleEffect::drawImplementation(..) not fully implemented."<<std::endl;
 #endif
 }

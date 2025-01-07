@@ -808,6 +808,9 @@ void VertexArrayState::setInterleavedArrays(osg::State& /*state*/, GLenum format
 
     glInterleavedArrays( format, stride, pointer);
 #else
+    OSG_UNUSED(format);
+    OSG_UNUSED(stride);
+    OSG_UNUSED(pointer);
     OSG_NOTICE<<"Warning: State::setInterleavedArrays(..) not implemented."<<std::endl;
 #endif
 }

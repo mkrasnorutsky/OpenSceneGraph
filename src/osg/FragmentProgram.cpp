@@ -140,6 +140,7 @@ void FragmentProgram::apply(State& state) const
         glMatrixMode(GL_MODELVIEW); // restore matrix mode
     }
 #else
+    OSG_UNUSED(state);
     OSG_NOTICE<<"Warning: FragmentProgram::apply(State&) - not supported."<<std::endl;
 #endif
 }
