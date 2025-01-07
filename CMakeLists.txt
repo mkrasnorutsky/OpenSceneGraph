@@ -1052,7 +1052,7 @@ SET(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} CACHE STRING "(EXPERIMENTAL) You may 
 # This is for an advanced option to give aggressive warnings
 # under different compilers. If yours is not implemented, this option
 # will not be made available.
-IF(CMAKE_COMPILER_IS_GNUCXX)
+IF(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # To be complete, we might also do GNUCC flags,
     # but everything here is C++ code.
     # -Wshadow and -Woverloaded-virtual are also interesting flags, but OSG
@@ -1063,11 +1063,8 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
     # errors instead of warnings for certain issues, including superfluous
     # semicolons and commas, and the use of long long. -fpermissive seems
     # to be the workaround.
-    SET(OSG_AGGRESSIVE_WARNING_FLAGS -Wall -Wparentheses -Wno-long-long -Wno-import -pedantic -Wreturn-type -Wmissing-braces -Wunknown-pragmas -Wunused)
-
-    # FlightGear: Do not spam warnings in modern compilers
-    SET(OSG_AGGRESSIVE_WARNING_FLAGS ${OSG_AGGRESSIVE_WARNING_FLAGS} -Wno-inconsistent-missing-override)
-    # End of FlightGear
+    # FlightGear added params: from -Wno-overloaded-virtual (included) onwards
+    SET(OSG_AGGRESSIVE_WARNING_FLAGS -Wall -Wparentheses -Wno-long-long -Wno-import -pedantic -Wreturn-type -Wmissing-braces -Wunknown-pragmas -Wunused -Wno-overloaded-virtual -Wno-deprecated-copy -Wno-class-memaccess -Wno-stringop-truncation)
 
     MESSAGE( STATUS "g++ version ${CMAKE_CXX_COMPILER_VERSION} ")
     IF(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.6)
@@ -1109,11 +1106,8 @@ ELSEIF(MSVC)
         set(CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELEASE} /Zi")
         #endif
 ELSEIF(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        SET(OSG_AGGRESSIVE_WARNING_FLAGS  -Wall -Wparentheses -Wno-long-long -Wno-import -pedantic -Wreturn-type -Wmissing-braces -Wunknown-pragmas -Wunused -Wno-overloaded-virtual)
-
-        # FlightGear: Do not spam warnings in modern compilers
-        SET(OSG_AGGRESSIVE_WARNING_FLAGS ${OSG_AGGRESSIVE_WARNING_FLAGS} -Wno-inconsistent-missing-override)
-        # End of FlightGear
+        # FlightGear added params: from -Wno-overloaded-virtual (included) onwards
+        SET(OSG_AGGRESSIVE_WARNING_FLAGS -Wall -Wparentheses -Wno-long-long -Wno-import -pedantic -Wreturn-type -Wmissing-braces -Wunknown-pragmas -Wunused -Wno-overloaded-virtual -Wno-inconsistent-missing-override -Wno-invalid-utf8 -Wno-unused-but-set-variable -Wno-unused-const-variable)
 
         # CMake lacks an elseif, so other non-gcc, non-VS compilers need
         # to be listed below. If unhandled, OSG_AGGRESSIVE_WARNING_FLAGS should
@@ -1145,7 +1139,7 @@ ELSEIF(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
                 ENDIF()
             ENDIF()
 
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-overloaded-virtual -Wno-conversion -Wno-inconsistent-missing-override")
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-conversion")
             set(WARNING_CFLAGS "")
 
             # FlightGear: force O3 for RelWithDebInfo builds
