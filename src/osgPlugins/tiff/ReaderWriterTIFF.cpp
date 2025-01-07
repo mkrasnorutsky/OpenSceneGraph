@@ -322,7 +322,7 @@ tiff_warn(const char*, const char* fmt, va_list ap)
 
 
 static int
-checkcmap(int n, uint16* r, uint16* g, uint16* b)
+checkcmap(int n, uint16_t* r, uint16_t* g, uint16_t* b)
 {
     while (n-- > 0)
         if (*r++ >= 256 || *g++ >= 256 || *b++ >= 256)
@@ -332,7 +332,7 @@ checkcmap(int n, uint16* r, uint16* g, uint16* b)
 }
 
 static void
-invert_row(unsigned char *ptr, unsigned char *data, int n, int invert, uint16 bitspersample)
+invert_row(unsigned char *ptr, unsigned char *data, int n, int invert, uint16_t bitspersample)
 {
     // OSG_NOTICE<<"invert_row "<<invert<<std::endl;
     if (bitspersample == 8)
@@ -385,7 +385,7 @@ unsigned short *rmap, unsigned short *gmap, unsigned short *bmap)
 
 static void interleave_row(unsigned char *ptr,
                            unsigned char *red, unsigned char *green, unsigned char *blue,
-                           int n, int numSamples, uint16 bitspersample)
+                           int n, int numSamples, uint16_t bitspersample)
 {
     // OSG_NOTICE<<"Interleave row RGB"<<std::endl;
     if (bitspersample == 8)
@@ -432,7 +432,7 @@ static void interleave_row(unsigned char *ptr,
 
 static void interleave_row(unsigned char *ptr,
                            unsigned char *red, unsigned char *green, unsigned char *blue, unsigned char *alpha,
-                           int n, int numSamples, uint16 bitspersample)
+                           int n, int numSamples, uint16_t bitspersample)
 {
     // OSG_NOTICE<<"Interleave row RGBA"<<std::endl;
     if (bitspersample == 8)
@@ -503,20 +503,20 @@ simage_tiff_load(std::istream& fin,
                  int& width_ret,
                  int& height_ret,
                  int& numComponents_ret,
-                 uint16& bitspersample)
+                 uint16_t& bitspersample)
 {
     TIFF *in;
-    uint16 dataType;
-    uint16 samplesperpixel;
-    uint16 photometric;
-    uint32 w, h;
-    uint16 config;
-    uint16* red;
-    uint16* green;
-    uint16* blue;
+    uint16_t dataType;
+    uint16_t samplesperpixel;
+    uint16_t photometric;
+    uint32_t w, h;
+    uint16_t config;
+    uint16_t* red;
+    uint16_t* green;
+    uint16_t* blue;
     unsigned char *inbuf = NULL;
     tsize_t rowsize;
-    uint32 row;
+    uint32_t row;
     int format;
     unsigned char *buffer;
     int width;
@@ -729,7 +729,7 @@ simage_tiff_load(std::istream& fin,
                 int s;
                 for (s = 0; s < format; s++)
                 {
-                    if (TIFFReadScanline(in, (tdata_t)(inbuf+s*rowsize), (uint32)row, (tsample_t)s) < 0)
+                    if (TIFFReadScanline(in, (tdata_t)(inbuf+s*rowsize), (uint32_t)row, (tsample_t)s) < 0)
                     {
                         tifferror = ERR_READ; break;
                     }
@@ -793,7 +793,7 @@ class ReaderWriterTIFF : public osgDB::ReaderWriter
             int width_ret = -1;
             int height_ret = -1;
             int numComponents_ret = -1;
-            uint16 bitspersample_ret = 0;
+            uint16_t bitspersample_ret = 0;
 
             imageData = simage_tiff_load(fin, width_ret, height_ret, numComponents_ret, bitspersample_ret);
 
@@ -905,7 +905,7 @@ class ReaderWriterTIFF : public osgDB::ReaderWriter
             TIFF *image;
             int samplesPerPixel;
             int bitsPerSample;
-            uint16 photometric;
+            uint16_t photometric;
 
             image = TIFFClientOpen("outputstream", "w", (thandle_t)&fout,
                                     libtiffOStreamReadProc, //Custom read function
@@ -947,7 +947,7 @@ class ReaderWriterTIFF : public osgDB::ReaderWriter
                     break;
             }
 
-            uint32 rowsperstrip = 0;
+            uint32_t rowsperstrip = 0;
 
             switch(img.getDataType()){
                 case GL_FLOAT:
