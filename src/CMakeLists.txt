@@ -17,12 +17,12 @@ FOREACH( mylibfolder
         osgText
         osgViewer
         # osgAnimation
-        osgFX
-        #osgManipulator
+        # osgFX
+        # osgManipulator
         osgParticle
         # osgUI
         # osgVolume
-        # # osgShadow
+        # osgShadow
         osgSim
         osgTerrain
         # osgWidget
