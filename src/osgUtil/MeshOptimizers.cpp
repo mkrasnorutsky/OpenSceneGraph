@@ -16,6 +16,7 @@
 #include <limits>
 
 #include <algorithm>
+#include <tuple>
 #include <vector>
 
 #include <iostream>
@@ -836,7 +837,7 @@ void VertexCacheVisitor::doVertexOptimization(Geometry& geom,
             unsigned vertIdx = triToAdd->verts[i];
             Vertex* vert = &vertices[vertIdx];
             vertDrawList.push_back(vertIdx);
-            std::remove(vertTriListStore.begin() + vert->triList,
+            std::ignore = std::remove(vertTriListStore.begin() + vert->triList,
                    vertTriListStore.begin() + vert->triList
                    + vert->numActiveTris,
                    triToAddIdx);
