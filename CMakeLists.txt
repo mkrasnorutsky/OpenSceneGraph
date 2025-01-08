@@ -46,6 +46,10 @@ if(COMMAND cmake_policy)
    ####
 endif()
 
+# FlightGear: Explicitly set the OpenGL preference to legacy
+set(OpenGL_GL_PREFERENCE LEGACY)
+# End FlightGear
+
 IF(APPLE)
   # Get OSX version in MAJOR.MINOR format
   EXECUTE_PROCESS(COMMAND sw_vers -productVersion
