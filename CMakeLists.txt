@@ -761,7 +761,7 @@ ENDIF()
 # Optional build components
 
 # OSG Applications
-OPTION(BUILD_OSG_APPLICATIONS "Enable to build OSG Applications (e.g. osgviewer)" ON)
+OPTION(BUILD_OSG_APPLICATIONS "Enable to build OSG Applications (e.g. osgviewer)" OFF)
 
 # OSG Examples
 OPTION(BUILD_OSG_EXAMPLES "Enable to build OSG Examples" OFF)
