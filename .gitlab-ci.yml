@@ -118,3 +118,14 @@ macos-build:
   cache:
     paths:
       - $BUILD_DIR
+
+
+staging:
+  stage: deploy
+  trigger:
+    project: flightgear/simgear
+    # we could get fancy here, but for now, just trigger 'next'
+    branch: next
+    strategy: depend
+  inherit: 
+    variables: false
