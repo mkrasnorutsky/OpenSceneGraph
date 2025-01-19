@@ -129,6 +129,19 @@ void DisplaySettings::setDisplaySettings(const DisplaySettings& vs)
     _OSXMenubarBehavior = vs._OSXMenubarBehavior;
 
     _syncSwapBuffers = vs._syncSwapBuffers;
+
+    // Be certain to avoid lock inversion by only taking one lock at a time
+    ValueMap valueMap;
+    {
+        // Copy other _valueMap with other lock held
+        OpenThreads::ScopedLock<OpenThreads::Mutex> lock(vs._valueMapMutex);
+        valueMap = vs._valueMap;
+    }
+    {
+        // Move into _valueMap with this lock held
+        OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_valueMapMutex);
+        _valueMap = std::move(valueMap);
+    }
 }
 
 void DisplaySettings::merge(const DisplaySettings& vs)
