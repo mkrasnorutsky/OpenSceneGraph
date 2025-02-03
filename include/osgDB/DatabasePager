@@ -48,7 +48,7 @@ namespace osgDB {
   * and synchronizing of loaded models with the main scene graph.*/
 class OSGDB_EXPORT DatabasePager : public osg::NodeVisitor::DatabaseRequestHandler
 {
-    public :
+  public :
 
         typedef OpenThreads::Thread::ThreadPriority ThreadPriority;
 
@@ -69,11 +69,17 @@ class OSGDB_EXPORT DatabasePager : public osg::NodeVisitor::DatabaseRequestHandl
 
 
 
-        /** Add a request to load a node file to end the database request list.*/
+        /** Add a request to load a node file to the database request list.*/
         virtual void requestNodeFile(const std::string& fileName, osg::NodePath& nodePath,
                                      float priority, const osg::FrameStamp* framestamp,
                                      osg::ref_ptr<osg::Referenced>& databaseRequest,
                                      const osg::Referenced* options);
+
+        /** Add a request to load a node using a callback to the database request list.*/
+        virtual void requestNodeCallback(std::function<void()> callback, osg::NodePath& nodePath,
+                                float priority, const osg::FrameStamp* framestamp,
+                                osg::ref_ptr<osg::Referenced>& databaseRequest,
+                                const osg::Referenced* options);
 
         /** Set the priority of the database pager thread(s).*/
         int setSchedulePriority(OpenThreads::Thread::ThreadPriority priority);
@@ -352,6 +358,9 @@ class OSGDB_EXPORT DatabasePager : public osg::NodeVisitor::DatabaseRequestHandl
 
             osg::observer_ptr<osgUtil::IncrementalCompileOperation::CompileSet> _compileSet;
             bool                                _groupExpired; // flag used only in update thread
+
+            // An alternative loadCallback that will be called instead of the normal load function.
+            std::function<void()>              _loadCallback;
         };
 
 
@@ -415,6 +424,13 @@ class OSGDB_EXPORT DatabasePager : public osg::NodeVisitor::DatabaseRequestHandl
             OpenThreads::Mutex          _childrenToDeleteListMutex;
             ObjectList                  _childrenToDeleteList;
         };
+
+        /** Convenience function to handle both LoadCallback and file requests */
+        virtual void requestNode(std::function<void()> callback, 
+                                const std::string& fileName, osg::NodePath& nodePath,
+                                float priority, const osg::FrameStamp* framestamp,
+                                osg::ref_ptr<osg::Referenced>& databaseRequest,
+                                const osg::Referenced* options);
 
         // forward declare inner helper classes
         class FindCompileableGLObjectsVisitor;

@@ -49,7 +49,6 @@ static osg::ApplicationUsageProxy DatabasePager_e4(osg::ApplicationUsage::ENVIRO
 static osg::ApplicationUsageProxy DatabasePager_e11(osg::ApplicationUsage::ENVIRONMENTAL_VARIABLE,"OSG_MAX_PAGEDLOD <num>","Set the target maximum number of PagedLOD to maintain.");
 static osg::ApplicationUsageProxy DatabasePager_e12(osg::ApplicationUsage::ENVIRONMENTAL_VARIABLE,"OSG_ASSIGN_PBO_TO_IMAGES <ON/OFF>","Set whether PixelBufferObjects should be assigned to Images to aid download to the GPU.");
 
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //  CountPagedLODList
@@ -714,6 +713,15 @@ void DatabasePager::DatabaseThread::run()
         bool cacheNodes = false;
         if (databaseRequest.valid())
         {
+            if (databaseRequest->_loadCallback) {
+                // Special case where the DatabasePager is being used with callback rather than a normal load.  Typically used
+                // to regenerate osgTerrain::TerrainTiles.
+                databaseRequest->_loadCallback();
+                databaseRequest = nullptr;
+                // skip the rest of the do/while loop as we have done all the processing we need to do.
+                continue;
+            }
+
             {
                 OpenThreads::ScopedLock<OpenThreads::Mutex> drLock(_pager->_dr_mutex);
                 dr_loadOptions = databaseRequest->_loadOptions.valid() ? databaseRequest->_loadOptions->cloneOptions() : new osgDB::Options;
@@ -1349,11 +1357,11 @@ bool DatabasePager::getRequestsInProgress() const
     return false;
 }
 
-
-void DatabasePager::requestNodeFile(const std::string& fileName, osg::NodePath& nodePath,
-                                    float priority, const osg::FrameStamp* framestamp,
-                                    osg::ref_ptr<osg::Referenced>& databaseRequestRef,
-                                    const osg::Referenced* options)
+void DatabasePager::requestNode(std::function<void()> loadCallback,
+                                const std::string& fileName, osg::NodePath& nodePath,
+                                float priority, const osg::FrameStamp* framestamp,
+                                osg::ref_ptr<osg::Referenced>& databaseRequestRef,
+                                const osg::Referenced* options)
 {
     osgDB::Options* loadOptions = dynamic_cast<osgDB::Options*>(const_cast<osg::Referenced*>(options));
     if (!loadOptions)
@@ -1368,26 +1376,29 @@ void DatabasePager::requestNodeFile(const std::string& fileName, osg::NodePath& 
 
     if (!_acceptNewRequests) return;
 
+    osg::Group* group = nullptr;
+    osg::Node* terrain = nullptr;
+    if (!loadCallback) {
+        if (nodePath.empty())
+        {
+            OSG_NOTICE<<"Warning: DatabasePager::requestNodeFile(..) passed empty NodePath, so nowhere to attach new subgraph to."<<std::endl;
+            return;
+        }
 
-    if (nodePath.empty())
-    {
-        OSG_NOTICE<<"Warning: DatabasePager::requestNodeFile(..) passed empty NodePath, so nowhere to attach new subgraph to."<<std::endl;
-        return;
-    }
+        group = nodePath.back()->asGroup();
+        if (!group)
+        {
+            OSG_NOTICE<<"Warning: DatabasePager::requestNodeFile(..) passed NodePath without group as last node in path, so nowhere to attach new subgraph to."<<std::endl;
+            return;
+        }
 
-    osg::Group* group = nodePath.back()->asGroup();
-    if (!group)
-    {
-        OSG_NOTICE<<"Warning: DatabasePager::requestNodeFile(..) passed NodePath without group as last node in path, so nowhere to attach new subgraph to."<<std::endl;
-        return;
-    }
-
-    osg::Node* terrain = 0;
-    for(osg::NodePath::reverse_iterator itr = nodePath.rbegin();
-        itr != nodePath.rend();
-        ++itr)
-    {
-        if ((*itr)->asTerrain()) terrain = *itr;
+        terrain = 0;
+        for(auto itr = nodePath.rbegin();
+            itr != nodePath.rend();
+            ++itr)
+        {
+            if ((*itr)->asTerrain()) terrain = *itr;
+        }
     }
 
     double timestamp = framestamp?framestamp->getReferenceTime():0.0;
@@ -1447,6 +1458,7 @@ void DatabasePager::requestNodeFile(const std::string& fileName, osg::NodePath& 
                     databaseRequest->_terrain = terrain;
                     databaseRequest->_loadOptions = loadOptions;
                     databaseRequest->_objectCache = 0;
+                    databaseRequest->_loadCallback = loadCallback;
                     requeue = true;
                 }
 
@@ -1480,6 +1492,7 @@ void DatabasePager::requestNodeFile(const std::string& fileName, osg::NodePath& 
             databaseRequest->_terrain = terrain;
             databaseRequest->_loadOptions = loadOptions;
             databaseRequest->_objectCache = 0;
+            databaseRequest->_loadCallback = loadCallback;
 
             _fileRequestQueue->addNoLock(databaseRequest.get());
         }
@@ -1515,6 +1528,30 @@ void DatabasePager::requestNodeFile(const std::string& fileName, osg::NodePath& 
 #ifdef WITH_REQUESTNODEFILE_TIMING
     totalTime += osg::Timer::instance()->delta_m(start_tick, osg::Timer::instance()->tick());
 #endif
+}
+
+void DatabasePager::requestNodeFile(const std::string& fileName, osg::NodePath& nodePath,
+                                    float priority, const osg::FrameStamp* framestamp,
+                                    osg::ref_ptr<osg::Referenced>& databaseRequestRef,
+                                    const osg::Referenced* options)
+{
+    requestNode(nullptr, fileName, nodePath,
+                    priority, framestamp,
+                    databaseRequestRef,
+                    options);
+
+}
+
+void DatabasePager::requestNodeCallback(std::function<void()> callback, osg::NodePath& nodePath,
+                            float priority, const osg::FrameStamp* framestamp,
+                            osg::ref_ptr<osg::Referenced>& databaseRequest,
+                            const osg::Referenced* options)
+{
+    requestNode(callback, 
+                "", nodePath,
+                priority, framestamp,
+                databaseRequest,
+                options);
 }
 
 void DatabasePager::signalBeginFrame(const osg::FrameStamp* framestamp)

@@ -14,6 +14,8 @@
 #ifndef OSG_NODEVISITOR
 #define OSG_NODEVISITOR 1
 
+#include <functional>
+
 #include <osg/Node>
 #include <osg/Matrix>
 #include <osg/FrameStamp>
@@ -367,7 +369,13 @@ class OSG_EXPORT NodeVisitor : public virtual Object
             DatabaseRequestHandler():
                 Referenced(true) {}
 
-             virtual void requestNodeFile(const std::string& fileName, osg::NodePath& nodePath, float priority, const FrameStamp* framestamp, osg::ref_ptr<osg::Referenced>& databaseRequest, const osg::Referenced* options=0) = 0;
+            virtual void requestNodeFile(const std::string& fileName, osg::NodePath& nodePath, float priority, const FrameStamp* framestamp, osg::ref_ptr<osg::Referenced>& databaseRequest, const osg::Referenced* options=0) = 0;
+
+            // FlightGear Extension
+            virtual void requestNodeCallback(std::function<void()> callback, osg::NodePath& nodePath,
+                                float priority, const osg::FrameStamp* framestamp,
+                                osg::ref_ptr<osg::Referenced>& databaseRequest,
+                                const osg::Referenced* options) = 0;
 
         protected:
             virtual ~DatabaseRequestHandler() {}
