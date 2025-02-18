@@ -7,11 +7,19 @@ variables:
   BUILD_DIR: "$CI_PROJECT_DIR/build"
   PREFIX_DIR: "$CI_PROJECT_DIR/osg-dist"
 
+# do not run pipelines on forks
+# build merge requests, tags and the protected branches 
+workflow:
+  rules:
+    - if: $CI_PROJECT_NAMESPACE != "flightgear"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+
 linux-build:
   image: registry.gitlab.com/flightgear/flightgear
   stage: build
-  rules:
-    - if: $CI_PIPELINE_SOURCE != "schedule"
   script:
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -Wno-dev
       -D CMAKE_BUILD_TYPE=RelWithDebInfo 
@@ -31,8 +39,6 @@ linux-build:
 linux-focal-build:
   image: registry.gitlab.com/flightgear/flightgear/stable-build
   stage: build
-  rules:
-    - if: $CI_PIPELINE_SOURCE != "schedule"
   script:
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -Wno-dev
       -D CMAKE_BUILD_TYPE=RelWithDebInfo 
@@ -81,8 +87,6 @@ macos-build:
   tags:
     - saas-macos-medium-m1
   image: macos-14-xcode-15
-  rules:
-    - if: $CI_PIPELINE_SOURCE != "schedule"
   before_script:
       - export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
       - export HOMEBREW_NO_INSTALL_CLEANUP=1
@@ -119,9 +123,10 @@ macos-build:
     paths:
       - $BUILD_DIR
 
-
 staging:
   stage: deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "merge_request_event"
   trigger:
     project: flightgear/simgear
     # we could get fancy here, but for now, just trigger 'next'
