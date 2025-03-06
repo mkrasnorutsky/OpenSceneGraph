@@ -35,10 +35,13 @@ typedef struct
 class PNGError
 {
 public:
-    PNGError(const char* message)
+    PNGError(const std::string& error_msg, const std::string& filename)
     {
-        _message = "PNG lib error : ";
-        _message += message;
+        _message = "PNG lib error: " + error_msg;
+
+        if (!filename.empty()) {
+            _message += "\n(in file " + filename + ")";
+        }
     }
     friend std::ostream& operator<<(std::ostream& stream, const PNGError& err)
     {
@@ -49,18 +52,23 @@ private:
     std::string _message;
 };
 
-void user_error_fn(png_structp /*png_ptr*/, png_const_charp error_msg)
+void user_error_fn(png_structp png_ptr, png_const_charp error_msg)
 {
+    const std::string *filename_ptr = static_cast<const std::string*>(png_get_error_ptr(png_ptr));
+    std::string filename = filename_ptr ? *filename_ptr : "unknown";
+
 #ifdef OSG_CPP_EXCEPTIONS_AVAILABLE
-    throw PNGError(error_msg);
+    throw PNGError(error_msg, filename);
 #else
-    OSG_WARN << "PNG lib warning : " << error_msg << std::endl;
+    OSG_WARN << "PNG lib warning in file " << filename << ": " << error_msg << std::endl;
 #endif
 }
 
-void user_warning_fn(png_structp /*png_ptr*/, png_const_charp warning_msg)
+void user_warning_fn(png_structp png_ptr, png_const_charp warning_msg)
 {
-    OSG_WARN << "PNG lib warning : " << warning_msg << std::endl;
+    const std::string *filename_ptr = static_cast<const std::string*>(png_get_error_ptr(png_ptr));
+    std::string filename = filename_ptr ? *filename_ptr : "unknown";
+    OSG_WARN << "PNG lib warning in file " << filename << ": " << warning_msg << std::endl;
 }
 
 void png_read_istream(png_structp png_ptr, png_bytep data, png_size_t length)
@@ -159,7 +167,7 @@ class ReaderWriterPNG : public osgDB::ReaderWriter
             return WriteResult::FILE_SAVED;
         }
 
-        ReadResult readPNGStream(std::istream& fin) const
+        ReadResult readPNGStream(std::istream& fin, const std::string& filename = {}) const
         {
             int trans = PNG_ALPHA;
             pngInfo pInfo;
@@ -179,8 +187,8 @@ class ReaderWriterPNG : public osgDB::ReaderWriter
             png_uint_32 i;
             png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
-            // Set custom error handlers
-            png_set_error_fn(png, png_get_error_ptr(png), user_error_fn, user_warning_fn);
+            // Set custom error handlers and pass the filename
+            png_set_error_fn(png, const_cast<std::string*>(&filename), user_error_fn, user_warning_fn);
 
             #ifdef OSG_CPP_EXCEPTIONS_AVAILABLE
             try
@@ -398,7 +406,7 @@ class ReaderWriterPNG : public osgDB::ReaderWriter
 
             osgDB::ifstream istream(fileName.c_str(), std::ios::in | std::ios::binary);
             if(!istream) return ReadResult::FILE_NOT_HANDLED;
-            ReadResult rr = readPNGStream(istream);
+            ReadResult rr = readPNGStream(istream, fileName);
             if(rr.validImage()) rr.getImage()->setFileName(file);
             return rr;
         }
