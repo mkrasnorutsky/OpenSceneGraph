@@ -134,6 +134,20 @@ class OSGGA_EXPORT EventQueue : public osg::Referenced
         osgGA::GUIEventAdapter* mouseMotion(float x, float y, double time);
 
 
+        /** Method for adapting mouse enter events, placing this event on the back of the event queue. */
+        osgGA::GUIEventAdapter* mouseEnter() { return mouseEnter(getTime()); }
+
+        /** Method for adapting mouse enter events, placing this event on the back of the event queue, with specified time. */
+        osgGA::GUIEventAdapter* mouseEnter(double time);
+
+
+        /** Method for adapting mouse leave events, placing this event on the back of the event queue. */
+        osgGA::GUIEventAdapter* mouseLeave() { return mouseLeave(getTime()); }
+
+        /** Method for adapting mouse leave events, placing this event on the back of the event queue, with specified time. */
+        osgGA::GUIEventAdapter* mouseLeave(double time);
+
+
         /** Method for adapting mouse button pressed events, placing this event on the back of the event queue.
           * Button numbering is 1 for left mouse button, 2 for middle, 3 for right. */
         osgGA::GUIEventAdapter* mouseButtonPress(float x, float y, unsigned int button) { return mouseButtonPress(x, y, button, getTime()); }

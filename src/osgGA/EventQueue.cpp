@@ -235,6 +235,28 @@ osgGA::GUIEventAdapter* EventQueue::mouseMotion(float x, float y, double time)
     return event;
 }
 
+osgGA::GUIEventAdapter* EventQueue::mouseEnter(double time)
+{
+    GUIEventAdapter* event = new GUIEventAdapter(*_accumulateEventState);
+    event->setEventType(GUIEventAdapter::ENTER);
+    event->setTime(time);
+
+    addEvent(event);
+
+    return event;
+}
+
+osgGA::GUIEventAdapter* EventQueue::mouseLeave(double time)
+{
+    GUIEventAdapter* event = new GUIEventAdapter(*_accumulateEventState);
+    event->setEventType(GUIEventAdapter::LEAVE);
+    event->setTime(time);
+
+    addEvent(event);
+
+    return event;
+}
+
 osgGA::GUIEventAdapter* EventQueue::mouseButtonPress(float x, float y, unsigned int button, double time)
 {
     _accumulateEventState->setX(x);

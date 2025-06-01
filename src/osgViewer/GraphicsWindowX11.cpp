@@ -1135,7 +1135,8 @@ bool GraphicsWindowX11::createWindow()
     XSelectInput( _eventDisplay, _window, ExposureMask | StructureNotifyMask |
                                      KeyPressMask | KeyReleaseMask |
                                      PointerMotionMask | ButtonPressMask | ButtonReleaseMask |
-                                     KeymapStateMask | FocusChangeMask | EnterWindowMask );
+                                     KeymapStateMask | FocusChangeMask | EnterWindowMask |
+                                     LeaveWindowMask);
 
     XFlush( _eventDisplay );
     XSync( _eventDisplay, 0 );
@@ -1478,7 +1479,31 @@ bool GraphicsWindowX11::checkEvents()
                 OSG_INFO<<"EnterNotify event received"<<std::endl;
                 _modifierState = ev.xcrossing.state;
                 syncLocks();
+
+                // Skip enter event if buttons are pressed, we will have already
+                // skipped a leave event anyway.
+                if (ev.xcrossing.mode == NotifyNormal &&
+                    ev.xcrossing.state & (Button1Mask | Button2Mask | Button3Mask | Button4Mask | Button5Mask))
+                    break;
+
+                getEventQueue()->mouseEnter(eventTime);
                 break;
+
+            case LeaveNotify:
+            {
+                OSG_INFO<<"LeaveNotify event received"<<std::endl;
+                _modifierState = ev.xcrossing.state;
+                syncLocks();
+
+                // Skip normal leave event if buttons are pressed, we should get
+                // a LeaveNotify event with mode == NotifyUngrab later.
+                if (ev.xcrossing.mode == NotifyNormal &&
+                    ev.xcrossing.state & (Button1Mask | Button2Mask | Button3Mask | Button4Mask | Button5Mask))
+                    break;
+
+                getEventQueue()->mouseLeave(eventTime);
+                break;
+            }
 
             case KeymapNotify :
             {

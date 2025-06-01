@@ -106,7 +106,9 @@ public:
             PEN_PROXIMITY_LEAVE = 1<<13,
             CLOSE_WINDOW        = 1<<14,
             QUIT_APPLICATION    = 1<<15,
-            USER                = 1<<16
+            USER                = 1<<16,
+            ENTER               = 1<<17,
+            LEAVE               = 1<<18
         };
 
         enum KeySymbol
