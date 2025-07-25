@@ -18,7 +18,7 @@ workflow:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
 
 linux-build:
-  image: registry.gitlab.com/flightgear/flightgear
+  image: ${CI_REGISTRY}/flightgear/flightgear-ci-docker/flightgear:latest
   stage: build
   script:
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -Wno-dev
@@ -37,7 +37,7 @@ linux-build:
       - $PREFIX_DIR/lib/pkgconfig/*
 
 linux-focal-build:
-  image: registry.gitlab.com/flightgear/flightgear/stable-build
+  image: ${CI_REGISTRY}/flightgear/flightgear-ci-docker/flightgear:latest
   stage: build
   script:
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -Wno-dev
