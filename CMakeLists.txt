@@ -1,6 +1,8 @@
 #
 # OpenSceneGraph CMake build file
 #
+CMAKE_MINIMUM_REQUIRED(VERSION 3.20)
+
 SET(OPENSCENEGRAPH_MAJOR_VERSION 3)
 SET(OPENSCENEGRAPH_MINOR_VERSION 6)
 SET(OPENSCENEGRAPH_PATCH_VERSION 5)
@@ -19,8 +21,6 @@ SET(OPENSCENEGRAPH_RELEASE_CANDIDATE 0)
 set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS TRUE)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-
-CMAKE_MINIMUM_REQUIRED(VERSION 3.12 FATAL_ERROR)
 
 if(COMMAND cmake_policy)
     # Works around warnings libraries linked against that don't
@@ -48,7 +48,7 @@ if(COMMAND cmake_policy)
 endif()
 
 # FlightGear: Explicitly set the OpenGL preference to legacy
-set(OpenGL_GL_PREFERENCE LEGACY)
+# set(OpenGL_GL_PREFERENCE LEGACY)
 # End FlightGear
 
 IF(APPLE)
@@ -471,7 +471,7 @@ ENDIF(WIN32 AND NOT ANDROID)
 
 OPTION(OSG_NOTIFY_DISABLED "Set to ON to build OpenSceneGraph with the notify() disabled." OFF)
 
-OPTION(OSG_USE_DEPRECATED_API "Set to ON to build OpenSceneGraph with the OSG_USE_DEPREFATED_API #define enabled to allow access to deprecated APIs ." ON)
+OPTION(OSG_USE_DEPRECATED_API "Set to ON to build OpenSceneGraph with the OSG_USE_DEPRECATED_API #define enabled to allow access to deprecated APIs ." ON)
 
 OPTION(OSG_USE_FLOAT_MATRIX "Set to ON to build OpenSceneGraph with float Matrix instead of double." OFF)
 MARK_AS_ADVANCED(OSG_USE_FLOAT_MATRIX)
@@ -769,10 +769,10 @@ ENDIF()
 # Optional build components
 
 # OSG Applications
-OPTION(BUILD_OSG_APPLICATIONS "Enable to build OSG Applications (e.g. osgviewer)" OFF)
+# OPTION(BUILD_OSG_APPLICATIONS "Enable to build OSG Applications (e.g. osgviewer)" OFF)
 
 # OSG Examples
-OPTION(BUILD_OSG_EXAMPLES "Enable to build OSG Examples" OFF)
+# OPTION(BUILD_OSG_EXAMPLES "Enable to build OSG Examples" OFF)
 
 # OSG Plugins disable option for apple build on travis ci test - full build job runs over time limit of 50 min.
 OPTION(BUILD_OSG_PLUGINS "Build OSG Plugins - Disable for compile testing examples on a time limit" ON)
@@ -861,14 +861,11 @@ INCLUDE(OsgMacroUtils)
 
 
 #optional example related dependencies
-IF   (BUILD_OSG_EXAMPLES AND NOT ANDROID)
-
-
-    FIND_PACKAGE(FLTK)
-    FIND_PACKAGE(FOX)
-    FIND_PACKAGE(wxWidgets COMPONENTS base core gl net)
-
-ENDIF(BUILD_OSG_EXAMPLES AND NOT ANDROID)
+#IF   (BUILD_OSG_EXAMPLES AND NOT ANDROID)
+#    FIND_PACKAGE(FLTK)
+#    FIND_PACKAGE(FOX)
+#    FIND_PACKAGE(wxWidgets COMPONENTS base core gl net)
+#ENDIF(BUILD_OSG_EXAMPLES AND NOT ANDROID)
 
 
 # Platform specific:
@@ -1199,13 +1196,13 @@ ENDIF()
 # OSG Core
 ADD_SUBDIRECTORY(src)
 
-IF   (BUILD_OSG_APPLICATIONS AND NOT ANDROID)
-    ADD_SUBDIRECTORY(applications)
-ENDIF()
+#IF   (BUILD_OSG_APPLICATIONS AND NOT ANDROID)
+#    ADD_SUBDIRECTORY(applications)
+#ENDIF()
 
-IF   (BUILD_OSG_EXAMPLES)
-    ADD_SUBDIRECTORY(examples)
-ENDIF()
+#IF   (BUILD_OSG_EXAMPLES)
+#    ADD_SUBDIRECTORY(examples)
+#ENDIF()
 
 
 IF(APPLE AND NOT ANDROID)
@@ -1256,97 +1253,97 @@ ENDIF()
 
 
 # For Doxygen
-INCLUDE(${CMAKE_ROOT}/Modules/Documentation.cmake OPTIONAL)
-OPTION(BUILD_DOCUMENTATION "Build OpenSceneGraph reference documentation using doxygen (use: make doc_openscenegraph doc_openthreads)" OFF)
-MARK_AS_ADVANCED(CLEAR BUILD_DOCUMENTATION)
+#INCLUDE(${CMAKE_ROOT}/Modules/Documentation.cmake OPTIONAL)
+#OPTION(BUILD_DOCUMENTATION "Build OpenSceneGraph reference documentation using doxygen (use: make doc_openscenegraph doc_openthreads)" OFF)
+#MARK_AS_ADVANCED(CLEAR BUILD_DOCUMENTATION)
 # To build the documention, you will have to enable it
 # and then do the equivalent of "make doc_openscenegraph doc_openthreads".
-IF(BUILD_DOCUMENTATION)
-
-    OPTION(BUILD_REF_DOCS_SEARCHENGINE "Enable doxygen's search engine (requires that documentation to be installed on a php enabled web server)" OFF)
-    IF(BUILD_REF_DOCS_SEARCHENGINE)
-        SET(SEARCHENGINE YES)
-    ELSE()
-        SET(SEARCHENGINE NO)
-    ENDIF()
-
-    OPTION(BUILD_REF_DOCS_TAGFILE "Generate a tag file named osg.tag on the documentation web server" OFF)
-    IF(BUILD_REF_DOCS_TAGFILE)
-        SET(GENERATE_TAGFILE "${OpenSceneGraph_BINARY_DIR}/doc/OpenSceneGraphReferenceDocs/osg.tag")
-    ELSE()
-        SET(GENERATE_TAGFILE "")
-    ENDIF()
-
-    IF(DOT)
-        SET(HAVE_DOT YES)
-    ELSE()
-        SET(HAVE_DOT NO)
-    ENDIF()
-
-    # If html help generation was requested. DOCUMENTATION_HTML_HELP is defined by Documentation.cmake
-    SET(GENERATE_HTMLHELP "NO")
-    IF(DOCUMENTATION_HTML_HELP)
-        # on windows Documentation.cmake finds the html help workshop if it exists. On u*ix we might have it with wine but no way to point it out
-        IF(NOT WIN32)
-            SET(HTML_HELP_COMPILER "" CACHE FILEPATH "Enter location of the HTML help compiler to let doxygen compile html")
-            MARK_AS_ADVANCED(HTML_HELP_COMPILER)
-        ENDIF()
-        # this var sets a proper value in .doxygen files when configuring them below
-        SET(GENERATE_HTMLHELP "YES")
-    endif()
-
-    # This processes our doxyfile.cmake and substitutes paths to generate
-    # a final Doxyfile
-    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/doc/Doxyfiles/doxyfile.cmake
-        ${PROJECT_BINARY_DIR}/doc/openscenegraph.doxyfile
-    )
-    # copy the osg logo to documentations target folder
-    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/PlatformSpecifics/Windows/icons/src/osg32-32.png
-        ${PROJECT_BINARY_DIR}/doc/OpenSceneGraphReferenceDocs/osg32-32.png COPYONLY
-    )
-    #INSTALL(FILES ${PROJECT_BINARY_DIR}/doc/${PROJECT_NAME}ReferenceDocs-${OPENSCENEGRAPH_VERSION}.chm DESTINATION doc OPTIONAL COMPONENT openscenegraph-doc)
-    INSTALL(DIRECTORY ${PROJECT_BINARY_DIR}/doc/OpenSceneGraphReferenceDocs DESTINATION doc COMPONENT openscenegraph-doc)
-
-    # now set up openthreads documentation generation
-    IF(BUILD_REF_DOCS_TAGFILE)
-        SET(GENERATE_TAGFILE "${OpenSceneGraph_BINARY_DIR}/doc/OpenThreadsReferenceDocs/ot.tag")
-    ENDIF()
-
-    # This processes our openthreads.doxyfile.cmake and generate a final doxyfile
-    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/doc/Doxyfiles/openthreads.doxyfile.cmake
-        ${PROJECT_BINARY_DIR}/doc/openthreads.doxyfile
-    )
-    # copy the osg logo to documentations target folder
-    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/PlatformSpecifics/Windows/icons/src/osg32-32.png
-        ${PROJECT_BINARY_DIR}/doc/OpenThreadsReferenceDocs/osg32-32.png COPYONLY
-    )
-    #INSTALL(FILES ${PROJECT_BINARY_DIR}/doc/${PROJECT_NAME}ReferenceDocs-${OPENSCENEGRAPH_VERSION}.chm DESTINATION doc OPTIONAL COMPONENT openscenegraph-doc)
-    INSTALL(DIRECTORY ${PROJECT_BINARY_DIR}/doc/OpenThreadsReferenceDocs DESTINATION doc COMPONENT openthreads-doc)
-
-    # Process our other doxyfiles but don't create targets for these
-    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/doc/Doxyfiles/all_Doxyfile
-        ${PROJECT_BINARY_DIR}/doc/all_Doxyfile)
-    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/doc/Doxyfiles/auto_Doxyfile
-        ${PROJECT_BINARY_DIR}/doc/auto_Doxyfile)
-    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/doc/Doxyfiles/core_Doxyfile
-        ${PROJECT_BINARY_DIR}/doc/core_Doxyfile)
-
-    # This creates a new target to build documentation.
-    # It runs ${DOXYGEN} which is the full path and executable to
-    # Doxygen on your system, set by the FindDoxygen.cmake module
-    # (called by FindDocumentation.cmake).
-    # It runs the final generated Doxyfile against it.
-    # The DOT_PATH is substituted into the Doxyfile.
-    ADD_CUSTOM_TARGET(doc_openscenegraph ${DOXYGEN}
-        ${PROJECT_BINARY_DIR}/doc/openscenegraph.doxyfile
-    )
-    SET_TARGET_PROPERTIES(doc_openscenegraph PROPERTIES FOLDER "Documentation")
-
-    ADD_CUSTOM_TARGET(doc_openthreads ${DOXYGEN}
-        ${PROJECT_BINARY_DIR}/doc/openthreads.doxyfile
-    )
-    SET_TARGET_PROPERTIES(doc_openthreads PROPERTIES FOLDER "Documentation")
-ENDIF(BUILD_DOCUMENTATION)
+#IF(BUILD_DOCUMENTATION)
+#
+#    OPTION(BUILD_REF_DOCS_SEARCHENGINE "Enable doxygen's search engine (requires that documentation to be installed on a php enabled web server)" OFF)
+#    IF(BUILD_REF_DOCS_SEARCHENGINE)
+#        SET(SEARCHENGINE YES)
+#    ELSE()
+#        SET(SEARCHENGINE NO)
+#    ENDIF()
+#
+#    OPTION(BUILD_REF_DOCS_TAGFILE "Generate a tag file named osg.tag on the documentation web server" OFF)
+#    IF(BUILD_REF_DOCS_TAGFILE)
+#        SET(GENERATE_TAGFILE "${OpenSceneGraph_BINARY_DIR}/doc/OpenSceneGraphReferenceDocs/osg.tag")
+#    ELSE()
+#        SET(GENERATE_TAGFILE "")
+#    ENDIF()
+#
+#    IF(DOT)
+#        SET(HAVE_DOT YES)
+#    ELSE()
+#        SET(HAVE_DOT NO)
+#    ENDIF()
+#
+#    # If html help generation was requested. DOCUMENTATION_HTML_HELP is defined by Documentation.cmake
+#    SET(GENERATE_HTMLHELP "NO")
+#    IF(DOCUMENTATION_HTML_HELP)
+#        # on windows Documentation.cmake finds the html help workshop if it exists. On u*ix we might have it with wine but no way to point it out
+#        IF(NOT WIN32)
+#            SET(HTML_HELP_COMPILER "" CACHE FILEPATH "Enter location of the HTML help compiler to let doxygen compile html")
+#            MARK_AS_ADVANCED(HTML_HELP_COMPILER)
+#        ENDIF()
+#        # this var sets a proper value in .doxygen files when configuring them below
+#        SET(GENERATE_HTMLHELP "YES")
+#    endif()
+#
+#    # This processes our doxyfile.cmake and substitutes paths to generate
+#    # a final Doxyfile
+#    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/doc/Doxyfiles/doxyfile.cmake
+#        ${PROJECT_BINARY_DIR}/doc/openscenegraph.doxyfile
+#    )
+#    # copy the osg logo to documentations target folder
+#    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/PlatformSpecifics/Windows/icons/src/osg32-32.png
+#        ${PROJECT_BINARY_DIR}/doc/OpenSceneGraphReferenceDocs/osg32-32.png COPYONLY
+#    )
+#    #INSTALL(FILES ${PROJECT_BINARY_DIR}/doc/${PROJECT_NAME}ReferenceDocs-${OPENSCENEGRAPH_VERSION}.chm DESTINATION doc OPTIONAL COMPONENT openscenegraph-doc)
+#    INSTALL(DIRECTORY ${PROJECT_BINARY_DIR}/doc/OpenSceneGraphReferenceDocs DESTINATION doc COMPONENT openscenegraph-doc)
+#
+#    # now set up openthreads documentation generation
+#    IF(BUILD_REF_DOCS_TAGFILE)
+#        SET(GENERATE_TAGFILE "${OpenSceneGraph_BINARY_DIR}/doc/OpenThreadsReferenceDocs/ot.tag")
+#    ENDIF()
+#
+#    # This processes our openthreads.doxyfile.cmake and generate a final doxyfile
+#    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/doc/Doxyfiles/openthreads.doxyfile.cmake
+#        ${PROJECT_BINARY_DIR}/doc/openthreads.doxyfile
+#    )
+#    # copy the osg logo to documentations target folder
+#    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/PlatformSpecifics/Windows/icons/src/osg32-32.png
+#        ${PROJECT_BINARY_DIR}/doc/OpenThreadsReferenceDocs/osg32-32.png COPYONLY
+#    )
+#    #INSTALL(FILES ${PROJECT_BINARY_DIR}/doc/${PROJECT_NAME}ReferenceDocs-${OPENSCENEGRAPH_VERSION}.chm DESTINATION doc OPTIONAL COMPONENT openscenegraph-doc)
+#    INSTALL(DIRECTORY ${PROJECT_BINARY_DIR}/doc/OpenThreadsReferenceDocs DESTINATION doc COMPONENT openthreads-doc)
+#
+#    # Process our other doxyfiles but don't create targets for these
+#    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/doc/Doxyfiles/all_Doxyfile
+#        ${PROJECT_BINARY_DIR}/doc/all_Doxyfile)
+#    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/doc/Doxyfiles/auto_Doxyfile
+#        ${PROJECT_BINARY_DIR}/doc/auto_Doxyfile)
+#    CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/doc/Doxyfiles/core_Doxyfile
+#        ${PROJECT_BINARY_DIR}/doc/core_Doxyfile)
+#
+#    # This creates a new target to build documentation.
+#    # It runs ${DOXYGEN} which is the full path and executable to
+#    # Doxygen on your system, set by the FindDoxygen.cmake module
+#    # (called by FindDocumentation.cmake).
+#    # It runs the final generated Doxyfile against it.
+#    # The DOT_PATH is substituted into the Doxyfile.
+#    ADD_CUSTOM_TARGET(doc_openscenegraph ${DOXYGEN}
+#        ${PROJECT_BINARY_DIR}/doc/openscenegraph.doxyfile
+#    )
+#    SET_TARGET_PROPERTIES(doc_openscenegraph PROPERTIES FOLDER "Documentation")
+#
+#    ADD_CUSTOM_TARGET(doc_openthreads ${DOXYGEN}
+#        ${PROJECT_BINARY_DIR}/doc/openthreads.doxyfile
+#    )
+#    SET_TARGET_PROPERTIES(doc_openthreads PROPERTIES FOLDER "Documentation")
+#ENDIF(BUILD_DOCUMENTATION)
 
 OPTION(BUILD_DASHBOARD_REPORTS "Set to ON to activate reporting of OpenSceneGraph builds here http://cdash.openscenegraph.org/index.php?project=OpenSceneGraph" OFF)
 IF(BUILD_DASHBOARD_REPORTS)
