@@ -852,6 +852,15 @@ void ViewerBase::renderingTraversals()
 
     Cameras cameras;
     getCameras(cameras);
+    /*
+     * With DrawThreadPerContext, all cull operations take place sequentially.
+     * To maximise concurrency, the order should match the order that the draw
+     * thread runs draw operations (which each wait for the corresponding cull).
+     */
+    if (_threadingModel == DrawThreadPerContext)
+    {
+        std::sort(cameras.begin(), cameras.end(), osg::CameraRenderOrderSortOp());
+    }
 
     Contexts::iterator itr;
 
