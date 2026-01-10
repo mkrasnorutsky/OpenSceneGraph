@@ -2672,6 +2672,22 @@ LRESULT GraphicsWindowWin32::handleNativeWindowingEvent( HWND hwnd, UINT uMsg, W
                 float my = GET_Y_LPARAM(lParam);
                 transformMouseXY(mx, my);
                 getEventQueue()->mouseMotion(mx, my, eventTime);
+
+                TRACKMOUSEEVENT trackMouse {0};
+                trackMouse.cbSize = sizeof(trackMouse);
+                trackMouse.dwFlags = TME_LEAVE;
+                trackMouse.hwndTrack = hwnd;
+                trackMouse.dwHoverTime = HOVER_DEFAULT;
+                TrackMouseEvent(&trackMouse);
+            }
+            break;
+
+        ///////////////////
+        case WM_MOUSELEAVE :
+        ///////////////////
+
+            {
+                getEventQueue()->mouseLeave(eventTime);
             }
             break;
 
