@@ -2668,6 +2668,11 @@ LRESULT GraphicsWindowWin32::handleNativeWindowingEvent( HWND hwnd, UINT uMsg, W
         ///////////////////
 
             {
+                if (_mouseHasLeft) {
+                    _mouseHasLeft = false;
+                    getEventQueue()->mouseEnter(eventTime);
+                }
+
                 float mx = GET_X_LPARAM(lParam);
                 float my = GET_Y_LPARAM(lParam);
                 transformMouseXY(mx, my);
@@ -2688,6 +2693,7 @@ LRESULT GraphicsWindowWin32::handleNativeWindowingEvent( HWND hwnd, UINT uMsg, W
 
             {
                 getEventQueue()->mouseLeave(eventTime);
+                _mouseHasLeft = true;
             }
             break;
 

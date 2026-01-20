@@ -178,6 +178,9 @@ class OSGVIEWER_EXPORT GraphicsWindowWin32 : public osgViewer::GraphicsWindow, p
         /// Persist which mouse cursor was used before switching to the resize cursors.
         MouseCursor     _appMouseCursor;
 
+        /// record if we saw a LEAVE, so we can trigger ENTER on next MOVE
+        bool _mouseHasLeft = false;
+
         std::map<MouseCursor,HCURSOR> _mouseCursorMap;
 
         std::map<std::pair<int, int>, bool> _keyMap;
