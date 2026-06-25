@@ -38,7 +38,7 @@ class OSGSIM_EXPORT VisibilityGroup : public osg::Group
 
         META_Node(osgSim, VisibilityGroup);
 
-        virtual void traverse(osg::NodeVisitor& nv);
+        void traverse(osg::NodeVisitor& nv) override;
 
         /** Set the subgraph that is intersected for the visibility determination.*/
         void setVisibilityVolume(osg::Node* node) { _visibilityVolume = node; }

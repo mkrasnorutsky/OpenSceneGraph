@@ -48,6 +48,7 @@ class OSGDB_EXPORT Archive : public ReaderWriter
 
         /** return true if file exists in archive.*/
         virtual bool fileExists(const std::string& filename) const = 0;
+        using osgDB::ReaderWriter::fileExists;
 
         /** return type of file. */
         virtual FileType getFileType(const std::string& filename) const = 0;

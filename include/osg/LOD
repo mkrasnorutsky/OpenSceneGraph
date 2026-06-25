@@ -51,17 +51,17 @@ class OSG_EXPORT LOD : public Group
         typedef osg::BoundingSphere::vec_type vec_type;
         typedef osg::BoundingSphere::value_type value_type;
 
-        virtual void traverse(NodeVisitor& nv);
+        void traverse(NodeVisitor& nv) override;
 
         using osg::Group::addChild;
 
-        virtual bool addChild(Node *child);
+        bool addChild(Node *child) override;
 
         virtual bool addChild(Node *child, float rmin, float rmax);
 
         template<class T> bool addChild( const ref_ptr<T>& child, float rmin, float rmax) { return addChild(child.get(), rmin, rmax); }
 
-        virtual bool removeChildren(unsigned int pos,unsigned int numChildrenToRemove=1);
+        bool removeChildren(unsigned int pos,unsigned int numChildrenToRemove=1) override;
 
         typedef std::pair<float,float>  MinMaxPair;
         typedef std::vector<MinMaxPair> RangeList;
@@ -136,7 +136,7 @@ class OSG_EXPORT LOD : public Group
         /** return the list of MinMax ranges for each child.*/
         inline const RangeList& getRangeList() const { return _rangeList; }
 
-        virtual BoundingSphere computeBound() const;
+        BoundingSphere computeBound() const override;
 
     protected :
         virtual ~LOD() {}

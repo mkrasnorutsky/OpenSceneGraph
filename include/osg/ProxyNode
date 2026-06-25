@@ -34,17 +34,17 @@ class OSG_EXPORT ProxyNode : public Group
         typedef osg::BoundingSphere::vec_type vec_type;
         typedef osg::BoundingSphere::value_type value_type;
 
-        virtual void traverse(NodeVisitor& nv);
+        void traverse(NodeVisitor& nv) override;
 
         using osg::Group::addChild;
 
-        virtual bool addChild(Node *child);
+        bool addChild(Node *child) override;
 
         virtual bool addChild(Node *child, const std::string& filename);
 
         template<class T> bool addChild( const ref_ptr<T>& child, const std::string& filename) { return addChild(child.get(), filename); }
 
-        virtual bool removeChildren(unsigned int pos,unsigned int numChildrenToRemove);
+        bool removeChildren(unsigned int pos,unsigned int numChildrenToRemove) override;
 
 
         /** Set the optional database osgDB::Options object to use when loading children.*/
@@ -119,7 +119,7 @@ class OSG_EXPORT ProxyNode : public Group
         /** Get the object-space radius of the volume enclosed by the ProxyNode.*/
         inline value_type getRadius() const { return _radius; }
 
-        virtual BoundingSphere computeBound() const;
+        BoundingSphere computeBound() const override;
 
     protected :
 

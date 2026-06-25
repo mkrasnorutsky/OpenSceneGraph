@@ -38,13 +38,13 @@ class OSGSIM_EXPORT InsertImpostorsVisitor : public osg::NodeVisitor
         unsigned int getMaximumNumberOfNestedImpostors() const { return _maximumNumNestedImpostors; }
 
         /** Empty visitor, make it ready for next traversal. */
-        void reset();
+        void reset() override;
 
-        virtual void apply(osg::Node& node);
+        void apply(osg::Node& node) override;
 
-        virtual void apply(osg::Group& node);
+        void apply(osg::Group& node) override;
 
-        virtual void apply(osg::LOD& node);
+        void apply(osg::LOD& node) override;
 
         /* Insert the required impostors into the scene graph. */
         void insertImpostors();

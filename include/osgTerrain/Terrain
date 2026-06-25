@@ -35,10 +35,10 @@ class OSGTERRAIN_EXPORT Terrain : public osg::CoordinateSystemNode
 
         META_Node(osgTerrain, Terrain);
 
-        virtual void traverse(osg::NodeVisitor& nv);
+        void traverse(osg::NodeVisitor& nv) override;
 
-        virtual osgTerrain::Terrain* asTerrain() { return this; }
-        virtual const osgTerrain::Terrain* asTerrain() const { return this; }
+        osgTerrain::Terrain* asTerrain() override { return this; }
+        const osgTerrain::Terrain* asTerrain() const override { return this; }
 
 
         /** Set the sample ratio hint that TerrainTile should use when building geometry.

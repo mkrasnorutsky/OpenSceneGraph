@@ -183,16 +183,17 @@ public:
 
     META_NodeVisitor(osgUtil, StatsVisitor)
 
-    virtual void reset();
+    void reset() override;
 
-    virtual void apply(osg::Node& node);
-    virtual void apply(osg::Group& node);
-    virtual void apply(osg::Transform& node);
-    virtual void apply(osg::LOD& node);
-    virtual void apply(osg::Switch& node);
-    virtual void apply(osg::Geode& node);
-    virtual void apply(osg::Drawable& drawable);
+    void apply(osg::Node& node) override;
+    void apply(osg::Group& node) override;
+    void apply(osg::Transform& node) override;
+    void apply(osg::LOD& node) override;
+    void apply(osg::Switch& node) override;
+    void apply(osg::Geode& node) override;
+    void apply(osg::Drawable& drawable) override;
     virtual void apply(osg::StateSet& ss);
+    using osg::NodeVisitor::apply;
 
     virtual void totalUpStats();
 

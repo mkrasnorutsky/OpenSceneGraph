@@ -60,7 +60,7 @@ class OSGUTIL_EXPORT SceneView : public osg::Object, public osg::CullSettings
         };
 
         /* Set defaults. */
-        virtual void setDefaults() { setDefaults(STANDARD_SETTINGS); }
+        void setDefaults() override { setDefaults(STANDARD_SETTINGS); }
 
         /** Set scene view to use default global state, light, camera
          *  and render visitor.
@@ -452,10 +452,10 @@ class OSGUTIL_EXPORT SceneView : public osg::Object, public osg::CullSettings
 
 
         /** Inherit the local cull settings variable from a specified CullSettings object, according to the inheritance mask.*/
-        virtual void inheritCullSettings(const osg::CullSettings& settings) { inheritCullSettings(settings, _inheritanceMask); }
+        void inheritCullSettings(const osg::CullSettings& settings) override { inheritCullSettings(settings, _inheritanceMask); }
 
         /** Inherit the local cull settings variable from a specified CullSettings object, according to the inheritance mask.*/
-        virtual void inheritCullSettings(const osg::CullSettings& settings, unsigned int inheritanceMask);
+        void inheritCullSettings(const osg::CullSettings& settings, unsigned int inheritanceMask) override;
 
 
         /** Do init traversal of the attached scene graph using Init NodeVisitor.
@@ -484,8 +484,8 @@ class OSGUTIL_EXPORT SceneView : public osg::Object, public osg::CullSettings
           * then need to be deleted in OpenGL by SceneView::flushAllDeleteGLObjects(). */
         virtual void releaseAllGLObjects();
 
-        virtual void resizeGLObjectBuffers(unsigned int maxSize);
-        virtual void releaseGLObjects(osg::State* = 0) const;
+        void resizeGLObjectBuffers(unsigned int maxSize) override;
+        void releaseGLObjects(osg::State* = 0) const override;
 
         /** Flush all deleted OpenGL objects, such as texture objects, display lists, etc.*/
         virtual void flushAllDeletedGLObjects();

@@ -85,8 +85,8 @@ class OSG_EXPORT CameraView : public Transform
         inline double getFocalLength() const { return _focalLength; }
 
 
-        virtual bool computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor* nv) const;
-        virtual bool computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor* nv) const;
+        bool computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor* nv) const override;
+        bool computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor* nv) const override;
 
 
     protected :

@@ -37,10 +37,10 @@ class OSG_EXPORT Group : public Node
 
         META_Node(osg, Group);
 
-        virtual Group* asGroup() { return this; }
-        virtual const Group* asGroup() const { return this; }
+        Group* asGroup() override { return this; }
+        const Group* asGroup() const override { return this; }
 
-        virtual void traverse(NodeVisitor& nv);
+        void traverse(NodeVisitor& nv) override;
 
         /** Add Node to Group.
           * If node is not NULL then increment its
@@ -148,17 +148,17 @@ class OSG_EXPORT Group : public Node
         }
 
         /** Set whether to use a mutex to ensure ref() and unref() are thread safe.*/
-        virtual void setThreadSafeRefUnref(bool threadSafe);
+        void setThreadSafeRefUnref(bool threadSafe) override;
 
         /** Resize any per context GLObject buffers to specified size. */
-        virtual void resizeGLObjectBuffers(unsigned int maxSize);
+        void resizeGLObjectBuffers(unsigned int maxSize) override;
 
         /** If State is non-zero, this function releases any associated OpenGL objects for
            * the specified graphics context. Otherwise, releases OpenGL objects
            * for all graphics contexts. */
-        virtual void releaseGLObjects(osg::State* = 0) const;
+        void releaseGLObjects(osg::State* = 0) const override;
 
-        virtual BoundingSphere computeBound() const;
+        BoundingSphere computeBound() const override;
 
     protected:
 

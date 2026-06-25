@@ -28,7 +28,7 @@ public:
 
     META_NodeVisitor(osg, ComputeBoundsVisitor)
 
-    virtual void reset();
+    void reset() override;
 
     osg::BoundingBox& getBoundingBox() { return _bb; }
 
@@ -36,9 +36,9 @@ public:
 
     void getBase(osg::Polytope& polytope, float margin=0.1) const;
 
-    void apply(osg::Drawable& drawable);
+    void apply(osg::Drawable& drawable) override;
 
-    void apply(osg::Transform& transform);
+    void apply(osg::Transform& transform) override;
 
     inline void pushMatrix(osg::Matrix& matrix) { _matrixStack.push_back(matrix); }
 

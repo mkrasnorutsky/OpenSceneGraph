@@ -58,13 +58,13 @@ namespace osgParticle {
         inline void setSegment(const osg::Vec3& A, const osg::Vec3& B);
 
         /// Place a particle. This method is called by <CODE>ModularEmitter</CODE>, do not call it manually.
-        inline void place(Particle* P) const;
+        inline void place(Particle* P) const override;
 
         /// return the length of the segment
-        inline float volume() const;
+        inline float volume() const override;
 
         /// return the control position
-        inline osg::Vec3 getControlPosition() const;
+        inline osg::Vec3 getControlPosition() const override;
 
     protected:
         virtual ~SegmentPlacer() {}

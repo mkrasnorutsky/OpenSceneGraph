@@ -99,7 +99,7 @@ struct KeystoneCullCallback : public osg::DrawableCullCallback
     META_Object(osg,KeystoneCullCallback);
 
     /** do customized cull code, return true if drawable should be culled.*/
-    virtual bool cull(osg::NodeVisitor* /*nv*/, osg::Drawable* /*drawable*/, osg::RenderInfo* /*renderInfo*/) const
+    bool cull(osg::NodeVisitor* /*nv*/, osg::Drawable* /*drawable*/, osg::RenderInfo* /*renderInfo*/) const override
     {
         return _keystone.valid() ? !_keystone->getKeystoneEditingEnabled() : true;
     }
@@ -116,7 +116,7 @@ struct KeystoneUpdateCallback : public osg::DrawableUpdateCallback
     META_Object(osg,KeystoneUpdateCallback);
 
     /** do customized update code.*/
-    virtual void update(osg::NodeVisitor*, osg::Drawable* drawable)
+    void update(osg::NodeVisitor*, osg::Drawable* drawable) override
     {
         update(drawable->asGeometry());
     }

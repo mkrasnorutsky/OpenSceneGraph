@@ -114,7 +114,7 @@ bool DriveManipulator::intersect(const osg::Vec3d& start, const osg::Vec3d& end,
 }
 
 
-void DriveManipulator::computeHomePosition()
+void DriveManipulator::computeHomePosition(const osg::Camera *, bool)
 {
     if(_node.get())
     {

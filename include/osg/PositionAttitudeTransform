@@ -40,8 +40,8 @@ class OSG_EXPORT PositionAttitudeTransform : public Transform
 
         META_Node(osg, PositionAttitudeTransform);
 
-        virtual PositionAttitudeTransform* asPositionAttitudeTransform() { return this; }
-        virtual const PositionAttitudeTransform* asPositionAttitudeTransform() const { return this; }
+        PositionAttitudeTransform* asPositionAttitudeTransform() override { return this; }
+        const PositionAttitudeTransform* asPositionAttitudeTransform() const override { return this; }
 
         inline void setPosition(const Vec3d& pos) { _position = pos; dirtyBound(); }
         inline const Vec3d& getPosition() const { return _position; }
@@ -59,8 +59,8 @@ class OSG_EXPORT PositionAttitudeTransform : public Transform
         inline const Vec3d& getPivotPoint() const { return _pivotPoint; }
 
 
-        virtual bool computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor* nv) const;
-        virtual bool computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor* nv) const;
+        bool computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor* nv) const override;
+        bool computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor* nv) const override;
 
 
     protected :

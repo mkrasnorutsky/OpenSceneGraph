@@ -98,14 +98,14 @@ class OSG_EXPORT Drawable : public Node
 
         /** Convert 'this' into a Drawable pointer if Object is a Drawable, otherwise return 0.
           * Equivalent to dynamic_cast<Drawable*>(this).*/
-        virtual Drawable* asDrawable() { return this; }
+        Drawable* asDrawable() override { return this; }
 
         /** convert 'const this' into a const Drawable pointer if Object is a Drawable, otherwise return 0.
           * Equivalent to dynamic_cast<const Drawable*>(this).*/
-        virtual const Drawable* asDrawable() const { return this; }
+        const Drawable* asDrawable() const override { return this; }
 
         /** Compute the DataVariance based on an assessment of callback etc.*/
-        virtual void computeDataVariance();
+        void computeDataVariance() override;
 
         /** Get the list of matrices that transform this node from local coordinates to world coordinates.
           * The optional Node* haltTraversalAtNode allows the user to prevent traversal beyond a specified node. */
@@ -152,7 +152,7 @@ class OSG_EXPORT Drawable : public Node
 
 
         /** Compute the bounding sphere around Drawables's geometry.*/
-        virtual BoundingSphere computeBound() const;
+        BoundingSphere computeBound() const override;
 
         /** Compute the bounding box around Drawables's geometry.*/
         virtual BoundingBox computeBoundingBox() const;
@@ -330,15 +330,15 @@ class OSG_EXPORT Drawable : public Node
 
 
         /** Set whether to use a mutex to ensure ref() and unref() are thread safe.*/
-        virtual void setThreadSafeRefUnref(bool threadSafe);
+        void setThreadSafeRefUnref(bool threadSafe) override;
 
         /** Resize any per context GLObject buffers to specified size. */
-        virtual void resizeGLObjectBuffers(unsigned int maxSize);
+        void resizeGLObjectBuffers(unsigned int maxSize) override;
 
         /** If State is non-zero, this function releases OpenGL objects for
           * the specified graphics context. Otherwise, releases OpenGL objects
           * for all graphics contexts. */
-        virtual void releaseGLObjects(State* state=0) const;
+        void releaseGLObjects(State* state=0) const override;
 
         // for backwards compatibility as local implementations are now found in osg namespace within the include/osg/Callback header
         typedef DrawableUpdateCallback UpdateCallback;

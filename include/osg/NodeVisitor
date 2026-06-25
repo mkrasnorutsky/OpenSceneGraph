@@ -63,8 +63,8 @@ class CullStack;
 const unsigned int UNINITIALIZED_FRAME_NUMBER=0xffffffff;
 
 #define META_NodeVisitor(library, name) \
-        virtual const char* libraryName() const { return #library; }\
-        virtual const char* className() const { return #name; }
+        const char* libraryName() const override { return #library; }\
+        const char* className() const override { return #name; }
 
 /** Visitor for type safe operations on osg::Nodes.
     Based on GOF's Visitor pattern. The NodeVisitor
@@ -114,11 +114,11 @@ class OSG_EXPORT NodeVisitor : public virtual Object
 
         /** Convert 'this' into a NodeVisitor pointer if Object is a NodeVisitor, otherwise return 0.
           * Equivalent to dynamic_cast<NodeVisitor*>(this).*/
-        virtual NodeVisitor* asNodeVisitor() { return this; }
+        NodeVisitor* asNodeVisitor() override { return this; }
 
         /** convert 'const this' into a const NodeVisitor pointer if Object is a NodeVisitor, otherwise return 0.
           * Equivalent to dynamic_cast<const NodeVisitor*>(this).*/
-        virtual const NodeVisitor* asNodeVisitor() const { return this; }
+        const NodeVisitor* asNodeVisitor() const override { return this; }
 
         /** Convert 'this' into a osgUtil::UpdateVisitor pointer if Object is a osgUtil::UpdateVisitor, otherwise return 0.
           * Equivalent to dynamic_cast<osgUtil::UpdateVisitor*>(this).*/

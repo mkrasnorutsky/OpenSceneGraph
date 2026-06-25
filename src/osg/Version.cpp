@@ -24,11 +24,11 @@ const char* osgGetVersion()
     {
         if (OSG_VERSION_REVISION==0)
         {
-            sprintf(osg_version,"%d.%d.%d",OSG_VERSION_MAJOR,OSG_VERSION_MINOR,OSG_VERSION_RELEASE);
+            snprintf(osg_version,256,"%d.%d.%d",OSG_VERSION_MAJOR,OSG_VERSION_MINOR,OSG_VERSION_RELEASE);
         }
         else
         {
-            sprintf(osg_version,"%d.%d.%d-%d",OSG_VERSION_MAJOR,OSG_VERSION_MINOR,OSG_VERSION_RELEASE,OSG_VERSION_REVISION);
+            snprintf(osg_version,256,"%d.%d.%d-%d",OSG_VERSION_MAJOR,OSG_VERSION_MINOR,OSG_VERSION_RELEASE,OSG_VERSION_REVISION);
         }
 
         osg_version_init = 0;
@@ -43,7 +43,7 @@ const char* osgGetSOVersion()
     static int osg_soversion_init = 1;
     if (osg_soversion_init)
     {
-        sprintf(osg_soversion,"%d",OPENSCENEGRAPH_SOVERSION);
+        snprintf(osg_soversion,32,"%d",OPENSCENEGRAPH_SOVERSION);
         osg_soversion_init = 0;
     }
 

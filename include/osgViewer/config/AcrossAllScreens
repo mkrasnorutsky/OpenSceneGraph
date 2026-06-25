@@ -27,7 +27,7 @@ class OSGVIEWER_EXPORT AcrossAllScreens : public ViewConfig
         
         META_Object(osgViewer, AcrossAllScreens);
         
-        virtual void configure(osgViewer::View& view) const;
+        void configure(osgViewer::View& view) const override;
 };
 
 }

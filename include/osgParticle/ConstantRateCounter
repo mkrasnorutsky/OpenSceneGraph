@@ -50,7 +50,7 @@ namespace osgParticle
         double getNumberOfParticlesPerSecondToCreate() const { return _numberOfParticlesPerSecondToCreate; }
 
         /// Return the number of particles to be created in this frame
-        virtual int numParticlesToCreate(double dt) const
+        int numParticlesToCreate(double dt) const override
         {
             double v = (dt*_numberOfParticlesPerSecondToCreate);
             int i = (int)(v);
@@ -64,7 +64,7 @@ namespace osgParticle
         }
 
 
-        virtual int getEstimatedMaxNumOfParticles(double lifeTime) const
+        int getEstimatedMaxNumOfParticles(double lifeTime) const override
         {
             int minNumParticles =  static_cast<int>(_minimumNumberOfParticlesToCreate*60.0f*lifeTime);
             int baseNumPartciles = static_cast<int>(_numberOfParticlesPerSecondToCreate * lifeTime);

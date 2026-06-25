@@ -310,32 +310,32 @@ class OSGTERRAIN_EXPORT ImageLayer : public Layer
 
         META_Object(osgTerrain, ImageLayer);
 
-        void setFileName(const std::string& filename) { _filename = filename; if (_image.valid()) _image->setFileName(filename); }
-        virtual const std::string& getFileName() const { return _image.get() ? _image->getFileName() : _filename; }
+        void setFileName(const std::string& filename) override { _filename = filename; if (_image.valid()) _image->setFileName(filename); }
+        const std::string& getFileName() const override { return _image.get() ? _image->getFileName() : _filename; }
 
-        virtual bool transform(float offset, float scale);
+        bool transform(float offset, float scale) override;
 
         void setImage(osg::Image* image);
 
         template<class T> void setImage(const osg::ref_ptr<T>& image) { return setImage(image.get()); }
 
         /** Return image associated with layer. */
-        virtual osg::Image* getImage() { return _image.get(); }
+        osg::Image* getImage() override { return _image.get(); }
 
         /** Return const image associated with layer. */
-        virtual const osg::Image* getImage() const { return _image.get(); }
+        const osg::Image* getImage() const override { return _image.get(); }
 
-        virtual unsigned int getNumColumns() const { return _image.valid() ? _image->s() : 0; }
-        virtual unsigned int getNumRows() const { return _image.valid() ? _image->t() : 0;  }
+        unsigned int getNumColumns() const override { return _image.valid() ? _image->s() : 0; }
+        unsigned int getNumRows() const override { return _image.valid() ? _image->t() : 0;  }
 
-        virtual bool getValue(unsigned int i, unsigned int j, float& value) const;
-        virtual bool getValue(unsigned int i, unsigned int j, osg::Vec2& value) const;
-        virtual bool getValue(unsigned int i, unsigned int j, osg::Vec3& value) const;
-        virtual bool getValue(unsigned int i, unsigned int j, osg::Vec4& value) const;
+        bool getValue(unsigned int i, unsigned int j, float& value) const override;
+        bool getValue(unsigned int i, unsigned int j, osg::Vec2& value) const override;
+        bool getValue(unsigned int i, unsigned int j, osg::Vec3& value) const override;
+        bool getValue(unsigned int i, unsigned int j, osg::Vec4& value) const override;
 
-        virtual void dirty();
-        virtual void setModifiedCount(unsigned int value);
-        virtual unsigned int getModifiedCount() const;
+        void dirty() override;
+        void setModifiedCount(unsigned int value) override;
+        unsigned int getModifiedCount() const override;
 
     protected:
 
@@ -356,7 +356,7 @@ class OSGTERRAIN_EXPORT ContourLayer : public Layer
 
         META_Object(osgTerrain, ContourLayer);
 
-        virtual bool transform(float offset, float scale);
+        bool transform(float offset, float scale) override;
 
         void setTransferFunction(osg::TransferFunction1D* tf);
 
@@ -366,23 +366,23 @@ class OSGTERRAIN_EXPORT ContourLayer : public Layer
         const osg::TransferFunction1D* getTransferFunction() const { return _tf.get(); }
 
         /** Return image associated with layer. */
-        virtual osg::Image* getImage() { return _tf.valid() ? _tf->getImage() : 0; }
+        osg::Image* getImage() override { return _tf.valid() ? _tf->getImage() : 0; }
 
         /** Return const image associated with layer. */
-        virtual const osg::Image* getImage() const { return _tf.valid() ? _tf->getImage() : 0; }
+        const osg::Image* getImage() const override { return _tf.valid() ? _tf->getImage() : 0; }
 
 
-        virtual unsigned int getNumColumns() const { return _tf.valid() ? _tf->getNumberImageCells() : 0; }
-        virtual unsigned int getNumRows() const { return _tf.valid() ? 1 : 0;  }
+        unsigned int getNumColumns() const override { return _tf.valid() ? _tf->getNumberImageCells() : 0; }
+        unsigned int getNumRows() const override { return _tf.valid() ? 1 : 0;  }
 
-        virtual bool getValue(unsigned int i, unsigned int j, float& value) const;
-        virtual bool getValue(unsigned int i, unsigned int j, osg::Vec2& value) const;
-        virtual bool getValue(unsigned int i, unsigned int j, osg::Vec3& value) const;
-        virtual bool getValue(unsigned int i, unsigned int j, osg::Vec4& value) const;
+        bool getValue(unsigned int i, unsigned int j, float& value) const override;
+        bool getValue(unsigned int i, unsigned int j, osg::Vec2& value) const override;
+        bool getValue(unsigned int i, unsigned int j, osg::Vec3& value) const override;
+        bool getValue(unsigned int i, unsigned int j, osg::Vec4& value) const override;
 
-        virtual void dirty();
-        virtual void setModifiedCount(unsigned int value);
-        virtual unsigned int getModifiedCount() const;
+        void dirty() override;
+        void setModifiedCount(unsigned int value) override;
+        unsigned int getModifiedCount() const override;
 
     protected:
 
@@ -403,10 +403,10 @@ class OSGTERRAIN_EXPORT HeightFieldLayer : public Layer
 
         META_Object(osgTerrain, HeightFieldLayer);
 
-        void setFileName(const std::string& filename) { _filename = filename; }
-        virtual const std::string& getFileName() const { return _filename; }
+        void setFileName(const std::string& filename) override { _filename = filename; }
+        const std::string& getFileName() const override { return _filename; }
 
-        virtual bool transform(float offset, float scale);
+        bool transform(float offset, float scale) override;
 
         void setHeightField(osg::HeightField* hf);
 
@@ -415,17 +415,17 @@ class OSGTERRAIN_EXPORT HeightFieldLayer : public Layer
         osg::HeightField* getHeightField() { return _heightField.get(); }
         const osg::HeightField* getHeightField() const { return _heightField.get(); }
 
-        virtual unsigned int getNumColumns() const { return _heightField.valid() ? _heightField->getNumColumns() : 0; }
-        virtual unsigned int getNumRows() const { return _heightField.valid() ? _heightField->getNumRows() : 0;  }
+        unsigned int getNumColumns() const override { return _heightField.valid() ? _heightField->getNumColumns() : 0; }
+        unsigned int getNumRows() const override { return _heightField.valid() ? _heightField->getNumRows() : 0;  }
 
-        virtual bool getValue(unsigned int i, unsigned int j, float& value) const;
-        virtual bool getValue(unsigned int i, unsigned int j, osg::Vec2& value) const;
-        virtual bool getValue(unsigned int i, unsigned int j, osg::Vec3& value) const;
-        virtual bool getValue(unsigned int i, unsigned int j, osg::Vec4& value) const;
+        bool getValue(unsigned int i, unsigned int j, float& value) const override;
+        bool getValue(unsigned int i, unsigned int j, osg::Vec2& value) const override;
+        bool getValue(unsigned int i, unsigned int j, osg::Vec3& value) const override;
+        bool getValue(unsigned int i, unsigned int j, osg::Vec4& value) const override;
 
-        virtual void dirty();
-        virtual void setModifiedCount(unsigned int value);
-        virtual unsigned int getModifiedCount() const;
+        void dirty() override;
+        void setModifiedCount(unsigned int value) override;
+        unsigned int getModifiedCount() const override;
 
     protected:
 
@@ -449,13 +449,13 @@ class OSGTERRAIN_EXPORT ProxyLayer : public Layer
         META_Object(osgTerrain, ProxyLayer);
 
         /** Return image associated with layer if supported. */
-        virtual osg::Image* getImage()
+        osg::Image* getImage() override
         {
             return _implementation.valid() ? _implementation->getImage() : 0;
         }
 
         /** Return const image associated with layer if supported. */
-        virtual const osg::Image* getImage() const
+        const osg::Image* getImage() const override
         {
             return _implementation.valid() ? _implementation->getImage() : 0;
         }
@@ -469,24 +469,24 @@ class OSGTERRAIN_EXPORT ProxyLayer : public Layer
         /** Get the const implementation layer that does the actual work.*/
         const Layer* getImplementation() const { return _implementation.get(); }
 
-        virtual void setFileName(const std::string& filename);
-        virtual const std::string& getFileName() const { return _filename; }
+        void setFileName(const std::string& filename) override;
+        const std::string& getFileName() const override { return _filename; }
 
-        virtual unsigned int getNumColumns() const;
-        virtual unsigned int getNumRows() const;
+        unsigned int getNumColumns() const override;
+        unsigned int getNumRows() const override;
 
-        virtual bool transform(float offset, float scale);
+        bool transform(float offset, float scale) override;
 
-        virtual bool getValue(unsigned int i, unsigned int j, float& value) const;
-        virtual bool getValue(unsigned int i, unsigned int j, osg::Vec2& value) const;
-        virtual bool getValue(unsigned int i, unsigned int j, osg::Vec3& value) const;
-        virtual bool getValue(unsigned int i, unsigned int j, osg::Vec4& value) const;
+        bool getValue(unsigned int i, unsigned int j, float& value) const override;
+        bool getValue(unsigned int i, unsigned int j, osg::Vec2& value) const override;
+        bool getValue(unsigned int i, unsigned int j, osg::Vec3& value) const override;
+        bool getValue(unsigned int i, unsigned int j, osg::Vec4& value) const override;
 
-        virtual void dirty();
-        virtual void setModifiedCount(unsigned int value);
-        virtual unsigned int getModifiedCount() const;
+        void dirty() override;
+        void setModifiedCount(unsigned int value) override;
+        unsigned int getModifiedCount() const override;
 
-        virtual osg::BoundingSphere computeBound(bool treatAsElevationLayer) const;
+        osg::BoundingSphere computeBound(bool treatAsElevationLayer) const override;
 
     protected:
 
@@ -521,6 +521,8 @@ class OSGTERRAIN_EXPORT CompositeLayer : public Layer
 
         /** Get the file name of the data associated with layer 'i'. */
         const std::string& getFileName(unsigned int i) const { return _layers[i].layer.valid() ? _layers[i].layer->getFileName() : _layers[i].filename; }
+        using osgTerrain::Layer::setFileName;
+        using osgTerrain::Layer::getFileName;
 
         void setCompoundName(unsigned int i, const std::string& compoundname);
         std::string getCompoundName(unsigned int i) const;
@@ -600,7 +602,7 @@ class OSGTERRAIN_EXPORT SwitchLayer : public CompositeLayer
         int getActiveLayer() const { return _activeLayer; }
 
         /** Return image associated with layer if supported. */
-        virtual osg::Image* getImage()
+        osg::Image* getImage() override
         {
             if (_activeLayer < 0) return 0;
             if (_activeLayer >= static_cast<int>(getNumLayers())) return 0;
@@ -608,7 +610,7 @@ class OSGTERRAIN_EXPORT SwitchLayer : public CompositeLayer
         }
 
         /** Return const image associated with layer if supported. */
-        virtual const osg::Image* getImage() const
+        const osg::Image* getImage() const override
         {
             if (_activeLayer < 0) return 0;
             if (_activeLayer >= static_cast<int>(getNumLayers())) return 0;

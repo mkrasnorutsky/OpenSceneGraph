@@ -190,12 +190,12 @@ class OSG_EXPORT Shader : public osg::Object
 
 
         /** Resize any per context GLObject buffers to specified size. */
-        virtual void resizeGLObjectBuffers(unsigned int maxSize);
+        void resizeGLObjectBuffers(unsigned int maxSize) override;
 
         /** release OpenGL objects in specified graphics context if State
             object is passed, otherwise release OpenGL objects for all graphics context if
             State object pointer NULL.*/
-        void releaseGLObjects(osg::State* state=0) const;
+        void releaseGLObjects(osg::State* state=0) const override;
 
         /** Mark our PCSs as needing recompilation.
           * Also mark Programs that depend on us as needing relink */
@@ -332,8 +332,8 @@ class OSG_EXPORT ShaderComponent : public osg::Object
         unsigned int getNumShaders() const { return static_cast<unsigned int>(_shaders.size()); }
 
         virtual void compileGLObjects(State& state) const;
-        virtual void resizeGLObjectBuffers(unsigned int maxSize);
-        virtual void releaseGLObjects(State* state=0) const;
+        void resizeGLObjectBuffers(unsigned int maxSize) override;
+        void releaseGLObjects(State* state=0) const override;
 
     protected:
 

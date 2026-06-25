@@ -169,14 +169,14 @@ class OSGUTIL_EXPORT IntersectionVisitor : public osg::NodeVisitor
 
         /** Convert 'this' into a osgUtil::IntersectionVisitor pointer if Object is a IntersectionVisitor, otherwise return 0.
           * Equivalent to dynamic_cast<osgUtil::IntersectionVisitor*>(this).*/
-        virtual osgUtil::IntersectionVisitor* asIntersectionVisitor() { return this; }
+        osgUtil::IntersectionVisitor* asIntersectionVisitor() override { return this; }
 
         /** convert 'const this' into a const osgUtil::IntersectionVisitor pointer if Object is a IntersectionVisitor, otherwise return 0.
           * Equivalent to dynamic_cast<const osgUtil::IntersectionVisitor*>(this).*/
-        virtual const osgUtil::IntersectionVisitor* asIntersectionVisitor() const { return this; }
+        const osgUtil::IntersectionVisitor* asIntersectionVisitor() const override { return this; }
 
 
-        virtual void reset();
+        void reset() override;
 
         /** Set the intersector that will be used to intersect with the scene, and to store any hits that occur.*/
         void setIntersector(Intersector* intersector);
@@ -244,7 +244,7 @@ class OSGUTIL_EXPORT IntersectionVisitor : public osg::NodeVisitor
 
 
         /** Get the eye point in the local coordinate frame a given traversal point.*/
-        virtual osg::Vec3 getEyePoint() const;
+        osg::Vec3 getEyePoint() const override;
 
         enum LODSelectionMode
         {
@@ -260,20 +260,20 @@ class OSGUTIL_EXPORT IntersectionVisitor : public osg::NodeVisitor
 
          /** Get the distance from a point to the eye point, distance value in local coordinate system.
           * This is calculated using the pseudo-EyePoint (above) when doing LOD calculcations. */
-        virtual float getDistanceToEyePoint(const osg::Vec3& pos, bool withLODScale) const;
+        float getDistanceToEyePoint(const osg::Vec3& pos, bool withLODScale) const override;
 
     public:
 
-        virtual void apply(osg::Node& node);
-        virtual void apply(osg::Drawable& drawable);
-        virtual void apply(osg::Geode& geode);
-        virtual void apply(osg::Billboard& geode);
-        virtual void apply(osg::Group& group);
-        virtual void apply(osg::LOD& lod);
-        virtual void apply(osg::PagedLOD& lod);
-        virtual void apply(osg::Transform& transform);
-        virtual void apply(osg::Projection& projection);
-        virtual void apply(osg::Camera& camera);
+        void apply(osg::Node& node) override;
+        void apply(osg::Drawable& drawable) override;
+        void apply(osg::Geode& geode) override;
+        void apply(osg::Billboard& geode) override;
+        void apply(osg::Group& group) override;
+        void apply(osg::LOD& lod) override;
+        void apply(osg::PagedLOD& lod) override;
+        void apply(osg::Transform& transform) override;
+        void apply(osg::Projection& projection) override;
+        void apply(osg::Camera& camera) override;
 
     protected:
 

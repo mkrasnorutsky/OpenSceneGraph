@@ -62,7 +62,7 @@ public:
     float getCutoffHigh() const { return _cutoffHigh; }
 
     /// Apply the acceleration to a particle. Do not call this method manually.
-    inline void operate( Particle* P, double dt );
+    inline void operate( Particle* P, double dt ) override;
 
 protected:
     virtual ~AngularDampingOperator() {}

@@ -34,19 +34,19 @@ class OSGTERRAIN_EXPORT GeometryTechnique : public TerrainTechnique
 
         META_Object(osgTerrain, GeometryTechnique);
 
-        virtual void init(int dirtyMask, bool assumeMultiThreaded);
+        void init(int dirtyMask, bool assumeMultiThreaded) override;
 
         virtual Locator* computeMasterLocator();
 
 
-        virtual void update(osgUtil::UpdateVisitor* nv);
+        void update(osgUtil::UpdateVisitor* nv) override;
 
-        virtual void cull(osgUtil::CullVisitor* nv);
+        void cull(osgUtil::CullVisitor* nv) override;
 
         /** Traverse the terain subgraph.*/
-        virtual void traverse(osg::NodeVisitor& nv);
+        void traverse(osg::NodeVisitor& nv) override;
 
-        virtual void cleanSceneGraph();
+        void cleanSceneGraph() override;
 
         void setFilterBias(float filterBias);
         float getFilterBias() const { return _filterBias; }
@@ -70,7 +70,7 @@ class OSGTERRAIN_EXPORT GeometryTechnique : public TerrainTechnique
         /** If State is non-zero, this function releases any associated OpenGL objects for
         * the specified graphics context. Otherwise, releases OpenGL objects
         * for all graphics contexts. */
-        virtual void releaseGLObjects(osg::State* = 0) const;
+        void releaseGLObjects(osg::State* = 0) const override;
 
 
     protected:

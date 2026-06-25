@@ -36,7 +36,7 @@ class OSG_EXPORT Capability : public osg::StateAttribute
         META_Object(osg, Capability);
 
         /** Return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs. */
-        virtual int compare(const StateAttribute& sa) const
+        int compare(const StateAttribute& sa) const override
         {
             // Check for equal types, then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -48,7 +48,7 @@ class OSG_EXPORT Capability : public osg::StateAttribute
         }
 
         /** Return the Type identifier of the attribute's class type.*/
-        virtual Type getType() const { return static_cast<Type>(CAPABILITY+_capability); }
+        Type getType() const override { return static_cast<Type>(CAPABILITY+_capability); }
 
         void setCapability(GLenum capability) { _capability = capability; }
 
@@ -82,7 +82,7 @@ class OSG_EXPORT Capabilityi : public osg::Capability
         META_Object(osg, Capabilityi);
 
         /** Return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs. */
-        virtual int compare(const StateAttribute& sa) const
+        int compare(const StateAttribute& sa) const override
         {
             // Check for equal types, then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -95,7 +95,7 @@ class OSG_EXPORT Capabilityi : public osg::Capability
         }
 
         /** Return the member identifier within the attribute's class type. Used for light number/clip plane number etc.*/
-        virtual unsigned int getMember() const { return _index; }
+        unsigned int getMember() const override { return _index; }
 
         /** Set the renderbuffer index of the Enablei. */
         void setIndex(unsigned int buf) { _index = buf; }
@@ -126,7 +126,7 @@ class OSG_EXPORT Enablei : public Capabilityi
 
         META_Object(osg, Enablei);
 
-        virtual void apply(State&) const;
+        void apply(State&) const override;
 
 protected:
 
@@ -149,7 +149,7 @@ class OSG_EXPORT Disablei : public Capabilityi
 
         META_Object(osg, Disablei);
 
-        virtual void apply(State&) const;
+        void apply(State&) const override;
 
     protected:
 

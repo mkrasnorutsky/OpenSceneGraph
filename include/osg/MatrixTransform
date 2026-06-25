@@ -36,8 +36,8 @@ class OSG_EXPORT MatrixTransform : public Transform
 
         META_Node(osg, MatrixTransform);
 
-        virtual MatrixTransform* asMatrixTransform() { return this; }
-        virtual const MatrixTransform* asMatrixTransform() const { return this; }
+        MatrixTransform* asMatrixTransform() override { return this; }
+        const MatrixTransform* asMatrixTransform() const override { return this; }
 
 
         /** Set the transform's matrix.*/
@@ -63,9 +63,9 @@ class OSG_EXPORT MatrixTransform : public Transform
             return _inverse;
         }
 
-        virtual bool computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor*) const;
+        bool computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor*) const override;
 
-        virtual bool computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor*) const;
+        bool computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor*) const override;
 
 
     protected :

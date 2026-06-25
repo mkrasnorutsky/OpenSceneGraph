@@ -116,9 +116,9 @@ public:
 
     META_Node( osg, OcclusionQueryNode );
 
-    virtual osg::BoundingSphere computeBound() const;
+    osg::BoundingSphere computeBound() const override;
 
-    virtual void releaseGLObjects( osg::State* state = 0 ) const;
+    void releaseGLObjects( osg::State* state = 0 ) const override;
 
 
     // When disabled, OQN doesn't perform occlusion queries, and simply

@@ -41,16 +41,16 @@ public:
    virtual void setRotationMode(RotationMode mode);
    RotationMode getRotationMode() const;
 
-   virtual void setByMatrix( const osg::Matrixd& matrix );
+   void setByMatrix( const osg::Matrixd& matrix ) override;
 
-   virtual void setTransformation( const osg::Vec3d& eye, const osg::Vec3d& center, const osg::Vec3d& up );
+   void setTransformation( const osg::Vec3d& eye, const osg::Vec3d& center, const osg::Vec3d& up ) override;
 
-   virtual void setNode( osg::Node* node );
+   void setNode( osg::Node* node ) override;
 
 protected:
 
-   virtual bool performMovementMiddleMouseButton( const double eventTimeDelta, const double dx, const double dy );
-   virtual bool performMovementRightMouseButton( const double eventTimeDelta, const double dx, const double dy );
+   bool performMovementMiddleMouseButton( const double eventTimeDelta, const double dx, const double dy ) override;
+   bool performMovementRightMouseButton( const double eventTimeDelta, const double dx, const double dy ) override;
 
    bool intersect( const osg::Vec3d& start, const osg::Vec3d& end, osg::Vec3d& intersection ) const;
    void clampOrientation();

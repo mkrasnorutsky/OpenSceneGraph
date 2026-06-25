@@ -60,7 +60,7 @@ namespace osgDB {
         // Call right after each load
         void share(osg::Node *node, OpenThreads::Mutex *mt=0);
 
-        void apply(osg::Node& node);
+        void apply(osg::Node& node) override;
 
         // Answers the question "Will this state set be eliminated by
         // the SharedStateManager because an equivalent one has been
@@ -69,7 +69,7 @@ namespace osgDB {
 
         bool isShared(osg::Texture* texture);
 
-        void releaseGLObjects(osg::State* state ) const;
+        void releaseGLObjects(osg::State* state ) const override;
 
     protected:
 

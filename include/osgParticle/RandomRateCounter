@@ -31,7 +31,7 @@ namespace osgParticle
         META_Object(osgParticle, RandomRateCounter);
 
         /// Return the number of particles to be created in this frame
-        inline int numParticlesToCreate(double dt) const;
+        inline int numParticlesToCreate(double dt) const override;
 
     protected:
         virtual ~RandomRateCounter() {}

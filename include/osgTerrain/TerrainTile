@@ -75,7 +75,7 @@ class OSGTERRAIN_EXPORT TerrainTile : public osg::Group
 
         META_Node(osgTerrain, TerrainTile);
 
-        virtual void traverse(osg::NodeVisitor& nv);
+        void traverse(osg::NodeVisitor& nv) override;
 
         /** Call init on any attached TerrainTechnique.*/
         void init(int dirtyMask, bool assumeMultiThreaded);
@@ -212,7 +212,7 @@ class OSGTERRAIN_EXPORT TerrainTile : public osg::Group
 
 
         /** Compute the bounding volume of the terrain by computing the union of the bounding volumes of all layers.*/
-        virtual osg::BoundingSphere computeBound() const;
+        osg::BoundingSphere computeBound() const override;
 
         /** Callback for post processing loaded TerrainTile, and for filling in missing elements such as external external imagery.*/
         struct TileLoadedCallback : public osg::Referenced
@@ -227,7 +227,7 @@ class OSGTERRAIN_EXPORT TerrainTile : public osg::Group
         /** If State is non-zero, this function releases any associated OpenGL objects for
         * the specified graphics context. Otherwise, releases OpenGL objects
         * for all graphics contexts. */
-        virtual void releaseGLObjects(osg::State* = 0) const;
+        void releaseGLObjects(osg::State* = 0) const override;
 
 
     protected:

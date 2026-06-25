@@ -33,22 +33,22 @@ class OSG_EXPORT CollectOccludersVisitor : public osg::NodeVisitor, public osg::
 
         META_NodeVisitor(osg, CollectOccludersVisitor)
 
-        virtual Object* cloneType() const { return new CollectOccludersVisitor(); }
+        Object* cloneType() const override { return new CollectOccludersVisitor(); }
 
-        virtual void reset();
+        void reset() override;
 
-        virtual float getDistanceToEyePoint(const Vec3& pos, bool withLODScale) const;
-        virtual float getDistanceToViewPoint(const Vec3& pos, bool withLODScale) const;
+        float getDistanceToEyePoint(const Vec3& pos, bool withLODScale) const override;
+        float getDistanceToViewPoint(const Vec3& pos, bool withLODScale) const override;
 
-        virtual float getDistanceFromEyePoint(const Vec3& pos, bool withLODScale) const;
+        float getDistanceFromEyePoint(const Vec3& pos, bool withLODScale) const override;
 
-        virtual void apply(osg::Node&);
-        virtual void apply(osg::Transform& node);
-        virtual void apply(osg::Projection& node);
+        void apply(osg::Node&) override;
+        void apply(osg::Transform& node) override;
+        void apply(osg::Projection& node) override;
 
-        virtual void apply(osg::Switch& node);
-        virtual void apply(osg::LOD& node);
-        virtual void apply(osg::OccluderNode& node);
+        void apply(osg::Switch& node) override;
+        void apply(osg::LOD& node) override;
+        void apply(osg::OccluderNode& node) override;
 
         /** Sets the minimum shadow occluder volume that an active occluder
           * must have. vol is units relative the clip space volume where 1.0

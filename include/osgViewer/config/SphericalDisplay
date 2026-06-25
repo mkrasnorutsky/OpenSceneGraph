@@ -40,7 +40,7 @@ class OSGVIEWER_EXPORT SphericalDisplay : public ViewConfig
         
         META_Object(osgViewer,SphericalDisplay);
         
-        virtual void configure(osgViewer::View& view) const;
+        void configure(osgViewer::View& view) const override;
         
         void setRadius(double r) { _radius = r; }
         double getRadius() const { return _radius; }

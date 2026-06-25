@@ -74,10 +74,10 @@ public:
     float getSigma() const { return _sigma; }
 
     /// Apply the acceleration to a particle. Do not call this method manually.
-    inline void operate( Particle* P, double dt );
+    inline void operate( Particle* P, double dt ) override;
 
     /// Perform some initializations. Do not call this method manually.
-    inline void beginOperate( Program* prg );
+    inline void beginOperate( Program* prg ) override;
 
 protected:
     virtual ~ExplosionOperator() {}

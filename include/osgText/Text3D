@@ -74,36 +74,36 @@ class OSGTEXT_EXPORT Text3D : public osgText::TextBase
 
 
         /** Draw the text.*/
-        virtual void drawImplementation(osg::RenderInfo& renderInfo) const;
+        void drawImplementation(osg::RenderInfo& renderInfo) const override;
 
         /** return false, osgText::Text does not support accept(AttributeFunctor&).*/
-        virtual bool supports(const osg::Drawable::AttributeFunctor&) const { return false; }
+        bool supports(const osg::Drawable::AttributeFunctor&) const override { return false; }
 
         /** return true, osgText::Text does support accept(ConstAttributeFunctor&).*/
-        virtual bool supports(const osg::Drawable::ConstAttributeFunctor&) const { return false; }
+        bool supports(const osg::Drawable::ConstAttributeFunctor&) const override { return false; }
 
         /** accept an ConstAttributeFunctor and call its methods to tell it about the internal attributes that this Drawable has.*/
-        virtual void accept(osg::Drawable::ConstAttributeFunctor& af) const;
+        void accept(osg::Drawable::ConstAttributeFunctor& af) const override;
 
         /** return true, osgText::Text does support accept(PrimitiveFunctor&) .*/
-        virtual bool supports(const osg::PrimitiveFunctor&) const { return false; }
+        bool supports(const osg::PrimitiveFunctor&) const override { return false; }
 
         /** accept a PrimtiveFunctor and call its methods to tell it about the internal primtives that this Drawable has.*/
-        virtual void accept(osg::PrimitiveFunctor& pf) const;
+        void accept(osg::PrimitiveFunctor& pf) const override;
 
         /** Resize any per context GLObject buffers to specified size. */
-        virtual void resizeGLObjectBuffers(unsigned int maxSize);
+        void resizeGLObjectBuffers(unsigned int maxSize) override;
 
         /** If State is non-zero, this function releases OpenGL objects for
           * the specified graphics context. Otherwise, releases OpenGL objexts
           * for all graphics contexts. */
-        virtual void releaseGLObjects(osg::State* state=0) const;
+        void releaseGLObjects(osg::State* state=0) const override;
 
         // make Font a friend to allow it set the _font to 0 if the font is
         // forcefully unloaded.
         friend class Font;
 
-        virtual osg::BoundingBox computeBoundingBox() const;
+        osg::BoundingBox computeBoundingBox() const override;
 
 
     protected:
@@ -112,7 +112,7 @@ class OSGTEXT_EXPORT Text3D : public osgText::TextBase
 
         String::iterator computeLastCharacterOnLine(osg::Vec2& cursor, String::iterator first,String::iterator last);
 
-        void computeGlyphRepresentation();
+        void computeGlyphRepresentation() override;
 
         void copyAndOffsetPrimitiveSets(osg::Geometry::PrimitiveSetList& dest_PrimitiveSetList, osg::Geometry::PrimitiveSetList& src_PrimitiveSetList, unsigned int offset);
 

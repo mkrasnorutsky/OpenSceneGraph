@@ -56,7 +56,7 @@ class OSGUTIL_EXPORT GLObjectsVisitor : public osg::NodeVisitor
 
         META_NodeVisitor(osgUtil, GLObjectsVisitor)
 
-        virtual void reset()
+        void reset() override
         {
             _drawablesAppliedSet.clear();
             _stateSetAppliedSet.clear();
@@ -98,10 +98,11 @@ class OSGUTIL_EXPORT GLObjectsVisitor : public osg::NodeVisitor
         osg::State::CheckForGLErrors getCheckForGLErrors() const { return _checkGLErrors; }
 
         /** Simply traverse using standard NodeVisitor traverse method.*/
-        virtual void apply(osg::Node& node);
+        void apply(osg::Node& node) override;
 
-        void apply(osg::Drawable& drawable);
-        void apply(osg::StateSet& stateset);
+        void apply(osg::Drawable& drawable) override;
+        virtual void apply(osg::StateSet& stateset);
+        using osg::NodeVisitor::apply;
 
         /** Do a compile traversal and then reset any state,*/
         void compile(osg::Node& node);

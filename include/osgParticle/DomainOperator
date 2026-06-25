@@ -108,13 +108,13 @@ public:
     unsigned int getNumDomains() const { return _domains.size(); }
 
     /// Apply the acceleration to a particle. Do not call this method manually.
-    void operate( Particle* P, double dt );
+    void operate( Particle* P, double dt ) override;
 
     /// Perform some initializations. Do not call this method manually.
-    void beginOperate( Program* prg );
+    void beginOperate( Program* prg ) override;
 
     /// Perform some post-operations. Do not call this method manually.
-    void endOperate();
+    void endOperate() override;
 
 protected:
     virtual ~DomainOperator() {}

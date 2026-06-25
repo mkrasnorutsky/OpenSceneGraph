@@ -40,15 +40,15 @@ class OSGGA_EXPORT OrbitManipulator : public StandardManipulator
 
         META_Object( osgGA, OrbitManipulator );
 
-        virtual void setByMatrix( const osg::Matrixd& matrix );
-        virtual void setByInverseMatrix( const osg::Matrixd& matrix );
-        virtual osg::Matrixd getMatrix() const;
-        virtual osg::Matrixd getInverseMatrix() const;
+        void setByMatrix( const osg::Matrixd& matrix ) override;
+        void setByInverseMatrix( const osg::Matrixd& matrix ) override;
+        osg::Matrixd getMatrix() const override;
+        osg::Matrixd getInverseMatrix() const override;
 
-        virtual void setTransformation( const osg::Vec3d& eye, const osg::Quat& rotation );
-        virtual void setTransformation( const osg::Vec3d& eye, const osg::Vec3d& center, const osg::Vec3d& up );
-        virtual void getTransformation( osg::Vec3d& eye, osg::Quat& rotation ) const;
-        virtual void getTransformation( osg::Vec3d& eye, osg::Vec3d& center, osg::Vec3d& up ) const;
+        void setTransformation( const osg::Vec3d& eye, const osg::Quat& rotation ) override;
+        void setTransformation( const osg::Vec3d& eye, const osg::Vec3d& center, const osg::Vec3d& up ) override;
+        void getTransformation( osg::Vec3d& eye, osg::Quat& rotation ) const override;
+        void getTransformation( osg::Vec3d& eye, osg::Vec3d& center, osg::Vec3d& up ) const override;
 
         void setHeading( double azimuth );
         double getHeading() const;
@@ -70,18 +70,18 @@ class OSGGA_EXPORT OrbitManipulator : public StandardManipulator
         virtual void setMinimumDistance( const double& minimumDistance, bool relativeToModelSize = false );
         double getMinimumDistance( bool *relativeToModelSize = NULL ) const;
 
-        virtual osgUtil::SceneView::FusionDistanceMode getFusionDistanceMode() const;
-        virtual float getFusionDistanceValue() const;
+        osgUtil::SceneView::FusionDistanceMode getFusionDistanceMode() const override;
+        float getFusionDistanceValue() const override;
 
     protected:
 
-        virtual bool handleMouseWheel( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
+        bool handleMouseWheel( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us ) override;
 
-        virtual bool performMovementLeftMouseButton( const double eventTimeDelta, const double dx, const double dy );
-        virtual bool performMovementMiddleMouseButton( const double eventTimeDelta, const double dx, const double dy );
-        virtual bool performMovementRightMouseButton( const double eventTimeDelta, const double dx, const double dy );
-        virtual bool performMouseDeltaMovement( const float dx, const float dy );
-        virtual void applyAnimationStep( const double currentProgress, const double prevProgress );
+        bool performMovementLeftMouseButton( const double eventTimeDelta, const double dx, const double dy ) override;
+        bool performMovementMiddleMouseButton( const double eventTimeDelta, const double dx, const double dy ) override;
+        bool performMovementRightMouseButton( const double eventTimeDelta, const double dx, const double dy ) override;
+        bool performMouseDeltaMovement( const float dx, const float dy ) override;
+        void applyAnimationStep( const double currentProgress, const double prevProgress ) override;
 
         virtual void rotateTrackball( const float px0, const float py0,
                                       const float px1, const float py1, const float scale );
@@ -91,7 +91,7 @@ class OSGGA_EXPORT OrbitManipulator : public StandardManipulator
         virtual void zoomModel( const float dy, bool pushForwardIfNeeded = true );
         void trackball( osg::Vec3d& axis, float& angle, float p1x, float p1y, float p2x, float p2y );
         float tb_project_to_sphere( float r, float x, float y );
-        virtual bool startAnimationByMousePointerIntersection( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
+        bool startAnimationByMousePointerIntersection( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us ) override;
 
         osg::Vec3d _center;
         osg::Quat  _rotation;
@@ -108,7 +108,7 @@ class OSGGA_EXPORT OrbitManipulator : public StandardManipulator
             osg::Vec3d _movement;
             void start( const osg::Vec3d& movement, const double startTime );
         };
-        virtual void allocAnimationData() { _animationData = new OrbitAnimationData(); }
+        void allocAnimationData() override { _animationData = new OrbitAnimationData(); }
 };
 
 

@@ -556,13 +556,13 @@ class OSG_EXPORT Uniform : public Object
 
         /** Convert 'this' into a Uniform pointer if Object is a Uniform, otherwise return 0.
           * Equivalent to dynamic_cast<Uniform*>(this).*/
-        virtual Uniform* asUniform() { return this; }
+        Uniform* asUniform() override { return this; }
 
         /** convert 'const this' into a const Uniform pointer if Object is a Uniform, otherwise return 0.
           * Equivalent to dynamic_cast<const Uniform*>(this).*/
-        virtual const Uniform* asUniform() const { return this; }
+        const Uniform* asUniform() const override { return this; }
 
-        
+
         /** Set the type of glUniform, ensuring it is only set once.*/
         bool setType( Type t );
 
@@ -570,7 +570,7 @@ class OSG_EXPORT Uniform : public Object
         Type getType() const { return _type; }
 
         /** Set the name of the glUniform, ensuring it is only set once.*/
-        virtual void setName( const std::string& name );
+        void setName( const std::string& name ) override;
 
         /** Set the length of a uniform, ensuring it is only set once (1==scalar)*/
         void setNumElements( unsigned int numElements );
@@ -845,11 +845,11 @@ class OSG_EXPORT Uniform : public Object
         bool getElement( unsigned int index, bool& b0, bool& b1 ) const;
         bool getElement( unsigned int index, bool& b0, bool& b1, bool& b2 ) const;
         bool getElement( unsigned int index, bool& b0, bool& b1, bool& b2, bool& b3 ) const;
-        
-        
+
+
         /** provide typedef for backwards compatibility to OSG-3.2 and other previous versions. */
         typedef UniformCallback Callback;
-        
+
 
         /** Set the UpdateCallback which allows users to attach customize the updating of an object during the update traversal.*/
         void setUpdateCallback(UniformCallback* uc);

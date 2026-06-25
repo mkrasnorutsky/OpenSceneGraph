@@ -57,7 +57,7 @@ class OSGVIEWER_EXPORT WoWVxDisplay : public ViewConfig
         
         META_Object(osgViewer, WoWVxDisplay);
         
-        virtual void configure(osgViewer::View& view) const;
+        void configure(osgViewer::View& view) const override;
         
         void setScreenNum(unsigned int n) { _screenNum = n; }
         unsigned int getScreenNum() const { return _screenNum; }

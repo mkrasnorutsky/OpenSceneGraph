@@ -34,17 +34,17 @@ class OSGSIM_EXPORT MultiSwitch : public osg::Group
 
         META_Node(osgSim, MultiSwitch);
 
-        virtual void traverse(osg::NodeVisitor& nv);
+        void traverse(osg::NodeVisitor& nv) override;
 
         void setNewChildDefaultValue(bool value) { _newChildDefaultValue = value; }
 
         bool getNewChildDefaultValue() const { return _newChildDefaultValue; }
 
-        virtual bool addChild( osg::Node *child );
+        bool addChild( osg::Node *child ) override;
 
-        virtual bool insertChild( unsigned int index, osg::Node *child );
+        bool insertChild( unsigned int index, osg::Node *child ) override;
 
-        virtual bool removeChild( osg::Node *child );
+        bool removeChild( osg::Node *child ) override;
 
         void setValue(unsigned int switchSet, unsigned int pos,bool value);
 

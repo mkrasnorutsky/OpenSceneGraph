@@ -61,11 +61,11 @@ protected:
     virtual ~BounceOperator() {}
     BounceOperator& operator=( const BounceOperator& ) { return *this; }
 
-    virtual void handleTriangle( const Domain& domain, Particle* P, double dt );
-    virtual void handleRectangle( const Domain& domain, Particle* P, double dt );
-    virtual void handlePlane( const Domain& domain, Particle* P, double dt );
-    virtual void handleSphere( const Domain& domain, Particle* P, double dt );
-    virtual void handleDisk( const Domain& domain, Particle* P, double dt );
+    void handleTriangle( const Domain& domain, Particle* P, double dt ) override;
+    void handleRectangle( const Domain& domain, Particle* P, double dt ) override;
+    void handlePlane( const Domain& domain, Particle* P, double dt ) override;
+    void handleSphere( const Domain& domain, Particle* P, double dt ) override;
+    void handleDisk( const Domain& domain, Particle* P, double dt ) override;
 
     float _friction;
     float _resilience;

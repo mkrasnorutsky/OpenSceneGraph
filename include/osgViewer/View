@@ -84,7 +84,7 @@ class OSGVIEWER_EXPORT View : public osg::View, public osgGA::GUIActionAdapter
 
         /** Provide a mechanism for getting the osg::View associated from the GUIActionAdapter.
           * One would use this to case view to osgViewer::View(er) if supported by the subclass.*/
-        virtual osg::View* asView() { return this; }
+        osg::View* asView() override { return this; }
 
         /** Provide a mechanism for getting the viewer object from this osgViewer::View.
           * In the case of a osgViewer::Viewer the ViewerBase will effectively point to this object as Viewer subclasses from View.
@@ -92,7 +92,7 @@ class OSGVIEWER_EXPORT View : public osg::View, public osgGA::GUIActionAdapter
         ViewerBase* getViewerBase() { return _viewerBase.get(); }
 
         /** Take all the settings, Camera and Slaves from the passed in view, leaving it empty. */
-        virtual void take(osg::View& rhs);
+        void take(osg::View& rhs) override;
 
         virtual void setStartTick(osg::Timer_t tick);
         osg::Timer_t getStartTick() const { return _startTick; }
@@ -289,10 +289,10 @@ class OSGVIEWER_EXPORT View : public osg::View, public osgGA::GUIActionAdapter
 
 
         /** Compute intersections of a ray, starting the current mouse position, through the specified camera. */
-        bool computeIntersections(const osgGA::GUIEventAdapter& ea, osgUtil::LineSegmentIntersector::Intersections& intersections,osg::Node::NodeMask traversalMask = 0xffffffff);
+        bool computeIntersections(const osgGA::GUIEventAdapter& ea, osgUtil::LineSegmentIntersector::Intersections& intersections,osg::Node::NodeMask traversalMask = 0xffffffff) override;
 
         /** Compute intersections of a ray, starting the current mouse position, through the specified master camera's window/eye coordinates and a specified nodePath's subgraph. */
-        bool computeIntersections(const osgGA::GUIEventAdapter& ea, const osg::NodePath& nodePath, osgUtil::LineSegmentIntersector::Intersections& intersections,osg::Node::NodeMask traversalMask = 0xffffffff);
+        bool computeIntersections(const osgGA::GUIEventAdapter& ea, const osg::NodePath& nodePath, osgUtil::LineSegmentIntersector::Intersections& intersections,osg::Node::NodeMask traversalMask = 0xffffffff) override;
 
 
         /** Compute intersections of a ray through the specified camera. */
@@ -301,9 +301,9 @@ class OSGVIEWER_EXPORT View : public osg::View, public osgGA::GUIActionAdapter
         /** Compute intersections of a ray through the specified camera and a specified nodePath's subgraph. */
         bool computeIntersections(const osg::Camera* camera, osgUtil::Intersector::CoordinateFrame cf, float x,float y, const osg::NodePath& nodePath, osgUtil::LineSegmentIntersector::Intersections& intersections,osg::Node::NodeMask traversalMask = 0xffffffff);
 
-        virtual void requestRedraw();
-        virtual void requestContinuousUpdate(bool needed=true);
-        virtual void requestWarpPointer(float x,float y);
+        void requestRedraw() override;
+        void requestContinuousUpdate(bool needed=true) override;
+        void requestWarpPointer(float x,float y) override;
 
         /** Return true if there are pending updates to the scene graph that require an update. */
         virtual bool requiresUpdateSceneGraph() const;
@@ -341,7 +341,7 @@ public:
 
         virtual ~View();
 
-        virtual osg::GraphicsOperation* createRenderer(osg::Camera* camera);
+        osg::GraphicsOperation* createRenderer(osg::Camera* camera) override;
 
         osg::observer_ptr<ViewerBase>          _viewerBase;
 

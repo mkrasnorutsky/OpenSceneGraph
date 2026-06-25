@@ -57,12 +57,12 @@ typedef std::vector< Matrix > MatrixList;
   * and accept methods.  Use when subclassing from Node to make it
   * more convenient to define the required pure virtual methods.*/
 #define META_Node(library,name) \
-        virtual osg::Object* cloneType() const { return new name (); } \
-        virtual osg::Object* clone(const osg::CopyOp& copyop) const { return new name (*this,copyop); } \
-        virtual bool isSameKindAs(const osg::Object* obj) const { return dynamic_cast<const name *>(obj)!=NULL; } \
-        virtual const char* className() const { return #name; } \
-        virtual const char* libraryName() const { return #library; } \
-        virtual void accept(osg::NodeVisitor& nv) { if (nv.validNodeMask(*this)) { nv.pushOntoNodePath(this); nv.apply(*this); nv.popFromNodePath(); } } \
+        osg::Object* cloneType() const override { return new name (); } \
+        osg::Object* clone(const osg::CopyOp& copyop) const override { return new name (*this,copyop); } \
+        bool isSameKindAs(const osg::Object* obj) const override { return dynamic_cast<const name *>(obj)!=NULL; } \
+        const char* className() const override { return #name; } \
+        const char* libraryName() const override { return #library; } \
+        void accept(osg::NodeVisitor& nv) override { if (nv.validNodeMask(*this)) { nv.pushOntoNodePath(this); nv.apply(*this); nv.popFromNodePath(); } } \
 
 
 /** Base class for all internal nodes in the scene graph.
@@ -81,34 +81,34 @@ class OSG_EXPORT Node : public Object
         Node(const Node&,const CopyOp& copyop=CopyOp::SHALLOW_COPY);
 
         /** clone an object of the same type as the node.*/
-        virtual Object* cloneType() const { return new Node(); }
+        Object* cloneType() const override { return new Node(); }
 
         /** return a clone of a node, with Object* return type.*/
-        virtual Object* clone(const CopyOp& copyop) const { return new Node(*this,copyop); }
+        Object* clone(const CopyOp& copyop) const override { return new Node(*this,copyop); }
 
         /** return true if this and obj are of the same kind of object.*/
-        virtual bool isSameKindAs(const Object* obj) const { return dynamic_cast<const Node*>(obj)!=NULL; }
+        bool isSameKindAs(const Object* obj) const override { return dynamic_cast<const Node*>(obj)!=NULL; }
 
         /** return the name of the node's library.*/
-        virtual const char* libraryName() const { return "osg"; }
+        const char* libraryName() const override { return "osg"; }
 
         /** return the name of the node's class type.*/
-        virtual const char* className() const { return "Node"; }
+        const char* className() const override { return "Node"; }
 
         /** Convert 'this' into a Node pointer if Object is a Node, otherwise return 0.
           * Equivalent to dynamic_cast<Node*>(this).*/
-        virtual Node* asNode() { return this; }
+        Node* asNode() override { return this; }
 
         /** convert 'const this' into a const Node pointer if Object is a Node, otherwise return 0.
           * Equivalent to dynamic_cast<const Node*>(this).*/
-        virtual const Node* asNode() const { return this; }
+        const Node* asNode() const override { return this; }
 
         /** convert 'this' into a Drawable pointer if Node is a Drawable, otherwise return 0.
           * Equivalent to dynamic_cast<Group*>(this).*/
-        virtual Drawable* asDrawable() { return 0; }
+        Drawable* asDrawable() override { return 0; }
         /** convert 'const this' into a const Drawable pointer if Node is a Drawable, otherwise return 0.
           * Equivalent to dynamic_cast<const Group*>(this).*/
-        virtual const Drawable* asDrawable() const { return 0; }
+        const Drawable* asDrawable() const override { return 0; }
 
         /** convert 'this' into a Geometry pointer if Node is a Geometry, otherwise return 0.
           * Equivalent to dynamic_cast<Group*>(this).*/
@@ -467,15 +467,15 @@ class OSG_EXPORT Node : public Object
         const ComputeBoundingSphereCallback* getComputeBoundingSphereCallback() const { return _computeBoundCallback.get(); }
 
         /** Set whether to use a mutex to ensure ref() and unref() are thread safe.*/
-        virtual void setThreadSafeRefUnref(bool threadSafe);
+        void setThreadSafeRefUnref(bool threadSafe) override;
 
         /** Resize any per context GLObject buffers to specified size. */
-        virtual void resizeGLObjectBuffers(unsigned int /*maxSize*/);
+        void resizeGLObjectBuffers(unsigned int /*maxSize*/) override;
 
         /** If State is non-zero, this function releases any associated OpenGL objects for
            * the specified graphics context. Otherwise, releases OpenGL objects
            * for all graphics contexts. */
-        virtual void releaseGLObjects(osg::State* = 0) const;
+        void releaseGLObjects(osg::State* = 0) const override;
 
 
     protected:

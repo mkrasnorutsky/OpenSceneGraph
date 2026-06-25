@@ -150,12 +150,12 @@ class OSG_EXPORT RenderBuffer: public Object
         static int getMaxSamples(unsigned int contextID, const GLExtensions* ext);
 
         /** Resize any per context GLObject buffers to specified size. */
-        virtual void resizeGLObjectBuffers(unsigned int maxSize);
+        void resizeGLObjectBuffers(unsigned int maxSize) override;
 
         /** If State is non-zero, this function releases any associated OpenGL objects for
            * the specified graphics context. Otherwise, releases OpenGL objexts
            * for all graphics contexts. */
-        virtual void releaseGLObjects(osg::State* = 0) const;
+        void releaseGLObjects(osg::State* = 0) const override;
 
     protected:
         virtual ~RenderBuffer();

@@ -39,10 +39,10 @@ namespace osgParticle
             This method is called automatically by <CODE>ModularEmitter</CODE> and should not be called
             manually.
         */
-        inline void place(Particle* P) const;
+        inline void place(Particle* P) const override;
 
         /// return the control position
-        inline osg::Vec3 getControlPosition() const;
+        inline osg::Vec3 getControlPosition() const override;
 
     protected:
         virtual ~PointPlacer() {}

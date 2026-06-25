@@ -68,13 +68,13 @@ namespace osgParticle
         META_Object(osgParticle, BoxPlacer);
 
         /// Place a particle. Do not call it manually.
-        inline void place(Particle* P) const;
+        inline void place(Particle* P) const override;
 
         /// return the volume of the box
-        inline float volume() const;
+        inline float volume() const override;
 
         /// return the control position
-        inline osg::Vec3 getControlPosition() const;
+        inline osg::Vec3 getControlPosition() const override;
 
     protected:
         virtual ~BoxPlacer() {}

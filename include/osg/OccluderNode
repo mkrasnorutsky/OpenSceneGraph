@@ -45,7 +45,7 @@ class OSG_EXPORT OccluderNode : public Group
         const ConvexPlanarOccluder* getOccluder() const { return _occluder.get(); }
 
         /** Overrides Group's computeBound.*/
-        virtual BoundingSphere computeBound() const;
+        BoundingSphere computeBound() const override;
 
     protected :
 

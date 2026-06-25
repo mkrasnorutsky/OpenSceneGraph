@@ -77,7 +77,7 @@ namespace osgParticle
         inline void setInitialRotationalSpeedRange(const osg::Vec3& r1, const osg::Vec3& r2);
 
         /// Shoot a particle. Do not call this method manually.
-        inline void shoot(Particle* P) const;
+        inline void shoot(Particle* P) const override;
 
     protected:
         virtual ~RadialShooter() {}

@@ -26,53 +26,53 @@ class OSGGA_EXPORT SphericalManipulator : public CameraManipulator
     public:
         SphericalManipulator();
 
-        virtual const char* className() const { return "Spherical Manipulator"; }
+        const char* className() const override { return "Spherical Manipulator"; }
 
         /** set the position of the matrix manipulator using a 4x4 Matrix.*/
-        virtual void setByMatrix(const osg::Matrixd& matrix);
+        void setByMatrix(const osg::Matrixd& matrix) override;
 
         /** set the position of the matrix manipulator using a 4x4 Matrix.*/
-        virtual void setByInverseMatrix(const osg::Matrixd& matrix) { setByMatrix(osg::Matrixd::inverse(matrix)); }
+        void setByInverseMatrix(const osg::Matrixd& matrix) override { setByMatrix(osg::Matrixd::inverse(matrix)); }
 
         /** get the position of the manipulator as 4x4 Matrix.*/
-        virtual osg::Matrixd getMatrix() const;
+        osg::Matrixd getMatrix() const override;
 
         /** get the position of the manipulator as a inverse matrix of the manipulator, typically used as a model view matrix.*/
-        virtual osg::Matrixd getInverseMatrix() const;
+        osg::Matrixd getInverseMatrix() const override;
 
         /** Get the FusionDistanceMode. Used by SceneView for setting up stereo convergence.*/
-        virtual osgUtil::SceneView::FusionDistanceMode getFusionDistanceMode() const { return osgUtil::SceneView::USE_FUSION_DISTANCE_VALUE; }
+        osgUtil::SceneView::FusionDistanceMode getFusionDistanceMode() const override { return osgUtil::SceneView::USE_FUSION_DISTANCE_VALUE; }
 
         /** Get the FusionDistanceValue. Used by SceneView for setting up stereo convergence.*/
-        virtual float getFusionDistanceValue() const { return _distance; }
+        float getFusionDistanceValue() const override { return _distance; }
 
         /** Attach a node to the manipulator.
         Automatically detaches previously attached node.
         setNode(NULL) detaches previously nodes.
         Is ignored by manipulators which do not require a reference model.*/
-        virtual void setNode(osg::Node*);
+        void setNode(osg::Node*) override;
 
         /** Return node if attached.*/
-        virtual const osg::Node* getNode() const;
+        const osg::Node* getNode() const override;
 
         /** Return node if attached.*/
-        virtual osg::Node* getNode();
+        osg::Node* getNode() override;
 
         /** Move the camera to the default position.
         May be ignored by manipulators if home functionality is not appropriate.*/
-        virtual void home(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& us);
-        virtual void home(double);
+        void home(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& us) override;
+        void home(double) override;
 
         /** Start/restart the manipulator.*/
-        virtual void init(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& us);
+        void init(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& us) override;
 
         void zoomOn(const osg::BoundingSphere& bound);
 
         /** handle events, return true if handled, false otherwise.*/
-        virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& us);
+        bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& us) override;
 
         /** Compute the home position.*/
-        virtual void computeHomePosition();
+        void computeHomePosition(const osg::Camera *camera = nullptr, bool useBoundingBox = false) override;
 
         void computeViewPosition(const osg::BoundingSphere& bound,double& scale,double& distance,osg::Vec3d& center);
 
@@ -108,7 +108,7 @@ class OSGGA_EXPORT SphericalManipulator : public CameraManipulator
 
 
         /** Get the keyboard and mouse usage of this manipulator.*/
-        virtual void getUsage(osg::ApplicationUsage& usage) const;
+        void getUsage(osg::ApplicationUsage& usage) const override;
 
         enum RotationMode
         {

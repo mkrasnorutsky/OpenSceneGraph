@@ -75,11 +75,11 @@ class ValueObject : public Object
 
         /** Convert 'this' into a ValueObject pointer if Object is a ValueObject, otherwise return 0.
           * Equivalent to dynamic_cast<ValueObject*>(this).*/
-        virtual ValueObject* asValueObject() { return this; }
+        ValueObject* asValueObject() override { return this; }
 
         /** Convert 'this' into a ValueObject pointer if Object is a ValueObject, otherwise return 0.
-          * Equivalent to dynamic_cast<ValueObject*>(this).*/
-        virtual const ValueObject* asValueObject() const { return this; }
+          * Equivalent to dynamic_cast<const ValueObject*>(this).*/
+        const ValueObject* asValueObject() const override { return this; }
 
         class GetValueVisitor
         {

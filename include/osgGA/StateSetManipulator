@@ -87,7 +87,7 @@ protected:
 
         virtual ~StateSetManipulator();
 
-        void clone();
+        void cloneStateSet();
 
         osg::ref_ptr<osg::StateSet> _stateset;
 

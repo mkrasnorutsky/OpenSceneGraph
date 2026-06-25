@@ -79,7 +79,7 @@ class OSGTERRAIN_EXPORT TerrainTechnique : public osg::Object, public osg::Obser
         /** If State is non-zero, this function releases any associated OpenGL objects for
         * the specified graphics context. Otherwise, releases OpenGL objects
         * for all graphics contexts. */
-        virtual void releaseGLObjects(osg::State* = 0) const {}
+        void releaseGLObjects(osg::State* = 0) const override {}
 
         virtual void addNeighbour(TerrainTile* tile) { _neighbours.addNeighbour(tile); }
         virtual void removeNeighbour(TerrainTile* tile) {  _neighbours.removeNeighbour(tile); }

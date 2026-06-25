@@ -50,11 +50,11 @@ class OSG_EXPORT StateSet : public Object
         StateSet();
         StateSet(const StateSet&,const CopyOp& copyop=CopyOp::SHALLOW_COPY);
 
-        virtual Object* cloneType() const { return new StateSet(); }
-        virtual Object* clone(const CopyOp& copyop) const { return new StateSet(*this,copyop); }
-        virtual bool isSameKindAs(const Object* obj) const { return dynamic_cast<const StateSet*>(obj)!=NULL; }
-        virtual const char* libraryName() const { return "osg"; }
-        virtual const char* className() const { return "StateSet"; }
+        Object* cloneType() const override { return new StateSet(); }
+        Object* clone(const CopyOp& copyop) const override { return new StateSet(*this,copyop); }
+        bool isSameKindAs(const Object* obj) const override { return dynamic_cast<const StateSet*>(obj)!=NULL; }
+        const char* libraryName() const override { return "osg"; }
+        const char* className() const override { return "StateSet"; }
 
         /** return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs.*/
         int compare(const StateSet& rhs,bool compareAttributeContents=false) const;
@@ -65,11 +65,11 @@ class OSG_EXPORT StateSet : public Object
 
         /** Convert 'this' into a StateSet pointer if Object is a StateSet, otherwise return 0.
           * Equivalent to dynamic_cast<StateSet*>(this).*/
-        virtual StateSet* asStateSet() { return this; }
+        StateSet* asStateSet() override { return this; }
 
         /** convert 'const this' into a const StateSet pointer if Object is a StateSet, otherwise return 0.
           * Equivalent to dynamic_cast<const StateSet*>(this).*/
-        virtual const StateSet* asStateSet() const { return this; }
+        const StateSet* asStateSet() const override { return this; }
 
 
         /** A vector of osg::Object pointers which is used to store the parent(s) of this Stateset, the parents could be osg::Node or osg::Drawable.*/
@@ -98,7 +98,7 @@ class OSG_EXPORT StateSet : public Object
 
 
         /** Compute the DataVariance based on an assessment of callback etc.*/
-        virtual void computeDataVariance();
+        void computeDataVariance() override;
 
 
         /** Set all the modes to on or off so that it defines a
@@ -453,7 +453,7 @@ class OSG_EXPORT StateSet : public Object
             META_Object(osg,Callback);
 
             /** override Callback::run() entry point to adapt to StateAttributeCallback::run(..) method.*/
-            virtual bool run(osg::Object* object, osg::Object* data);
+            bool run(osg::Object* object, osg::Object* data) override;
 
             /** do customized callback code.*/
             virtual void operator() (StateSet*, NodeVisitor*) {}
@@ -508,16 +508,16 @@ class OSG_EXPORT StateSet : public Object
         bool checkValidityOfAssociatedModes(State& state) const;
 
         /** Set whether to use a mutex to ensure ref() and unref() are thread safe.*/
-        virtual void setThreadSafeRefUnref(bool threadSafe);
+        void setThreadSafeRefUnref(bool threadSafe) override;
 
         /** call compile on all StateAttributes contained within this StateSet.*/
         void compileGLObjects(State& state) const;
 
         /** Resize any per context GLObject buffers to specified size. */
-        virtual void resizeGLObjectBuffers(unsigned int maxSize);
+        void resizeGLObjectBuffers(unsigned int maxSize) override;
 
         /** call release on all StateAttributes contained within this StateSet.*/
-        virtual void releaseGLObjects(State* state=0) const;
+        void releaseGLObjects(State* state=0) const override;
 
     protected :
 

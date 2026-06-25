@@ -91,16 +91,16 @@ public:
     DefaultIndirectCommandDrawArrays(const DefaultIndirectCommandDrawArrays& copy,const CopyOp& copyop/*=CopyOp::SHALLOW_COPY*/) :
         IndirectCommandDrawArrays(copy, copyop),MixinVector<DrawArraysIndirectCommand>() {}
 
-    virtual const GLvoid* getDataPointer() const { return empty()?0:&front(); }
-    virtual unsigned int getElementSize()const { return 16u; };
-    virtual unsigned int getNumElements() const { return static_cast<unsigned int>(size()); }
-    virtual void reserveElements(const unsigned int n) {reserve(n);}
-    virtual void resizeElements(const unsigned int n) {resize(n);}
+    const GLvoid* getDataPointer() const override { return empty()?0:&front(); }
+    unsigned int getElementSize()const override { return 16u; };
+    unsigned int getNumElements() const override { return static_cast<unsigned int>(size()); }
+    void reserveElements(const unsigned int n) override {reserve(n);}
+    void resizeElements(const unsigned int n) override {resize(n);}
 
-    virtual unsigned int & count(const unsigned int&index) { return at(index).count; }
-    virtual unsigned int & instanceCount(const unsigned int&index) { return at(index).instanceCount; }
-    virtual unsigned int & first(const unsigned int&index) { return at(index).first; }
-    virtual unsigned int & baseInstance(const unsigned int&index) { return at(index).baseInstance; }
+    unsigned int & count(const unsigned int&index) override { return at(index).count; }
+    unsigned int & instanceCount(const unsigned int&index) override { return at(index).instanceCount; }
+    unsigned int & first(const unsigned int&index) override { return at(index).first; }
+    unsigned int & baseInstance(const unsigned int&index) override { return at(index).baseInstance; }
 
 };
 
@@ -130,17 +130,17 @@ public:
     DefaultIndirectCommandDrawElements(const DefaultIndirectCommandDrawElements& copy,const CopyOp& copyop/*=CopyOp::SHALLOW_COPY*/) :
         IndirectCommandDrawElements(copy, copyop), MixinVector<DrawElementsIndirectCommand>() {}
 
-    virtual const GLvoid*   getDataPointer() const { return empty()?0:&front(); }
-    virtual unsigned int getNumElements() const { return static_cast<unsigned int>(size()); }
-    virtual unsigned int getElementSize()const { return 20u; };
-    virtual void reserveElements(const unsigned int n) {reserve(n);}
-    virtual void resizeElements(const unsigned int n) {resize(n);}
+    const GLvoid*   getDataPointer() const override { return empty()?0:&front(); }
+    unsigned int getNumElements() const override { return static_cast<unsigned int>(size()); }
+    unsigned int getElementSize()const override { return 20u; };
+    void reserveElements(const unsigned int n) override {reserve(n);}
+    void resizeElements(const unsigned int n) override {resize(n);}
 
-    virtual unsigned int & count(const unsigned int&index) { return at(index).count; }
-    virtual unsigned int & instanceCount(const unsigned int&index) { return at(index).instanceCount; }
-    virtual unsigned int & firstIndex(const unsigned int&index) { return at(index).firstIndex; }
-    virtual unsigned int & baseVertex(const unsigned int&index) { return at(index).baseVertex; }
-    virtual unsigned int & baseInstance(const unsigned int&index) { return at(index).baseInstance; }
+    unsigned int & count(const unsigned int&index) override { return at(index).count; }
+    unsigned int & instanceCount(const unsigned int&index) override { return at(index).instanceCount; }
+    unsigned int & firstIndex(const unsigned int&index) override { return at(index).firstIndex; }
+    unsigned int & baseVertex(const unsigned int&index) override { return at(index).baseVertex; }
+    unsigned int & baseInstance(const unsigned int&index) override { return at(index).baseInstance; }
 
 
 };

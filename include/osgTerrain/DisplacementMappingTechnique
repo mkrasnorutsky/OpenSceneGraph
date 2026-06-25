@@ -32,12 +32,12 @@ class OSGTERRAIN_EXPORT DisplacementMappingTechnique : public osgTerrain::Terrai
 
         META_Object(osgTerrain, DisplacementMappingTechnique);
 
-        virtual void init(int dirtyMask, bool assumeMultiThreaded);
-        virtual void update(osgUtil::UpdateVisitor* uv);
-        virtual void cull(osgUtil::CullVisitor* cv);
-        virtual void traverse(osg::NodeVisitor& nv);
-        virtual void cleanSceneGraph();
-        virtual void releaseGLObjects(osg::State* state) const;
+        void init(int dirtyMask, bool assumeMultiThreaded) override;
+        void update(osgUtil::UpdateVisitor* uv) override;
+        void cull(osgUtil::CullVisitor* cv) override;
+        void traverse(osg::NodeVisitor& nv) override;
+        void cleanSceneGraph() override;
+        void releaseGLObjects(osg::State* state) const override;
 
     protected:
 

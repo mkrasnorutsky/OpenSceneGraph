@@ -33,7 +33,7 @@ class OSGSIM_EXPORT DOFTransform : public osg::Transform
 
         META_Node(osgSim, DOFTransform);
 
-        virtual void traverse(osg::NodeVisitor& nv);
+        void traverse(osg::NodeVisitor& nv) override;
 
 
         void setMinHPR(const osg::Vec3& hpr) { _minHPR = hpr;}
@@ -108,9 +108,9 @@ class OSGSIM_EXPORT DOFTransform : public osg::Transform
 
         void animate(float deltaTime);
 
-        virtual bool computeLocalToWorldMatrix(osg::Matrix& matrix,osg::NodeVisitor* nv) const;
+        bool computeLocalToWorldMatrix(osg::Matrix& matrix,osg::NodeVisitor* nv) const override;
 
-        virtual bool computeWorldToLocalMatrix(osg::Matrix& matrix,osg::NodeVisitor* nv) const;
+        bool computeWorldToLocalMatrix(osg::Matrix& matrix,osg::NodeVisitor* nv) const override;
 
     protected:
 

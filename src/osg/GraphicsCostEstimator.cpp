@@ -248,6 +248,7 @@ public:
         _costs.first += cost.first;
         _costs.second += cost.second;
     }
+    using osg::NodeVisitor::apply;
 
 
     typedef std::set<osg::StateSet*> StateSets;
@@ -312,6 +313,7 @@ public:
         _costs.first += cost.first;
         _costs.second += cost.second;
     }
+    using osg::NodeVisitor::apply;
 
     const GraphicsCostEstimator* _gce;
     CostPair    _costs;

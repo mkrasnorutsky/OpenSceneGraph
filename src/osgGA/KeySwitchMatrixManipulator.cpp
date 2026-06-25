@@ -88,13 +88,13 @@ void KeySwitchMatrixManipulator::setAutoComputeHomePosition(bool flag)
     }
 }
 
-void KeySwitchMatrixManipulator::computeHomePosition()
+void KeySwitchMatrixManipulator::computeHomePosition(const osg::Camera *camera, bool useBoundingBox)
 {
     for(KeyManipMap::iterator itr=_manips.begin();
         itr!=_manips.end();
         ++itr)
     {
-        itr->second.second->computeHomePosition();
+        itr->second.second->computeHomePosition(camera, useBoundingBox);
     }
 }
 

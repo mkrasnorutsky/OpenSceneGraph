@@ -43,16 +43,16 @@ public:
 
         META_Object(osgGA, EventHandler);
 
-        virtual NodeCallback* asNodeCallback() { return osg::NodeCallback::asNodeCallback(); }
-        virtual const NodeCallback* asNodeCallback() const { return osg::NodeCallback::asNodeCallback(); }
+        NodeCallback* asNodeCallback() override { return osg::NodeCallback::asNodeCallback(); }
+        const NodeCallback* asNodeCallback() const override { return osg::NodeCallback::asNodeCallback(); }
 
-        virtual DrawableEventCallback* asDrawableEventCallback() { return osg::DrawableEventCallback::asDrawableEventCallback(); }
-        virtual const DrawableEventCallback* asDrawableEventCallback() const { return osg::DrawableEventCallback::asDrawableEventCallback(); }
+        DrawableEventCallback* asDrawableEventCallback() override { return osg::DrawableEventCallback::asDrawableEventCallback(); }
+        const DrawableEventCallback* asDrawableEventCallback() const override { return osg::DrawableEventCallback::asDrawableEventCallback(); }
 
-        virtual EventHandler* asEventHandler() { return this; }
-        virtual const EventHandler* asEventHandler() const { return this; }
+        EventHandler* asEventHandler() override { return this; }
+        const EventHandler* asEventHandler() const override { return this; }
 
-        virtual bool run(osg::Object* object, osg::Object* data)
+        bool run(osg::Object* object, osg::Object* data) override
         {
             osg::Node* node = object->asNode();
             osg::NodeVisitor* nv = data->asNodeVisitor();
@@ -61,10 +61,10 @@ public:
         }
 
         /** Event traversal node callback method. There is no need to override this method in subclasses of EventHandler as this implementation calls handle(..) for you. */
-        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+        void operator()(osg::Node* node, osg::NodeVisitor* nv) override;
 
         /** Event traversal drawable callback method. There is no need to override this method in subclasses of EventHandler as this implementation calls handle(..) for you. */
-        virtual void event(osg::NodeVisitor* nv, osg::Drawable* drawable);
+        void event(osg::NodeVisitor* nv, osg::Drawable* drawable) override;
 
         /** Handle event. Override the handle(..) method in your event handlers to respond to events. */
         virtual bool handle(osgGA::Event* event, osg::Object* object, osg::NodeVisitor* nv);

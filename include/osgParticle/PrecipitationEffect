@@ -101,10 +101,10 @@ namespace osgParticle
 
             META_Object(osgParticle, PrecipitationDrawable);
 
-            virtual bool supports(const osg::PrimitiveFunctor&) const { return false; }
-            virtual void accept(osg::PrimitiveFunctor&) const {}
-            virtual bool supports(const osg::PrimitiveIndexFunctor&) const { return false; }
-            virtual void accept(osg::PrimitiveIndexFunctor&) const {}
+            bool supports(const osg::PrimitiveFunctor&) const override { return false; }
+            void accept(osg::PrimitiveFunctor&) const override {}
+            bool supports(const osg::PrimitiveIndexFunctor&) const override { return false; }
+            void accept(osg::PrimitiveIndexFunctor&) const override {}
 
             void setRequiresPreviousMatrix(bool flag) { _requiresPreviousMatrix = flag; }
             bool getRequiresPreviousMatrix() const { return _requiresPreviousMatrix; }
@@ -119,10 +119,10 @@ namespace osgParticle
             void setNumberOfVertices(unsigned int numVertices) { _numberOfVertices = numVertices; }
             unsigned int getNumberOfVertices() const { return _numberOfVertices; }
 
-            virtual void resizeGLObjectBuffers(unsigned int maxSize);
-            virtual void releaseGLObjects(osg::State* state) const;
+            void resizeGLObjectBuffers(unsigned int maxSize) override;
+            void releaseGLObjects(osg::State* state) const override;
 
-            virtual void drawImplementation(osg::RenderInfo& renderInfo) const;
+            void drawImplementation(osg::RenderInfo& renderInfo) const override;
 
             struct Cell
             {

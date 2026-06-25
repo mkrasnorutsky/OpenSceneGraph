@@ -61,19 +61,19 @@ class OSGUTIL_EXPORT CullVisitor : public osg::NodeVisitor, public osg::CullStac
 
         /** Convert 'this' into a osgUtil::CullVisitor pointer if Object is a osgUtil::CullVisitor, otherwise return 0.
           * Equivalent to dynamic_cast<osgUtil::CullVisitor*>(this).*/
-        virtual osgUtil::CullVisitor* asCullVisitor() { return this; }
+        osgUtil::CullVisitor* asCullVisitor() override { return this; }
 
         /** convert 'const this' into a const osgUtil::CullVisitor pointer if Object is a osgUtil::CullVisitor, otherwise return 0.
           * Equivalent to dynamic_cast<const osgUtil::CullVisitor*>(this).*/
-        virtual const osgUtil::CullVisitor* asCullVisitor() const { return this; }
+        const osgUtil::CullVisitor* asCullVisitor() const override { return this; }
 
         /** Convert 'this' into a osg::CullStack pointer if Object is a osg::CullStack, otherwise return 0.
           * Equivalent to dynamic_cast<osg::CullStack*>(this).*/
-        virtual osg::CullStack* asCullStack() { return static_cast<osg::CullStack*>(this); }
+        osg::CullStack* asCullStack() override { return static_cast<osg::CullStack*>(this); }
 
         /** convert 'const this' into a const osg::CullStack pointer if Object is a osg::CullStack, otherwise return 0.
           * Equivalent to dynamic_cast<const osg::CullStack*>(this).*/
-        virtual const osg::CullStack* asCullStack() const { return static_cast<const osg::CullStack*>(this); }
+        const osg::CullStack* asCullStack() const override { return static_cast<const osg::CullStack*>(this); }
 
 
         using osg::NodeVisitor::clone;
@@ -87,7 +87,7 @@ class OSGUTIL_EXPORT CullVisitor : public osg::NodeVisitor, public osg::CullStac
         /** create a CullVisitor by cloning CullVisitor::prototype().*/
         static CullVisitor* create();
 
-        virtual void reset();
+        void reset() override;
 
         struct Identifier : public osg::Referenced
         {
@@ -99,31 +99,31 @@ class OSGUTIL_EXPORT CullVisitor : public osg::NodeVisitor, public osg::CullStac
         Identifier* getIdentifier() { return _identifier.get(); }
         const Identifier* getIdentifier() const { return _identifier.get(); }
 
-        virtual osg::Vec3 getEyePoint() const { return getEyeLocal(); }
-        virtual osg::Vec3 getViewPoint() const { return getViewPointLocal(); }
+        osg::Vec3 getEyePoint() const override { return getEyeLocal(); }
+        osg::Vec3 getViewPoint() const override { return getViewPointLocal(); }
 
-        virtual float getDistanceToEyePoint(const osg::Vec3& pos, bool withLODScale) const;
-        virtual float getDistanceFromEyePoint(const osg::Vec3& pos, bool withLODScale) const;
+        float getDistanceToEyePoint(const osg::Vec3& pos, bool withLODScale) const override;
+        float getDistanceFromEyePoint(const osg::Vec3& pos, bool withLODScale) const override;
 
-        virtual float getDistanceToViewPoint(const osg::Vec3& pos, bool withLODScale) const;
+        float getDistanceToViewPoint(const osg::Vec3& pos, bool withLODScale) const override;
 
-        virtual void apply(osg::Node&);
-        virtual void apply(osg::Geode& node);
-        virtual void apply(osg::Drawable& drawable);
-        virtual void apply(osg::Billboard& node);
-        virtual void apply(osg::LightSource& node);
-        virtual void apply(osg::ClipNode& node);
-        virtual void apply(osg::TexGenNode& node);
+        void apply(osg::Node&) override;
+        void apply(osg::Geode& node) override;
+        void apply(osg::Drawable& drawable) override;
+        void apply(osg::Billboard& node) override;
+        void apply(osg::LightSource& node) override;
+        void apply(osg::ClipNode& node) override;
+        void apply(osg::TexGenNode& node) override;
 
-        virtual void apply(osg::Group& node);
-        virtual void apply(osg::Transform& node);
-        virtual void apply(osg::Projection& node);
-        virtual void apply(osg::Switch& node);
-        virtual void apply(osg::LOD& node);
-        virtual void apply(osg::ClearNode& node);
-        virtual void apply(osg::Camera& node);
-        virtual void apply(osg::OccluderNode& node);
-        virtual void apply(osg::OcclusionQueryNode& node);
+        void apply(osg::Group& node) override;
+        void apply(osg::Transform& node) override;
+        void apply(osg::Projection& node) override;
+        void apply(osg::Switch& node) override;
+        void apply(osg::LOD& node) override;
+        void apply(osg::ClearNode& node) override;
+        void apply(osg::Camera& node) override;
+        void apply(osg::OccluderNode& node) override;
+        void apply(osg::OcclusionQueryNode& node) override;
 
         /** Push state set on the current state group.
           * If the state exists in a child state group of the current

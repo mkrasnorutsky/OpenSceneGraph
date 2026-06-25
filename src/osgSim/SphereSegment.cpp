@@ -370,13 +370,13 @@ class PolytopeVisitor : public osg::NodeVisitor
 
         META_NodeVisitor("osgSim","PolytopeVisitor")
 
-        void reset()
+        void reset() override
         {
             _polytopeStack.clear();
             _hits.clear();
         }
 
-        void apply(osg::Node& node)
+        void apply(osg::Node& node) override
         {
             if (_polytopeStack.back().second.contains(node.getBound()))
             {
@@ -384,7 +384,7 @@ class PolytopeVisitor : public osg::NodeVisitor
             }
         }
 
-        void apply(osg::Transform& transform)
+        void apply(osg::Transform& transform) override
         {
             if (_polytopeStack.back().second.contains(transform.getBound()))
             {
@@ -401,7 +401,7 @@ class PolytopeVisitor : public osg::NodeVisitor
             }
         }
 
-        void apply(osg::Drawable& drawable)
+        void apply(osg::Drawable& drawable) override
         {
             if (_polytopeStack.back().second.contains(drawable.getBoundingBox()))
             {

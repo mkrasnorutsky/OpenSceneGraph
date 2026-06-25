@@ -612,6 +612,7 @@ class OSGUTIL_EXPORT Optimizer
 
                 void apply(osg::StateSet& stateset);
                 void apply(osg::Texture& texture);
+                using osg::NodeVisitor::apply;
 
                 bool            _changeAutoUnRef, _valueAutoUnRef;
                 bool            _changeClientImageStorage, _valueClientImageStorage;

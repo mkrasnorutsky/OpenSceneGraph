@@ -97,7 +97,7 @@ namespace osgParticle
         virtual ~FluidProgram() {}
         FluidProgram& operator=(const FluidProgram&) { return *this; }
 
-        virtual void execute(double dt);
+        void execute(double dt) override;
 
         osg::Vec3   _acceleration;
         float       _viscosity;

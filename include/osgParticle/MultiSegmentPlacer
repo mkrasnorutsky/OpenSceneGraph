@@ -62,13 +62,13 @@ namespace osgParticle {
         inline void removeVertex(int i);
 
         /// Place a partice. Called automatically by <CODE>ModularEmitter</CODE>, do not call this method manually.
-        void place(Particle* P) const;
+        void place(Particle* P) const override;
 
         /// return the length of the multi-segment
-        inline float volume() const;
+        inline float volume() const override;
 
         /// return the control position
-        inline osg::Vec3 getControlPosition() const;
+        inline osg::Vec3 getControlPosition() const override;
 
     protected:
         virtual ~MultiSegmentPlacer() {}

@@ -46,24 +46,24 @@ class OSGGA_EXPORT FlightManipulator : public FirstPersonManipulator
         virtual void setYawControlMode( YawControlMode ycm );
         inline YawControlMode getYawControlMode() const;
 
-        virtual void home( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
-        virtual void init( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
-        virtual void getUsage( osg::ApplicationUsage& usage ) const;
+        void home( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us ) override;
+        void init( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us ) override;
+        void getUsage( osg::ApplicationUsage& usage ) const override;
 
     protected:
 
-        virtual bool handleFrame( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
-        virtual bool handleMouseMove( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
-        virtual bool handleMouseDrag( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
-        virtual bool handleMousePush( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
-        virtual bool handleMouseRelease( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
-        virtual bool handleKeyDown( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
+        bool handleFrame( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us ) override;
+        bool handleMouseMove( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us ) override;
+        bool handleMouseDrag( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us ) override;
+        bool handleMousePush( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us ) override;
+        bool handleMouseRelease( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us ) override;
+        bool handleKeyDown( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us ) override;
         virtual bool flightHandleEvent( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
 
-        virtual bool performMovement();
-        virtual bool performMovementLeftMouseButton( const double eventTimeDelta, const double dx, const double dy );
-        virtual bool performMovementMiddleMouseButton( const double eventTimeDelta, const double dx, const double dy );
-        virtual bool performMovementRightMouseButton( const double eventTimeDelta, const double dx, const double dy );
+        bool performMovement() override;
+        bool performMovementLeftMouseButton( const double eventTimeDelta, const double dx, const double dy ) override;
+        bool performMovementMiddleMouseButton( const double eventTimeDelta, const double dx, const double dy ) override;
+        bool performMovementRightMouseButton( const double eventTimeDelta, const double dx, const double dy ) override;
 
         YawControlMode _yawMode;
 

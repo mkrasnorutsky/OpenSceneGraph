@@ -53,8 +53,8 @@ class OSG_EXPORT Camera : public Transform, public CullSettings
 
         META_Node(osg, Camera);
 
-        virtual Camera* asCamera() { return this; }
-        virtual const Camera* asCamera() const { return this; }
+        Camera* asCamera() override { return this; }
+        const Camera* asCamera() const override { return this; }
 
         /** Set the View that this Camera is part of. */
         void setView(View* view) { _view = view; }
@@ -608,6 +608,7 @@ class OSG_EXPORT Camera : public Transform, public CullSettings
                 if (_nestedCallback.valid())
                     ((const DrawCallback*)_nestedCallback.get())->run(renderInfo);
             }
+            using osg::Callback::run;
 
             /** Users will typically override this method to carry tasks such as screen capture or bufferobject readback. **/
             virtual void operator () (osg::RenderInfo& renderInfo) const;
@@ -616,7 +617,7 @@ class OSG_EXPORT Camera : public Transform, public CullSettings
             virtual void operator () (const osg::Camera& /*camera*/) const {}
 
             /** Resize any per context GLObject buffers to specified size. */
-            virtual void resizeGLObjectBuffers(unsigned int maxSize)
+            void resizeGLObjectBuffers(unsigned int maxSize) override
             {
                 if (_nestedCallback.valid())
                     _nestedCallback->resizeGLObjectBuffers(maxSize);
@@ -625,7 +626,7 @@ class OSG_EXPORT Camera : public Transform, public CullSettings
             /** If State is non-zero, this function releases any associated OpenGL objects for
             * the specified graphics context. Otherwise, releases OpenGL objexts
             * for all graphics contexts. */
-            virtual void releaseGLObjects(osg::State* state = 0) const
+            void releaseGLObjects(osg::State* state = 0) const override
             {
                 if (_nestedCallback.valid())
                     _nestedCallback->releaseGLObjects(state);
@@ -788,23 +789,23 @@ class OSG_EXPORT Camera : public Transform, public CullSettings
         OpenThreads::Mutex* getDataChangeMutex() const { return &_dataChangeMutex; }
 
         /** Resize any per context GLObject buffers to specified size. */
-        virtual void resizeGLObjectBuffers(unsigned int maxSize);
+        void resizeGLObjectBuffers(unsigned int maxSize) override;
 
         /** If State is non-zero, this function releases any associated OpenGL objects for
            * the specified graphics context. Otherwise, releases OpenGL objexts
            * for all graphics contexts. */
-        virtual void releaseGLObjects(osg::State* = 0) const;
+        void releaseGLObjects(osg::State* = 0) const override;
 
     public:
 
         /** Transform method that must be defined to provide generic interface for scene graph traversals.*/
-        virtual bool computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor*) const;
+        bool computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor*) const override;
 
         /** Transform method that must be defined to provide generic interface for scene graph traversals.*/
-        virtual bool computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor*) const;
+        bool computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor*) const override;
 
         /** Inherit the local cull settings variable from specified CullSettings object, according to the inheritance mask.*/
-        virtual void inheritCullSettings(const CullSettings& settings, unsigned int inheritanceMask);
+        void inheritCullSettings(const CullSettings& settings, unsigned int inheritanceMask) override;
 
     protected :
 

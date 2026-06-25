@@ -59,13 +59,13 @@ namespace osgParticle
         META_Object(osgParticle, SectorPlacer);
 
         /// Place a particle. Do not call it manually.
-        inline void place(Particle* P) const;
+        inline void place(Particle* P) const override;
 
         /// return the area of the sector
-        inline float volume() const;
+        inline float volume() const override;
 
         /// return the control position
-        inline osg::Vec3 getControlPosition() const;
+        inline osg::Vec3 getControlPosition() const override;
 
     protected:
         virtual ~SectorPlacer() {}

@@ -33,13 +33,13 @@ namespace osgParticle
         META_Object(osgParticle, ConnectedParticleSystem);
 
         /// Create a new particle from the specified template (or the default one if <CODE>ptemplate</CODE> is null).
-        virtual Particle* createParticle(const Particle* ptemplate);
+        Particle* createParticle(const Particle* ptemplate) override;
 
         /// Reuse the i-th particle.
-        virtual void reuseParticle(int i);
+        void reuseParticle(int i) override;
 
         /// Draw the connected particles as either a line or a quad strip, depending upon viewing distance. .
-        virtual void drawImplementation(osg::RenderInfo& renderInfo) const;
+        void drawImplementation(osg::RenderInfo& renderInfo) const override;
 
         ///Get the (const) particle from where the line or quadstrip starts to be drawn
         const osgParticle::Particle* getStartParticle() const

@@ -39,35 +39,35 @@ class OSGVIEWER_EXPORT Viewer : public ViewerBase, public osgViewer::View
         META_Object(osgViewer,Viewer);
 
         /** Take all the settings, Camera and Slaves from the passed in view(er), leaving it empty. */
-        virtual void take(osg::View& rhs);
+        void take(osg::View& rhs) override;
 
 
         /** Set the Stats object used to collect various frame related timing and scene graph stats.*/
-        virtual void setViewerStats(osg::Stats* stats) { setStats(stats); }
+        void setViewerStats(osg::Stats* stats) override { setStats(stats); }
 
         /** Get the Viewers Stats object.*/
-        virtual osg::Stats* getViewerStats() { return getStats(); }
+        osg::Stats* getViewerStats() override { return getStats(); }
 
         /** Get the Viewers Stats object.*/
-        virtual const osg::Stats* getViewerStats() const { return getStats(); }
+        const osg::Stats* getViewerStats() const override { return getStats(); }
 
 
         /** read the viewer configuration from a configuration file.*/
-        virtual bool readConfiguration(const std::string& filename);
+        bool readConfiguration(const std::string& filename) override;
 
         /** Get whether at least of one of this viewers windows are realized.*/
-        virtual bool isRealized() const;
+        bool isRealized() const override;
 
         /** set up windows and associated threads.*/
-        virtual void realize();
+        void realize() override;
 
-        virtual void setStartTick(osg::Timer_t tick);
+        void setStartTick(osg::Timer_t tick) override;
         void setReferenceTime(double time=0.0);
 
         using  osgViewer::View::setSceneData;
 
         /** Set the sene graph data that viewer with view.*/
-        virtual void setSceneData(osg::Node* node);
+        void setSceneData(osg::Node* node) override;
 
 
         /** Convenience method for setting up the viewer so it can be used embedded in an external managed window.
@@ -75,53 +75,53 @@ class OSGVIEWER_EXPORT Viewer : public ViewerBase, public osgViewer::View
         virtual GraphicsWindowEmbedded* setUpViewerAsEmbeddedInWindow(int x, int y, int width, int height);
 
 
-        virtual double elapsedTime();
+        double elapsedTime() override;
 
-        virtual osg::FrameStamp* getViewerFrameStamp() { return getFrameStamp(); }
+        osg::FrameStamp* getViewerFrameStamp() override { return getFrameStamp(); }
 
         /** Execute a main frame loop.
           * Equivalent to while (!viewer.done()) viewer.frame();
           * Also calls realize() if the viewer is not already realized,
           * and installs trackball manipulator if one is not already assigned.
           */
-        virtual int run();
+        int run() override;
 
         /** check to see if the new frame is required, called by run(..) when FrameScheme is set to ON_DEMAND.*/
-        virtual bool checkNeedToDoFrame();
+        bool checkNeedToDoFrame() override;
 
         /** check to see if events have been received, return true if events are now available.*/
-        virtual bool checkEvents();
+        bool checkEvents() override;
 
-        virtual void advance(double simulationTime=USE_REFERENCE_TIME);
+        void advance(double simulationTime=USE_REFERENCE_TIME) override;
 
-        virtual void eventTraversal();
+        void eventTraversal() override;
 
-        virtual void updateTraversal();
+        void updateTraversal() override;
 
-        virtual void getCameras(Cameras& cameras, bool onlyActive=true);
+        void getCameras(Cameras& cameras, bool onlyActive=true) override;
 
-        virtual void getContexts(Contexts& contexts, bool onlyValid=true);
+        void getContexts(Contexts& contexts, bool onlyValid=true) override;
 
-        virtual void getAllThreads(Threads& threads, bool onlyActive=true);
+        void getAllThreads(Threads& threads, bool onlyActive=true) override;
 
-        virtual void getOperationThreads(OperationThreads& threads, bool onlyActive=true);
+        void getOperationThreads(OperationThreads& threads, bool onlyActive=true) override;
 
-        virtual void getScenes(Scenes& scenes, bool onlyValid=true);
+        void getScenes(Scenes& scenes, bool onlyValid=true) override;
 
-        virtual void getViews(Views& views, bool onlyValid=true);
+        void getViews(Views& views, bool onlyValid=true) override;
 
         /** Get the keyboard and mouse usage of this viewer.*/
-        virtual void getUsage(osg::ApplicationUsage& usage) const;
+        void getUsage(osg::ApplicationUsage& usage) const override;
 
         // ensure that osg::View provides the reiszerGLObjects and releaseGLObjects methods
-        virtual void resizeGLObjectBuffers(unsigned int maxSize) { osg::View::resizeGLObjectBuffers(maxSize); }
-        virtual void releaseGLObjects(osg::State* state = 0) const { osg::View::releaseGLObjects(state); }
+        void resizeGLObjectBuffers(unsigned int maxSize) override { osg::View::resizeGLObjectBuffers(maxSize); }
+        void releaseGLObjects(osg::State* state = 0) const override { osg::View::releaseGLObjects(state); }
 
     protected:
 
         void constructorInit();
 
-        virtual void viewerInit() { init(); }
+        void viewerInit() override { init(); }
 
         void generateSlavePointerData(osg::Camera* camera, osgGA::GUIEventAdapter& event);
         void generatePointerData(osgGA::GUIEventAdapter& event);

@@ -512,24 +512,24 @@ public:
 
     META_Object(osgViewer, InteractiveImageHandler);
 
-    virtual NodeCallback* asNodeCallback() { return osg::NodeCallback::asNodeCallback(); }
-    virtual const NodeCallback* asNodeCallback() const { return osg::NodeCallback::asNodeCallback(); }
+    NodeCallback* asNodeCallback() override { return osg::NodeCallback::asNodeCallback(); }
+    const NodeCallback* asNodeCallback() const override { return osg::NodeCallback::asNodeCallback(); }
 
-    virtual DrawableEventCallback* asDrawableEventCallback() { return osg::DrawableEventCallback::asDrawableEventCallback(); }
-    virtual const DrawableEventCallback* asDrawableEventCallback() const { return osg::DrawableEventCallback::asDrawableEventCallback(); }
+    DrawableEventCallback* asDrawableEventCallback() override { return osg::DrawableEventCallback::asDrawableEventCallback(); }
+    const DrawableEventCallback* asDrawableEventCallback() const override { return osg::DrawableEventCallback::asDrawableEventCallback(); }
 
-    virtual DrawableCullCallback* asDrawableCullCallback() { return osg::DrawableCullCallback::asDrawableCullCallback(); }
-    virtual const DrawableCullCallback* asDrawableCullCallback() const { return osg::DrawableCullCallback::asDrawableCullCallback(); }
+    DrawableCullCallback* asDrawableCullCallback() override { return osg::DrawableCullCallback::asDrawableCullCallback(); }
+    const DrawableCullCallback* asDrawableCullCallback() const override { return osg::DrawableCullCallback::asDrawableCullCallback(); }
 
-    virtual osgGA::EventHandler* asEventHandler() { return osgGA::EventHandler::asEventHandler(); }
-    virtual const osgGA::EventHandler* asEventHandler() const { return osgGA::EventHandler::asEventHandler(); }
+    osgGA::EventHandler* asEventHandler() override { return osgGA::EventHandler::asEventHandler(); }
+    const osgGA::EventHandler* asEventHandler() const override { return osgGA::EventHandler::asEventHandler(); }
 
 	// use the osgGA::GUIEventHandler implementation of run.
-    virtual bool run(osg::Object* object, osg::Object* data) { return osgGA::GUIEventHandler::run(object, data); }
+    bool run(osg::Object* object, osg::Object* data) override { return osgGA::GUIEventHandler::run(object, data); }
 
-    virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa, osg::Object*, osg::NodeVisitor* nv);
+    bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa, osg::Object*, osg::NodeVisitor* nv) override;
 
-    virtual bool cull(osg::NodeVisitor* nv, osg::Drawable* drawable, osg::RenderInfo* renderInfo) const;
+    bool cull(osg::NodeVisitor* nv, osg::Drawable* drawable, osg::RenderInfo* renderInfo) const override;
 
 protected:
 

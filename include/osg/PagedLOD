@@ -43,13 +43,13 @@ class OSG_EXPORT PagedLOD : public LOD
 
         META_Node(osg, PagedLOD);
 
-        virtual void traverse(NodeVisitor& nv);
+        void traverse(NodeVisitor& nv) override;
 
         using osg::Group::addChild;
 
-        virtual bool addChild(Node *child);
+        bool addChild(Node *child) override;
 
-        virtual bool addChild(Node *child, float rmin, float rmax);
+        bool addChild(Node *child, float rmin, float rmax) override;
 
         template<class T> bool addChild( const ref_ptr<T>& child, float rmin, float rmax) { return addChild(child.get(), rmin, rmax); }
 
@@ -57,7 +57,7 @@ class OSG_EXPORT PagedLOD : public LOD
 
         template<class T> bool addChild( const ref_ptr<T>& child, float rmin, float rmax, const std::string& filename, float priorityOffset=0.0f, float priorityScale=1.0f) { return addChild(child.get(), rmin, rmax, filename, priorityOffset, priorityScale); }
 
-        virtual bool removeChildren(unsigned int pos,unsigned int numChildrenToRemove=1);
+        bool removeChildren(unsigned int pos,unsigned int numChildrenToRemove=1) override;
 
 
         /** Set the optional database osgDB::Options object to use when reading children.*/

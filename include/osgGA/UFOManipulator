@@ -63,50 +63,50 @@ class OSGGA_EXPORT UFOManipulator : public osgGA::CameraManipulator
         /** return className
           \return returns constant "UFO"
           */
-        virtual const char* className() const;
+        const char* className() const override;
 
         /** Set the current position with a matrix
           \param matrix  A viewpoint matrix.
          */
-        virtual void setByMatrix( const osg::Matrixd &matrix ) ;
+        void setByMatrix( const osg::Matrixd &matrix ) override;
 
         /** Set the current position with the inverse matrix
           \param invmat The inverse of a viewpoint matrix
           */
-        virtual void setByInverseMatrix( const osg::Matrixd &invmat);
+        void setByInverseMatrix( const osg::Matrixd &invmat) override;
 
         /** Get the current viewmatrix */
-        virtual osg::Matrixd getMatrix() const;
+        osg::Matrixd getMatrix() const override;
 
         /** Get the current inverse view matrix */
-        virtual osg::Matrixd getInverseMatrix() const ;
+        osg::Matrixd getInverseMatrix() const override;
 
         /** Set the  subgraph this manipulator is driving the eye through.
             \param node     root of subgraph
          */
-        virtual void setNode(osg::Node* node);
+        void setNode(osg::Node* node) override;
 
         /** Get the root node of the subgraph this manipulator is driving the eye through (const)*/
-        virtual const osg::Node* getNode() const;
+        const osg::Node* getNode() const override;
 
         /** Get the root node of the subgraph this manipulator is driving the eye through */
-        virtual osg::Node* getNode();
+        osg::Node* getNode() override;
 
         /** Computes the home position based on the extents and scale of the
             scene graph rooted at node */
-        virtual void computeHomePosition();
+        void computeHomePosition(const osg::Camera *camera = NULL, bool useBoundingBox = false) override;
 
         /** Sets the viewpoint matrix to the home position */
-        virtual void home(const osgGA::GUIEventAdapter&, osgGA::GUIActionAdapter&) ;
-        void home(double);
+        void home(const osgGA::GUIEventAdapter&, osgGA::GUIActionAdapter&) override;
+        void home(double) override;
 
-        virtual void init(const GUIEventAdapter& ,GUIActionAdapter&);
+        void init(const GUIEventAdapter& ,GUIActionAdapter&) override;
 
         /** Handles incoming osgGA events */
-        bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter &aa);
+        bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter &aa) override;
 
         /** Reports Usage parameters to the application */
-        void getUsage(osg::ApplicationUsage& usage) const;
+        void getUsage(osg::ApplicationUsage& usage) const override;
 
         /** Report the current position as LookAt vectors */
         void getCurrentPositionAsLookAt( osg::Vec3d& eye, osg::Vec3d& center, osg::Vec3d& up );

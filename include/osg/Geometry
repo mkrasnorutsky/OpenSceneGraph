@@ -38,8 +38,8 @@ class OSG_EXPORT Geometry : public Drawable
 
         META_Node(osg, Geometry);
 
-        virtual Geometry* asGeometry() { return this; }
-        virtual const Geometry* asGeometry() const { return this; }
+        Geometry* asGeometry() override { return this; }
+        const Geometry* asGeometry() const override { return this; }
 
         bool empty() const;
 
@@ -141,19 +141,19 @@ class OSG_EXPORT Geometry : public Drawable
 
         /** When set to true, ignore the setUseDisplayList() settings, and hints to the drawImplementation
             method to use OpenGL vertex buffer objects for rendering.*/
-        virtual void setUseVertexBufferObjects(bool flag);
+        void setUseVertexBufferObjects(bool flag) override;
 
         /** Force a recompile on next draw() of any OpenGL objects associated with this geoset.*/
-        virtual void dirtyGLObjects();
+        void dirtyGLObjects() override;
 
 
         /** Resize any per context GLObject buffers to specified size. */
-        virtual void resizeGLObjectBuffers(unsigned int maxSize);
+        void resizeGLObjectBuffers(unsigned int maxSize) override;
 
         /** If State is non-zero, this function releases OpenGL objects for
           * the specified graphics context. Otherwise, releases OpenGL objects
           * for all graphics contexts. */
-        virtual void releaseGLObjects(State* state=0) const;
+        void releaseGLObjects(State* state=0) const override;
 
         bool getArrayList(ArrayList& arrayList) const;
 
@@ -166,18 +166,18 @@ class OSG_EXPORT Geometry : public Drawable
 
         /** Return the estimated size of GLObjects (display lists/vertex buffer objects) that are associated with this drawable.
           * This size is used a hint for reuse of deleted display lists/vertex buffer objects. */
-        virtual unsigned int getGLObjectSizeHint() const;
+        unsigned int getGLObjectSizeHint() const override;
 
         /** Immediately compile this \c Drawable into an OpenGL Display List/VertexBufferObjects.
           * @note Operation is ignored if \c _useDisplayList is \c false or VertexBufferObjects are not used.
         */
-        virtual void compileGLObjects(RenderInfo& renderInfo) const;
+        void compileGLObjects(RenderInfo& renderInfo) const override;
 
         /** Draw Geometry directly ignoring an OpenGL display list which could be attached.
           * This is the internal draw method which does the drawing itself,
           * and is the method to override when deriving from Geometry for user-drawn objects.
         */
-        virtual void drawImplementation(RenderInfo& renderInfo) const;
+        void drawImplementation(RenderInfo& renderInfo) const override;
 
 
         /** Set up the vertex arrays for the purpose of rendering, called by drawImplemtation() prior to it calling drawPrimitivesImplementation().*/
@@ -188,28 +188,28 @@ class OSG_EXPORT Geometry : public Drawable
 
 
         /** Return true, osg::Geometry does support accept(Drawable::AttributeFunctor&). */
-        virtual bool supports(const Drawable::AttributeFunctor&) const { return true; }
+        bool supports(const Drawable::AttributeFunctor&) const override { return true; }
 
         /** Accept an Drawable::AttributeFunctor and call its methods to tell it about the internal attributes that this Drawable has. */
-        virtual void accept(Drawable::AttributeFunctor& af);
+        void accept(Drawable::AttributeFunctor& af) override;
 
         /** Return true, osg::Geometry does support accept(Drawable::ConstAttributeFunctor&). */
-        virtual bool supports(const Drawable::ConstAttributeFunctor&) const { return true; }
+        bool supports(const Drawable::ConstAttributeFunctor&) const override { return true; }
 
         /** Accept a Drawable::ConstAttributeFunctor and call its methods to tell it about the internal attributes that this Drawable has. */
-        virtual void accept(Drawable::ConstAttributeFunctor& af) const;
+        void accept(Drawable::ConstAttributeFunctor& af) const override;
 
         /** Return true, osg::Geometry does support accept(PrimitiveFunctor&). */
-        virtual bool supports(const PrimitiveFunctor&) const { return true; }
+        bool supports(const PrimitiveFunctor&) const override { return true; }
 
         /** Accept a PrimitiveFunctor and call its methods to tell it about the internal primitives that this Drawable has. */
-        virtual void accept(PrimitiveFunctor& pf) const;
+        void accept(PrimitiveFunctor& pf) const override;
 
         /** Return true, osg::Geometry does support accept(PrimitiveIndexFunctor&). */
-        virtual bool supports(const PrimitiveIndexFunctor&) const { return true; }
+        bool supports(const PrimitiveIndexFunctor&) const override { return true; }
 
         /** Accept a PrimitiveFunctor and call its methods to tell it about the internal primitives that this Drawable has. */
-        virtual void accept(PrimitiveIndexFunctor& pf) const;
+        void accept(PrimitiveIndexFunctor& pf) const override;
 
 
     protected:
@@ -233,7 +233,7 @@ class OSG_EXPORT Geometry : public Drawable
 
         bool                            _containsDeprecatedData;
 
-        virtual VertexArrayState* createVertexArrayStateImplementation(RenderInfo& renderInfo) const;
+        VertexArrayState* createVertexArrayStateImplementation(RenderInfo& renderInfo) const override;
 
     public:
 

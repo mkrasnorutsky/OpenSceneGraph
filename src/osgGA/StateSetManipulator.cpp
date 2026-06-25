@@ -56,7 +56,7 @@ const StateSet *StateSetManipulator::getStateSet() const
     return _stateset.get();
 }
 
-void StateSetManipulator::clone()
+void StateSetManipulator::cloneStateSet()
 {
     if (!_stateset) return;
 
@@ -148,7 +148,7 @@ void StateSetManipulator::setBackfaceEnabled(bool newbackface)
 {
     if (_backface == newbackface) return;
 
-    clone();
+    cloneStateSet();
 
     _backface = newbackface;
     if( _backface ) _stateset->setMode(GL_CULL_FACE,osg::StateAttribute::ON);
@@ -159,7 +159,7 @@ void StateSetManipulator::setLightingEnabled(bool newlighting)
 {
     if (_lighting == newlighting) return;
 
-    clone();
+    cloneStateSet();
 
     _lighting = newlighting;
     if( _lighting ) _stateset->setMode(GL_LIGHTING,osg::StateAttribute::ON);
@@ -170,7 +170,7 @@ void StateSetManipulator::setTextureEnabled(bool newtexture)
 {
     if (_texture==newtexture) return;
 
-    clone();
+    cloneStateSet();
 
     _texture = newtexture;
 //    osg::ref_ptr< osg::Texture > tex = dynamic_cast<osg::Texture*>
@@ -193,7 +193,7 @@ void StateSetManipulator::setTextureEnabled(bool newtexture)
 
 void StateSetManipulator::setPolygonMode(osg::PolygonMode::Mode newpolygonmode)
 {
-    clone();
+    cloneStateSet();
 
     osg::PolygonMode* polyModeObj = getOrCreatePolygonMode();
 
@@ -202,7 +202,7 @@ void StateSetManipulator::setPolygonMode(osg::PolygonMode::Mode newpolygonmode)
 
 void StateSetManipulator::cyclePolygonMode()
 {
-    clone();
+    cloneStateSet();
 
     osg::PolygonMode* polyModeObj = getOrCreatePolygonMode();
 

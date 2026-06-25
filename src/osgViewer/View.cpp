@@ -59,12 +59,12 @@ public:
 
     META_NodeVisitor("osgViewer","CollectedCoordinateSystemNodesVisitor")
 
-    virtual void apply(osg::Node& node)
+    void apply(osg::Node& node) override
     {
         traverse(node);
     }
 
-    virtual void apply(osg::CoordinateSystemNode& node)
+    void apply(osg::CoordinateSystemNode& node) override
     {
         if (_pathToCoordinateSystemNode.empty())
         {

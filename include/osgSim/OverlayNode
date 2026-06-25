@@ -45,7 +45,7 @@ class OSGSIM_EXPORT OverlayNode : public osg::Group
 
         META_Node(osgSim, OverlayNode);
 
-        virtual void traverse(osg::NodeVisitor& nv);
+        void traverse(osg::NodeVisitor& nv) override;
 
 
         void setOverlayTechnique(OverlayTechnique technique);
@@ -111,15 +111,15 @@ class OSGSIM_EXPORT OverlayNode : public osg::Group
 
 
         /** Set whether to use a mutex to ensure ref() and unref() are thread safe.*/
-        virtual void setThreadSafeRefUnref(bool threadSafe);
+        void setThreadSafeRefUnref(bool threadSafe) override;
 
         /** Resize any per context GLObject buffers to specified size. */
-        virtual void resizeGLObjectBuffers(unsigned int /*maxSize*/);
+        void resizeGLObjectBuffers(unsigned int /*maxSize*/) override;
 
         /** If State is non-zero, this function releases any associated OpenGL objects for
            * the specified graphics context. Otherwise, releases OpenGL objexts
            * for all graphics contexts. */
-        virtual void releaseGLObjects(osg::State* = 0) const;
+        void releaseGLObjects(osg::State* = 0) const override;
 
     protected :
 

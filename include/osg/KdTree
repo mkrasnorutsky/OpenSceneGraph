@@ -200,8 +200,10 @@ class OSG_EXPORT KdTreeBuilder : public osg::NodeVisitor
         META_NodeVisitor(osg, KdTreeBuilder)
 
         virtual KdTreeBuilder* clone() { return new KdTreeBuilder(*this); }
+        using osg::NodeVisitor::clone;
 
-        void apply(Geometry& geometry);
+        void apply(Geometry& geometry) override;
+        using osg::NodeVisitor::apply;
 
         KdTree::BuildOptions _buildOptions;
 

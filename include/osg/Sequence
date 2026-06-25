@@ -33,7 +33,7 @@ class OSG_EXPORT Sequence : public Group
 
         META_Node(osg, Sequence);
 
-        virtual void traverse(NodeVisitor& nv);
+        void traverse(NodeVisitor& nv) override;
 
         // the relationship between the _frameTime vector and the _children
         // vector is a bit of a mess.  This is how it was in previous versions,
@@ -45,21 +45,21 @@ class OSG_EXPORT Sequence : public Group
         using osg::Group::insertChild;
         using osg::Group::removeChild;
 
-        virtual bool addChild( Node *child);
+        bool addChild( Node *child) override;
 
         virtual bool addChild( Node *child, double t);
 
         template<class T> bool addChild( const ref_ptr<T>& child, double t) { return addChild(child.get(), t); }
 
-        virtual bool insertChild( unsigned int index, Node *child);
+        bool insertChild( unsigned int index, Node *child) override;
 
         virtual bool insertChild( unsigned int index, Node *child, double t);
 
         template<class T> bool insertChild( unsigned int index, const ref_ptr<T>& child, double t) { return insertChild(index, child.get(), t); }
 
-        virtual bool removeChild( Node *child );
+        bool removeChild( Node *child ) override;
 
-        virtual bool removeChildren(unsigned int pos,unsigned int numChildrenToRemove);
+        bool removeChildren(unsigned int pos,unsigned int numChildrenToRemove) override;
 
 
         /** value is which child node is to be displayed */

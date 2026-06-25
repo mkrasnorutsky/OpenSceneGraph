@@ -142,7 +142,7 @@ osg::Matrixd UFOManipulator::getInverseMatrix() const
     return (_inverseMatrix * _offset);
 }
 
-void UFOManipulator::computeHomePosition()
+void UFOManipulator::computeHomePosition(const osg::Camera*, bool)
 {
     if( !_node.valid() )
         return;

@@ -29,7 +29,7 @@ class OSGVIEWER_EXPORT SingleWindow : public ViewConfig
         
         META_Object(osgViewer,SingleWindow);
         
-        virtual void configure(osgViewer::View& view) const;
+        void configure(osgViewer::View& view) const override;
         
         void setX(int x) { _x = x; }
         int getX() const { return _x; }

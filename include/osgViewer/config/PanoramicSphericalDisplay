@@ -41,7 +41,7 @@ class OSGVIEWER_EXPORT PanoramicSphericalDisplay : public ViewConfig
         
         META_Object(osgViewer,PanoramicSphericalDisplay);
         
-        virtual void configure(osgViewer::View& view) const;
+        void configure(osgViewer::View& view) const override;
         
         void setRadius(double r) { _radius = r; }
         double getRadius() const { return _radius; }

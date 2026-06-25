@@ -79,7 +79,7 @@ class OSG_EXPORT Billboard : public Geode
           * gset as a child. If Geode::addDrawable() returns true, add the
           * default position to the pivot point position list and return true.
           * Otherwise, return false. */
-        virtual bool addDrawable( Drawable *gset );
+        bool addDrawable( Drawable *gset ) override;
 
         /** Add a Drawable with a specified position.
           * Call the base-class Geode::addDrawble() to add the given Drawable
@@ -92,12 +92,12 @@ class OSG_EXPORT Billboard : public Geode
           * If gset is a child, remove it, decrement its reference count,
           * remove its pivot point position. and return true.
           * Otherwise, return false. */
-        virtual bool removeDrawable( Drawable *gset );
+        bool removeDrawable( Drawable *gset ) override;
 
 
         bool computeMatrix(Matrix& modelview, const Vec3& eye_local, const Vec3& pos_local) const;
 
-        virtual BoundingSphere computeBound() const;
+        BoundingSphere computeBound() const override;
 
     protected:
 

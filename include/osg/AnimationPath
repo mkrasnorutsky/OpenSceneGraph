@@ -289,7 +289,7 @@ class OSG_EXPORT AnimationPathCallback : public NodeCallback
         virtual double getAnimationTime() const;
 
         /** Implements the callback. */
-        virtual void operator()(Node* node, NodeVisitor* nv);
+        void operator()(Node* node, NodeVisitor* nv) override;
 
         void update(osg::Node& node);
 

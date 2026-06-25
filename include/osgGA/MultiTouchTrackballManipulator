@@ -32,7 +32,7 @@ class OSGGA_EXPORT MultiTouchTrackballManipulator : public TrackballManipulator
 
         META_Object( osgGA, MultiTouchTrackballManipulator );
 
-        bool handle( const GUIEventAdapter& ea, GUIActionAdapter& us );
+        bool handle( const GUIEventAdapter& ea, GUIActionAdapter& us ) override;
 
     protected:
 

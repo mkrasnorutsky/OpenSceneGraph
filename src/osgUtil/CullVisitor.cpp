@@ -1311,7 +1311,7 @@ class RenderStageCache : public osg::Object, public osg::Observer
 
         META_Object(osgUtil, RenderStageCache);
 
-        virtual void objectDeleted(void* object)
+        void objectDeleted(void* object) override
         {
             osg::Referenced* ref = reinterpret_cast<osg::Referenced*>(object);
 
@@ -1356,7 +1356,7 @@ class RenderStageCache : public osg::Object, public osg::Observer
 
 
         /** Resize any per context GLObject buffers to specified size. */
-        virtual void resizeGLObjectBuffers(unsigned int maxSize)
+        void resizeGLObjectBuffers(unsigned int maxSize) override
         {
             for(RenderStageMap::const_iterator itr = _renderStageMap.begin();
                 itr != _renderStageMap.end();
@@ -1369,7 +1369,7 @@ class RenderStageCache : public osg::Object, public osg::Observer
         /** If State is non-zero, this function releases any associated OpenGL objects for
            * the specified graphics context. Otherwise, releases OpenGL objexts
            * for all graphics contexts. */
-        virtual void releaseGLObjects(osg::State* state= 0) const
+        void releaseGLObjects(osg::State* state= 0) const override
         {
             for(RenderStageMap::const_iterator itr = _renderStageMap.begin();
                 itr != _renderStageMap.end();

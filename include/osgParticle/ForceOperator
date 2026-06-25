@@ -44,10 +44,10 @@ namespace osgParticle
         inline void setForce(const osg::Vec3& f);
 
         /// Apply the force to a particle. Do not call this method manually.
-        inline void operate(Particle* P, double dt);
+        inline void operate(Particle* P, double dt) override;
 
         /// Perform some initialization. Do not call this method manually.
-        inline void beginOperate(Program *prg);
+        inline void beginOperate(Program *prg) override;
 
     protected:
         virtual ~ForceOperator() {};

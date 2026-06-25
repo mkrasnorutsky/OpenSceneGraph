@@ -40,7 +40,7 @@ class OSG_EXPORT ShaderComposer : public osg::Object
         virtual osg::Shader* composeMain(const Shaders& shaders);
         virtual void addShaderToProgram(Program* program, const Shaders& shaders);
 
-        virtual void releaseGLObjects(osg::State* state) const;
+        void releaseGLObjects(osg::State* state) const override;
 
     protected:
 

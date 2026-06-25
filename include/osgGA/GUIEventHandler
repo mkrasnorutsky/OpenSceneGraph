@@ -59,7 +59,7 @@ public:
         META_Object(osgGA,GUIEventHandler);
 
         /** Handle event. Override the handle(..) method in your event handlers to respond to events. */
-        virtual bool handle(osgGA::Event* event, osg::Object* object, osg::NodeVisitor* nv);
+        bool handle(osgGA::Event* event, osg::Object* object, osg::NodeVisitor* nv) override;
 
         /** Handle events, return true if handled, false otherwise. */
         virtual bool handle(const GUIEventAdapter& ea,GUIActionAdapter& aa, osg::Object*, osg::NodeVisitor*) { return handle(ea,aa); }

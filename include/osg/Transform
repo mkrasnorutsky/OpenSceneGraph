@@ -82,8 +82,8 @@ class OSG_EXPORT Transform : public Group
 
         META_Node(osg, Transform);
 
-        virtual Transform* asTransform() { return this; }
-        virtual const Transform* asTransform() const { return this; }
+        Transform* asTransform() override { return this; }
+        const Transform* asTransform() const override { return this; }
 
         virtual MatrixTransform* asMatrixTransform() { return 0; }
         virtual const MatrixTransform* asMatrixTransform() const { return 0; }
@@ -154,7 +154,7 @@ class OSG_EXPORT Transform : public Group
           * since this computeBound() uses the underlying matrix (calling
           * computeMatrix if required).
         */
-        virtual BoundingSphere computeBound() const;
+        BoundingSphere computeBound() const override;
 
     protected :
 

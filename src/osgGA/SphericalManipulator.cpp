@@ -413,7 +413,7 @@ bool SphericalManipulator::calcMovement()
     return false;
 }
 //--------------------------------------------------------------------------------------------------
-void SphericalManipulator::computeHomePosition()
+void SphericalManipulator::computeHomePosition(const osg::Camera*, bool)
 {
     if(getNode())
         computeViewPosition(getNode()->getBound(),_modelScale,_homeDistance,_homeCenter);

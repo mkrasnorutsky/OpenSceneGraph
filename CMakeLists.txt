@@ -1144,7 +1144,7 @@ ELSEIF(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL 
                 ENDIF()
             ENDIF()
 
-            set(WARNING_CFLAGS "-Wno-conversion -Wno-overloaded-virtual -Wno-inconsistent-missing-override -Wno-invalid-utf8 -Wno-unused-but-set-variable -Wno-unused-const-variable")
+            set(WARNING_CFLAGS "-Wno-conversion -Wno-invalid-utf8 -Wno-unused-but-set-variable -Wno-unused-const-variable -Winconsistent-missing-override")
 
             # FlightGear: force O3 for RelWithDebInfo builds
             set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -g -DNDEBUG ${WARNING_CFLAGS}")

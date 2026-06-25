@@ -139,7 +139,7 @@ class OSGSIM_EXPORT AzimSector : public Sector, public AzimRange
 
         META_Object(osgSim,AzimSector);
 
-        virtual float operator() (const osg::Vec3& eyeLocal) const;
+        float operator() (const osg::Vec3& eyeLocal) const override;
 
     protected:
 
@@ -164,7 +164,7 @@ class OSGSIM_EXPORT ElevationSector : public Sector, public ElevationRange
 
         META_Object(osgSim,ElevationSector);
 
-        virtual float operator() (const osg::Vec3& eyeLocal) const;
+        float operator() (const osg::Vec3& eyeLocal) const override;
 
     protected:
 
@@ -190,7 +190,7 @@ class OSGSIM_EXPORT AzimElevationSector : public Sector, public AzimRange, publi
 
         META_Object(osgSim,AzimElevationSector);
 
-        virtual float operator() (const osg::Vec3& eyeLocal) const;
+        float operator() (const osg::Vec3& eyeLocal) const override;
 
     protected:
 
@@ -228,7 +228,7 @@ class OSGSIM_EXPORT ConeSector : public Sector
 
         float getFadeAngle() const;
 
-        virtual float operator() (const osg::Vec3& eyeLocal) const;
+        float operator() (const osg::Vec3& eyeLocal) const override;
 
     protected:
 
@@ -292,7 +292,7 @@ class OSGSIM_EXPORT DirectionalSector : public Sector
 
         float getFadeAngle() const;
 
-        virtual float operator() (const osg::Vec3& eyeLocal) const;
+        float operator() (const osg::Vec3& eyeLocal) const override;
 
         void computeMatrix() ;
 

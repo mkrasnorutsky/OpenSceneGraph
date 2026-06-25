@@ -35,7 +35,7 @@ class OSGGA_EXPORT KeySwitchMatrixManipulator : public CameraManipulator
         typedef std::pair<std::string, osg::ref_ptr<CameraManipulator> > NamedManipulator;
         typedef std::map<int, NamedManipulator> KeyManipMap;
 
-        virtual const char* className() const { return "KeySwitchMatrixManipulator"; }
+        const char* className() const override { return "KeySwitchMatrixManipulator"; }
 
         /**
         Add a camera manipulator with an associated name, and a key to
@@ -82,49 +82,49 @@ class OSGGA_EXPORT KeySwitchMatrixManipulator : public CameraManipulator
         // Overrides from CameraManipulator...
 
         /** set the coordinate frame which callback tells the manipulator which way is up, east and north.*/
-        virtual void setCoordinateFrameCallback(CoordinateFrameCallback* cb);
+        void setCoordinateFrameCallback(CoordinateFrameCallback* cb) override;
 
         /** Set the position of the matrix manipulator using a 4x4 Matrix.*/
-        virtual void setByMatrix(const osg::Matrixd& matrix) { _current->setByMatrix(matrix); }
+        void setByMatrix(const osg::Matrixd& matrix) override { _current->setByMatrix(matrix); }
 
         /** set the position of the matrix manipulator using a 4x4 Matrix.*/
-        virtual void setByInverseMatrix(const osg::Matrixd& matrix) { _current->setByInverseMatrix(matrix); }
+        void setByInverseMatrix(const osg::Matrixd& matrix) override { _current->setByInverseMatrix(matrix); }
 
         /** get the position of the manipulator as 4x4 Matrix.*/
-        virtual osg::Matrixd getMatrix() const { return _current->getMatrix(); }
+        osg::Matrixd getMatrix() const override { return _current->getMatrix(); }
 
         /** get the position of the manipulator as a inverse matrix of the manipulator, typically used as a model view matrix.*/
-        virtual osg::Matrixd getInverseMatrix() const { return _current->getInverseMatrix(); }
+        osg::Matrixd getInverseMatrix() const override { return _current->getInverseMatrix(); }
 
         /** Get the FusionDistanceMode. Used by SceneView for setting up stereo convergence.*/
-        virtual osgUtil::SceneView::FusionDistanceMode getFusionDistanceMode() const { return _current->getFusionDistanceMode(); }
+        osgUtil::SceneView::FusionDistanceMode getFusionDistanceMode() const override { return _current->getFusionDistanceMode(); }
 
         /** Get the FusionDistanceValue. Used by SceneView for setting up stereo convergence.*/
-        virtual float getFusionDistanceValue() const { return _current->getFusionDistanceValue(); }
+        float getFusionDistanceValue() const override { return _current->getFusionDistanceValue(); }
 
 
-        virtual void setNode(osg::Node* n);
+        void setNode(osg::Node* n) override;
 
-        virtual const osg::Node* getNode() const        { return _current->getNode(); }
+        const osg::Node* getNode() const override        { return _current->getNode(); }
 
-        virtual osg::Node* getNode()                    { return _current->getNode(); }
+        osg::Node* getNode() override                    { return _current->getNode(); }
 
-        virtual void setHomePosition(const osg::Vec3d& eye, const osg::Vec3d& center, const osg::Vec3d& up, bool autoComputeHomePosition=false);
+        void setHomePosition(const osg::Vec3d& eye, const osg::Vec3d& center, const osg::Vec3d& up, bool autoComputeHomePosition=false) override;
 
-        virtual void setAutoComputeHomePosition(bool flag);
+        void setAutoComputeHomePosition(bool flag) override;
 
-        virtual void computeHomePosition();
+        void computeHomePosition(const osg::Camera *camera = NULL, bool useBoundingBox = false) override;
 
-        virtual void finishAnimation();
+        void finishAnimation() override;
 
-        virtual void home(const GUIEventAdapter& ee,GUIActionAdapter& aa);
+        void home(const GUIEventAdapter& ee,GUIActionAdapter& aa) override;
 
-        virtual void init(const GUIEventAdapter& ee,GUIActionAdapter& aa) { if (_current.valid()) _current->init(ee,aa); }
+        void init(const GUIEventAdapter& ee,GUIActionAdapter& aa) override { if (_current.valid()) _current->init(ee,aa); }
 
-        virtual bool handle(const GUIEventAdapter& ea,GUIActionAdapter& us);
+        bool handle(const GUIEventAdapter& ea,GUIActionAdapter& us) override;
 
         /** Get the keyboard and mouse usage of this manipulator.*/
-        virtual void getUsage(osg::ApplicationUsage& usage) const;
+        void getUsage(osg::ApplicationUsage& usage) const override;
 
     private:
 

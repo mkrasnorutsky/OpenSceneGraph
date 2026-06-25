@@ -28,7 +28,7 @@ class OSGVIEWER_EXPORT SingleScreen : public ViewConfig
         
         META_Object(osgViewer, SingleScreen);
         
-        virtual void configure(osgViewer::View& view) const;
+        void configure(osgViewer::View& view) const override;
 
         void setScreenNum(unsigned int sn) { _screenNum = sn; }
         unsigned int getScreenNum() const { return _screenNum; }

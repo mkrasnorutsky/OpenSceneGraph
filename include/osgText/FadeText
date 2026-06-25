@@ -36,7 +36,7 @@ public:
     float getFadeSpeed() const { return _fadeSpeed; }
 
     /** Draw the text.*/
-    virtual void drawImplementation(osg::RenderInfo& renderInfo) const;
+    void drawImplementation(osg::RenderInfo& renderInfo) const override;
 
 protected:
 

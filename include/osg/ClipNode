@@ -96,7 +96,7 @@ class OSG_EXPORT ClipNode : public Group
         /** Set up the local StateSet. */
         void setLocalStateSetModes(StateAttribute::GLModeValue=StateAttribute::ON);
 
-        virtual BoundingSphere computeBound() const;
+        BoundingSphere computeBound() const override;
 
     protected:
 

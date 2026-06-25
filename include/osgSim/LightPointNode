@@ -43,7 +43,7 @@ class OSGSIM_EXPORT LightPointNode : public osg::Node
 
         META_Node(osgSim,LightPointNode);
 
-        virtual void traverse(osg::NodeVisitor& nv);
+        void traverse(osg::NodeVisitor& nv) override;
 
 
         unsigned int getNumLightPoints() const { return _lightPointList.size(); }
@@ -87,7 +87,7 @@ class OSGSIM_EXPORT LightPointNode : public osg::Node
 
         bool getPointSprite() const { return _pointSprites; }
 
-        virtual osg::BoundingSphere computeBound() const;
+        osg::BoundingSphere computeBound() const override;
 
     protected:
 

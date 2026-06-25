@@ -29,7 +29,7 @@ public:
     Widget(const Widget& tfw, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
     META_Node(osgGA, Widget);
 
-    virtual void traverse(osg::NodeVisitor& nv);
+    void traverse(osg::NodeVisitor& nv) override;
     virtual void traverseImplementation(osg::NodeVisitor& nv);
 
     virtual bool handle(osgGA::EventVisitor* ev, osgGA::Event* event);
@@ -62,7 +62,7 @@ public:
     /** get whether the widget has focus or not.*/
     virtual bool getHasEventFocus() const;
 
-    virtual osg::BoundingSphere computeBound() const;
+    osg::BoundingSphere computeBound() const override;
 
     /** update any focus related graphics+state to the focused state.*/
     virtual void enter();

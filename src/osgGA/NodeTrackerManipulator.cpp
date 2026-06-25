@@ -121,7 +121,7 @@ void NodeTrackerManipulator::setTrackNode(osg::Node* node)
 }
 
 
-void NodeTrackerManipulator::computeHomePosition()
+void NodeTrackerManipulator::computeHomePosition(const osg::Camera*, bool)
 {
     osg::Node* node = getTrackNode();
     if(node)

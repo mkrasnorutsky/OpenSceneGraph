@@ -58,7 +58,7 @@ namespace osgParticle
         virtual ~ModularProgram() {}
         ModularProgram& operator=(const ModularProgram&) { return *this; }
 
-        void execute(double dt);
+        void execute(double dt) override;
 
     private:
         typedef std::vector<osg::ref_ptr<Operator> > Operator_vector;

@@ -33,15 +33,15 @@ namespace osgParticle
 
         META_Node(osgParticle,ExplosionDebrisEffect);
 
-        virtual void setDefaults();
+        void setDefaults() override;
 
-        virtual void setUpEmitterAndProgram();
+        void setUpEmitterAndProgram() override;
 
-        virtual Emitter* getEmitter() { return _emitter.get(); }
-        virtual const Emitter* getEmitter() const { return _emitter.get(); }
+        Emitter* getEmitter() override { return _emitter.get(); }
+        const Emitter* getEmitter() const override { return _emitter.get(); }
 
-        virtual Program* getProgram() { return _program.get(); }
-        virtual const Program* getProgram() const { return _program.get(); }
+        Program* getProgram() override { return _program.get(); }
+        const Program* getProgram() const override { return _program.get(); }
 
     protected:
 

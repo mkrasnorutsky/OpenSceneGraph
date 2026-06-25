@@ -85,7 +85,7 @@ class OSG_EXPORT ScriptNodeCallback : public osg::NodeCallback
         osg::ScriptEngine* getScriptEngine(osg::NodePath& nodePath);
 
         /** NodeCallback method, calls the Script.*/
-        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+        void operator()(osg::Node* node, osg::NodeVisitor* nv) override;
 
     protected:
 

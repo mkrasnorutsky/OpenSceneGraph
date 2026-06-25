@@ -451,8 +451,8 @@ public:
 
         META_Object(osgGA, GUIEventAdapter);
 
-        virtual GUIEventAdapter* asGUIEventAdapter() { return this; }
-        virtual const GUIEventAdapter* asGUIEventAdapter() const { return this; }
+        GUIEventAdapter* asGUIEventAdapter() override { return this; }
+        const GUIEventAdapter* asGUIEventAdapter() const override { return this; }
 
 
         /** Get the accumulated event state singleton.

@@ -66,26 +66,26 @@ class OSGTERRAIN_EXPORT SharedGeometry : public osg::Drawable
         const VertexToHeightFieldMapping& getVertexToHeightFieldMapping() const { return _vertexToHeightFieldMapping; }
 
 
-        osg::VertexArrayState* createVertexArrayStateImplementation(osg::RenderInfo& renderInfo) const;
+        osg::VertexArrayState* createVertexArrayStateImplementation(osg::RenderInfo& renderInfo) const override;
 
-        void compileGLObjects(osg::RenderInfo& renderInfo) const;
+        void compileGLObjects(osg::RenderInfo& renderInfo) const override;
 
-        void drawImplementation(osg::RenderInfo& renderInfo) const;
+        void drawImplementation(osg::RenderInfo& renderInfo) const override;
 
-        void resizeGLObjectBuffers(unsigned int maxSize);
-        void releaseGLObjects(osg::State* state) const;
+        void resizeGLObjectBuffers(unsigned int maxSize) override;
+        void releaseGLObjects(osg::State* state) const override;
 
-        virtual bool supports(const osg::Drawable::AttributeFunctor&) const { return true; }
-        virtual void accept(osg::Drawable::AttributeFunctor&);
+        bool supports(const osg::Drawable::AttributeFunctor&) const override { return true; }
+        void accept(osg::Drawable::AttributeFunctor&) override;
 
-        virtual bool supports(const osg::Drawable::ConstAttributeFunctor&) const { return true; }
-        virtual void accept(osg::Drawable::ConstAttributeFunctor&) const;
+        bool supports(const osg::Drawable::ConstAttributeFunctor&) const override { return true; }
+        void accept(osg::Drawable::ConstAttributeFunctor&) const override;
 
-        virtual bool supports(const osg::PrimitiveFunctor&) const { return true; }
-        virtual void accept(osg::PrimitiveFunctor&) const;
+        bool supports(const osg::PrimitiveFunctor&) const override { return true; }
+        void accept(osg::PrimitiveFunctor&) const override;
 
-        virtual bool supports(const osg::PrimitiveIndexFunctor&) const { return true; }
-        virtual void accept(osg::PrimitiveIndexFunctor&) const;
+        bool supports(const osg::PrimitiveIndexFunctor&) const override { return true; }
+        void accept(osg::PrimitiveIndexFunctor&) const override;
 
 protected:
 
@@ -193,23 +193,23 @@ class OSGTERRAIN_EXPORT HeightFieldDrawable : public osg::Drawable
         osg::Vec3Array* getVertices() { return _vertices.get(); }
         const osg::Vec3Array* getVertices() const { return _vertices.get(); }
 
-        virtual void drawImplementation(osg::RenderInfo& renderInfo) const;
-        virtual void compileGLObjects(osg::RenderInfo& renderInfo) const;
-        virtual void resizeGLObjectBuffers(unsigned int maxSize);
-        virtual void releaseGLObjects(osg::State* state=0) const;
+        void drawImplementation(osg::RenderInfo& renderInfo) const override;
+        void compileGLObjects(osg::RenderInfo& renderInfo) const override;
+        void resizeGLObjectBuffers(unsigned int maxSize) override;
+        void releaseGLObjects(osg::State* state=0) const override;
 
 
-        virtual bool supports(const osg::Drawable::AttributeFunctor&) const { return true; }
-        virtual void accept(osg::Drawable::AttributeFunctor&);
+        bool supports(const osg::Drawable::AttributeFunctor&) const override { return true; }
+        void accept(osg::Drawable::AttributeFunctor&) override;
 
-        virtual bool supports(const osg::Drawable::ConstAttributeFunctor&) const { return true; }
-        virtual void accept(osg::Drawable::ConstAttributeFunctor&) const;
+        bool supports(const osg::Drawable::ConstAttributeFunctor&) const override { return true; }
+        void accept(osg::Drawable::ConstAttributeFunctor&) const override;
 
-        virtual bool supports(const osg::PrimitiveFunctor&) const { return true; }
-        virtual void accept(osg::PrimitiveFunctor&) const;
+        bool supports(const osg::PrimitiveFunctor&) const override { return true; }
+        void accept(osg::PrimitiveFunctor&) const override;
 
-        virtual bool supports(const osg::PrimitiveIndexFunctor&) const { return true; }
-        virtual void accept(osg::PrimitiveIndexFunctor&) const;
+        bool supports(const osg::PrimitiveIndexFunctor&) const override { return true; }
+        void accept(osg::PrimitiveIndexFunctor&) const override;
 
 protected:
 

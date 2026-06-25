@@ -118,7 +118,7 @@ public:
     /** Copy constructor */
     SphereSegment(const SphereSegment& rhs, const osg::CopyOp& co);
 
-    void traverse(osg::NodeVisitor& nv);
+    void traverse(osg::NodeVisitor& nv) override;
 
     /** Set the centre point of the SphereSegment */
     void setCentre(const osg::Vec3& c);
@@ -241,10 +241,10 @@ public:
     void updatePrimitives();
 
 
-    virtual void resizeGLObjectBuffers(unsigned int maxSize);
-    virtual void releaseGLObjects(osg::State* state = 0) const;
+    void resizeGLObjectBuffers(unsigned int maxSize) override;
+    void releaseGLObjects(osg::State* state = 0) const override;
 
-    virtual osg::BoundingSphere computeBound() const;
+    osg::BoundingSphere computeBound() const override;
 
 private:
 

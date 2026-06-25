@@ -54,20 +54,20 @@ public:
     SinkStrategy getSinkStrategy() const { return _sinkStrategy; }
 
     /// Perform some initializations. Do not call this method manually.
-    void beginOperate( Program* prg );
+    void beginOperate( Program* prg ) override;
 
 protected:
     virtual ~SinkOperator() {}
     SinkOperator& operator=( const SinkOperator& ) { return *this; }
 
-    virtual void handlePoint( const Domain& domain, Particle* P, double dt );
-    virtual void handleLineSegment( const Domain& domain, Particle* P, double dt );
-    virtual void handleTriangle( const Domain& domain, Particle* P, double dt );
-    virtual void handleRectangle( const Domain& domain, Particle* P, double dt );
-    virtual void handlePlane( const Domain& domain, Particle* P, double dt );
-    virtual void handleSphere( const Domain& domain, Particle* P, double dt );
-    virtual void handleBox( const Domain& domain, Particle* P, double dt );
-    virtual void handleDisk( const Domain& domain, Particle* P, double dt );
+    void handlePoint( const Domain& domain, Particle* P, double dt ) override;
+    void handleLineSegment( const Domain& domain, Particle* P, double dt ) override;
+    void handleTriangle( const Domain& domain, Particle* P, double dt ) override;
+    void handleRectangle( const Domain& domain, Particle* P, double dt ) override;
+    void handlePlane( const Domain& domain, Particle* P, double dt ) override;
+    void handleSphere( const Domain& domain, Particle* P, double dt ) override;
+    void handleBox( const Domain& domain, Particle* P, double dt ) override;
+    void handleDisk( const Domain& domain, Particle* P, double dt ) override;
 
     inline const osg::Vec3& getValue( Particle* P );
     inline void kill( Particle* P, bool insideDomain );

@@ -46,7 +46,7 @@ class OSGUTIL_EXPORT DisplayRequirementsVisitor : public osg::NodeVisitor
 
         virtual void applyStateSet(osg::StateSet& stateset);
 
-        virtual void apply(osg::Node& node);
+        void apply(osg::Node& node) override;
 
     protected:
 

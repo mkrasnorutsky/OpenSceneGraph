@@ -175,7 +175,7 @@ bool Output::getUniqueIDForObject(const osg::Object* obj,std::string& uniqueID)
 bool Output::createUniqueIDForObject(const osg::Object* obj,std::string& uniqueID)
 {
     char str[256];
-    sprintf(str,"%s_%i",obj->className(),(unsigned int)_objectToUniqueIDMap.size());
+    snprintf(str,256,"%s_%i",obj->className(),(unsigned int)_objectToUniqueIDMap.size());
     uniqueID = str;
     return true;
 }
