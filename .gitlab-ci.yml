@@ -7,7 +7,7 @@ variables:
   PREFIX_DIR: "$CI_PROJECT_DIR/osg-dist"
 
 # do not run pipelines on forks
-# build merge requests, tags and the protected branches 
+# build merge requests, tags and the protected branches
 workflow:
   rules:
     - if: $CI_PROJECT_NAMESPACE != "flightgear"
@@ -21,9 +21,9 @@ linux-build:
   stage: build
   script:
     - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -Wno-dev
-      -D CMAKE_BUILD_TYPE=RelWithDebInfo 
+      -D CMAKE_BUILD_TYPE=RelWithDebInfo
       -D CMAKE_INSTALL_PREFIX=$PREFIX_DIR
-      -D OSG_USE_QT=0 
+      -D OSG_USE_QT=0
       -D CMAKE_RELWITHDEBINFO_POSTFIX=
       -D OSG_TEXT_USE_FONTCONFIG=0
 
@@ -46,7 +46,7 @@ windows_build:
         -Wno-dev
         -DCMAKE_BUILD_TYPE=RelWithDebInfo
         -DOSG_USE_UTF8_FILENAME:BOOL=ON
-        -DACTUAL_3RDPARTY_DIR:PATH=$CI_PROJECT_DIR\msvc140\3rdparty.x64 
+        -DACTUAL_3RDPARTY_DIR:PATH=$CI_PROJECT_DIR\msvc140\3rdparty.x64
         -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX_DIR
         -DCMAKE_RELWITHDEBINFO_POSTFIX=
     - cmake --build $BUILD_DIR
@@ -66,29 +66,28 @@ macos-build:
   stage: build
   tags:
     - saas-macos-medium-m1
-  image: macos-14-xcode-15
+  image: macos-26-xcode-26
   before_script:
       - export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
       - export HOMEBREW_NO_INSTALL_CLEANUP=1
-      - brew install ninja cmake 
+      - brew install ninja cmake
   script:
   # ensure we use our FreeType and not the one from Homebrew
   # ours is UB, HomeBrew's is not
     - export FREETYPE_DIR=$CI_PROJECT_DIR/dist
   # FontConfig disabled for now: we find it via HomeBrew and it's not UB
   # JPEG disabled becuase we use CoreImageIO loader anyway on macOS
-    - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G Ninja -Wno-dev
-        -D CMAKE_BUILD_TYPE=RelWithDebInfo 
-        -D CMAKE_INSTALL_PREFIX=$PREFIX_DIR 
-        -D OSG_WINDOWING_SYSTEM=Cocoa 
-        -D OSG_USE_QT=0 
+    - cmake -B $BUILD_DIR -S $CI_PROJECT_DIR -G "Ninja Multi-Config" -Wno-dev
+        -D CMAKE_INSTALL_PREFIX=$PREFIX_DIR
+        -D OSG_WINDOWING_SYSTEM=Cocoa
+        -D OSG_USE_QT=0
         -D CMAKE_RELWITHDEBINFO_POSTFIX=
         -D CMAKE_OSX_ARCHITECTURES="x86_64;arm64"
         -D OSG_TEXT_USE_FONTCONFIG=0
         -D BUILD_OSG_PLUGIN_JPEG=0
         -D BUILD_OSG_PLUGIN_TIFF=0
-    - cmake --build $BUILD_DIR
-    - cmake --build $BUILD_DIR --target install
+    - cmake --build $BUILD_DIR --config RelWithDebInfo
+    - cmake --build $BUILD_DIR --config RelWithDebInfo --target install
   needs:
     - project: flightgear/macos-3rd-party
       job: macos-build
@@ -112,5 +111,5 @@ staging:
     # we could get fancy here, but for now, just trigger 'next'
     branch: next
     strategy: depend
-  inherit: 
+  inherit:
     variables: false

@@ -1110,9 +1110,9 @@ ELSEIF(MSVC)
         set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
         set(CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELEASE} /Zi")
         #endif
-ELSEIF(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+ELSEIF(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
         # FlightGear added params: from -Wno-overloaded-virtual (included) onwards
-        SET(OSG_AGGRESSIVE_WARNING_FLAGS -Wall -Wparentheses -Wno-long-long -Wno-import -pedantic -Wreturn-type -Wmissing-braces -Wunknown-pragmas -Wunused -Wno-overloaded-virtual -Wno-inconsistent-missing-override -Wno-invalid-utf8 -Wno-unused-but-set-variable -Wno-unused-const-variable)
+        SET(OSG_AGGRESSIVE_WARNING_FLAGS -Wall -Wparentheses -Wno-long-long -Wno-import -pedantic -Wreturn-type -Wmissing-braces -Wunknown-pragmas -Wunused)
 
         # CMake lacks an elseif, so other non-gcc, non-VS compilers need
         # to be listed below. If unhandled, OSG_AGGRESSIVE_WARNING_FLAGS should
@@ -1144,14 +1144,15 @@ ELSEIF(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
                 ENDIF()
             ENDIF()
 
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-conversion")
-            set(WARNING_CFLAGS "")
+            set(WARNING_CFLAGS "-Wno-conversion -Wno-overloaded-virtual -Wno-inconsistent-missing-override -Wno-invalid-utf8 -Wno-unused-but-set-variable -Wno-unused-const-variable")
 
             # FlightGear: force O3 for RelWithDebInfo builds
-            set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -g -DNDEBUG")
-            set(CMAKE_C_FLAGS_RELWITHDEBINFO  "-O3 -g -DNDEBUG")
+            set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -g -DNDEBUG ${WARNING_CFLAGS}")
+            set(CMAKE_C_FLAGS_RELWITHDEBINFO  "-O3 -g -DNDEBUG ${WARNING_CFLAGS}")
             # End of FlightGear ###########
         ENDIF()
+else()
+    message(STATUS "Unknown compiler, aggressive warning flags not set.: ${CMAKE_CXX_COMPILER_ID}")
 ENDIF()
 
 # This part is for the CMake menu option to toggle the warnings on/off.
