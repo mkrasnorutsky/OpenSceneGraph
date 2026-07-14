@@ -371,6 +371,17 @@ class OSG_EXPORT Image : public BufferData
         /** return true if the data stored in the image is a contiguous block of data.*/
         bool isDataContiguous() const { return _rowLength==0 || _rowLength==_s; }
 
+        /** return true if the image has the same storage requirements as this image, so suitable for a memcpy of data. */
+        bool isSameStorageAs(Image* newImage) const 
+        { 
+            return newImage && s() == newImage->s() && 
+                                t() == newImage->t() && 
+                                r() == newImage->r() &&
+                                getPixelFormat() == newImage->getPixelFormat() && 
+                                getDataType() == newImage->getDataType() &&
+                                getRowSizeInBytes() == newImage->getRowSizeInBytes();
+        }
+
         /** Convenience class for assisting the copying of image data when the image data isn't contiguous.*/
         class OSG_EXPORT DataIterator
         {
