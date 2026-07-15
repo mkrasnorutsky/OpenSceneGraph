@@ -161,7 +161,7 @@ bool CompositeLayer_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
                 fw.writeObject(*(layer.getLayer(i)));
             }
         }
-        else if (!layer.getFileName(i).empty())
+        else if (!layer.getLayerFileName(i).empty())
         {
             fw.indent()<<"file "<<layer.getCompoundName(i)<<std::endl;
         }

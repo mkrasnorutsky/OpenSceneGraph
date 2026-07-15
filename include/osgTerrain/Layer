@@ -517,12 +517,10 @@ class OSGTERRAIN_EXPORT CompositeLayer : public Layer
         const std::string& getSetName(unsigned int i) const { return _layers[i].layer.valid() ? _layers[i].layer->getName() : _layers[i].setname; }
 
         /** Set the file name of the data associated with layer 'i'. */
-        void setFileName(unsigned int i, const std::string& filename) { _layers[i].filename = filename; if (_layers[i].layer.valid()) _layers[i].layer->setFileName(filename); }
+        void setLayerFileName(unsigned int i, const std::string& filename) { _layers[i].filename = filename; if (_layers[i].layer.valid()) _layers[i].layer->setFileName(filename); }
 
         /** Get the file name of the data associated with layer 'i'. */
-        const std::string& getFileName(unsigned int i) const { return _layers[i].layer.valid() ? _layers[i].layer->getFileName() : _layers[i].filename; }
-        using osgTerrain::Layer::setFileName;
-        using osgTerrain::Layer::getFileName;
+        const std::string& getLayerFileName(unsigned int i) const { return _layers[i].layer.valid() ? _layers[i].layer->getFileName() : _layers[i].filename; }
 
         void setCompoundName(unsigned int i, const std::string& compoundname);
         std::string getCompoundName(unsigned int i) const;
