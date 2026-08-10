@@ -106,4 +106,8 @@ _CPack_Packages/
 *.tar.gz
 *.zip
 
+# Claude Code AI assistant
+CLAUDE.md
+.claude/
+
 compile_commands.json
