@@ -97,14 +97,14 @@ public:
 
     // Remove expired children from a PagedLOD. On return
     // removedChildren contains the nodes removed by the call to
-    // PagedLOD::removeExpiredChildren, and the _childPagedLODs member
+    // PagedLOD::removeExpiredChild, and the _childPagedLODs member
     // contains all the PagedLOD objects found in those children's
     // subgraphs.
     bool removeExpiredChildrenAndFindPagedLODs(osg::PagedLOD* plod, double expiryTime, unsigned int expiryFrame, osg::NodeList& removedChildren)
     {
         size_t sizeBefore = removedChildren.size();
 
-        plod->removeExpiredChildren(expiryTime, expiryFrame, removedChildren);
+        plod->removeExpiredChild(expiryTime, expiryFrame, removedChildren);
 
         for(size_t i = sizeBefore; i<removedChildren.size(); ++i)
         {
@@ -145,12 +145,13 @@ public:
     virtual void clear() { _pagedLODs.clear(); }
     virtual unsigned int size() { return _pagedLODs.size(); }
 
-    virtual void removeExpiredChildren(
+    virtual bool removeExpiredChildren(
         int numberChildrenToRemove, double expiryTime, unsigned int expiryFrame,
         DatabasePager::ObjectList& childrenRemoved, bool visitActive)
     {
         int leftToRemove = numberChildrenToRemove;
-        for(PagedLODs::iterator itr = _pagedLODs.begin();
+        PagedLODs::iterator itr = _pagedLODs.begin();
+        for(;
             itr!=_pagedLODs.end() && leftToRemove > 0;
             )
         {
@@ -162,9 +163,13 @@ public:
                 {
                     DatabasePager::ExpirePagedLODsVisitor expirePagedLODsVisitor;
                     osg::NodeList expiredChildren; // expired PagedLODs
-                    expirePagedLODsVisitor.removeExpiredChildrenAndFindPagedLODs(
+                    bool childWasRemoved = expirePagedLODsVisitor.removeExpiredChildrenAndFindPagedLODs(
                         plod.get(), expiryTime, expiryFrame, expiredChildren);
-                    // Clear any expired PagedLODs out of the set
+                    // Clear any expired PagedLODs out of the set. Note this set may stay
+                    // unchanged even though a child was removed above: a removed child's
+                    // subgraph can be plain geometry with no nested PagedLOD at all (e.g.
+                    // a leaf terrain tile), so this loop alone is not a reliable measure
+                    // of how much pruning work was actually done.
                     for (DatabasePager::ExpirePagedLODsVisitor::PagedLODset::iterator
                              citr = expirePagedLODsVisitor._childPagedLODs.begin(),
                              end = expirePagedLODsVisitor._childPagedLODs.end();
@@ -176,9 +181,13 @@ public:
                         // PagedLOD pointed to by itr because it must be
                         // in itr's subgraph. Therefore erasing it doesn't
                         // invalidate itr.
-                        if (_pagedLODs.erase(clod) > 0)
-                            leftToRemove--;
+                        _pagedLODs.erase(clod);
                     }
+                    // Count the child removal itself, so pruning work per call stays
+                    // bounded even when the removed subgraph has no nested PagedLOD to
+                    // purge from the set above.
+                    if (childWasRemoved)
+                        leftToRemove--;
                     std::copy(expiredChildren.begin(), expiredChildren.end(), std::back_inserter(childrenRemoved));
                 }
 
@@ -194,6 +203,10 @@ public:
                 OSG_INFO<<"DatabasePager::removeExpiredSubgraphs() _inactivePagedLOD has been invalidated, but ignored"<<std::endl;
             }
         }
+
+        // itr==_pagedLODs.end() means the whole candidate set was visited without
+        // satisfying numberChildrenToRemove, i.e. this pass is starved of content
+        return itr == _pagedLODs.end();
     }
 
     virtual void removeNodes(osg::NodeList& nodesToRemove)
@@ -230,6 +243,30 @@ public:
     virtual bool containsPagedLOD(const osg::observer_ptr<osg::PagedLOD>& plod) const
     {
         return (_pagedLODs.count(plod)!=0);
+    }
+
+    virtual void report(std::vector<DatabasePager::PagedLODReportEntry>& out)
+    {
+        for(auto itr : _pagedLODs)
+        {
+            osg::ref_ptr<osg::PagedLOD> plod;
+            if (!itr.lock(plod)) continue;
+
+            DatabasePager::PagedLODReportEntry entry;
+            entry.numChildren = plod->getNumChildren();
+            entry.numFileNames = plod->getNumFileNames();
+            entry.frameNumberOfLastTraversal = plod->getFrameNumberOfLastTraversal();
+            if (entry.numFileNames>0)
+            {
+                unsigned int cindex = entry.numFileNames-1;
+                entry.filename = plod->getFileName(cindex);
+                entry.timeStamp = plod->getTimeStamp(cindex);
+                entry.minExpiryTime = plod->getMinimumExpiryTime(cindex);
+                entry.frameNumber = plod->getFrameNumber(cindex);
+                entry.priorityScale = plod->getPriorityScale(cindex);
+            }
+            out.push_back(entry);
+        }
     }
 
 };
@@ -709,7 +746,6 @@ void DatabasePager::DatabaseThread::run()
         osg::ref_ptr<FileLocationCallback> fileLocationCallback = osgDB::Registry::instance()->getFileLocationCallback();
         osg::ref_ptr<Options> dr_loadOptions;
         std::string fileName;
-        int frameNumberLastRequest = 0;
         bool cacheNodes = false;
         if (databaseRequest.valid())
         {
@@ -728,7 +764,6 @@ void DatabasePager::DatabaseThread::run()
                 dr_loadOptions->setTerrain(databaseRequest->_terrain);
                 dr_loadOptions->setParentGroup(databaseRequest->_group);
                 fileName = databaseRequest->_fileName;
-                frameNumberLastRequest = databaseRequest->_frameNumberLastRequest;
             }
 
 
@@ -791,8 +826,14 @@ void DatabasePager::DatabaseThread::run()
             }
 
 
-            // check if databaseRequest is still relevant
-            if ((_pager->_frameNumber-frameNumberLastRequest)<=1)
+            // check if databaseRequest is still relevant.
+            unsigned int liveFrameNumberLastRequest;
+            {
+                OpenThreads::ScopedLock<OpenThreads::Mutex> drLock(_pager->_dr_mutex);
+                liveFrameNumberLastRequest = databaseRequest->_frameNumberLastRequest;
+            }
+
+            if ((_pager->_frameNumber-liveFrameNumberLastRequest)<=1)
             {
 
                 // now check to see if this request is appropriate for this thread
@@ -861,7 +902,6 @@ void DatabasePager::DatabaseThread::run()
             //OSG_NOTICE<<"In DatabasePager thread readNodeFile("<<databaseRequest->_fileName<<")"<<std::endl;
             //osg::Timer_t before = osg::Timer::instance()->tick();
 
-
             // assume that readNode is thread safe...
             ReaderWriter::ReadResult rr = readFromFileCache ?
                         fileCache->readNode(fileName, dr_loadOptions.get(), false) :
@@ -881,9 +921,16 @@ void DatabasePager::DatabaseThread::run()
 
             {
                 OpenThreads::ScopedLock<OpenThreads::Mutex> drLock(_pager->_dr_mutex);
-                if ((_pager->_frameNumber-databaseRequest->_frameNumberLastRequest)>1)
+                // Under real load latency (e.g. several seconds for content read from a
+                // contended archive/zip with many threads competing for it): a still-wanted
+                // tile can easily go a few frames without being the *exact* frame's active request
+                // Use a tolerance in the hundreds of frames (order of a few seconds at typical
+                // frame rates) so a load survives being panned away from briefly, while still
+                // discarding requests that have genuinely gone unrequested for a long time.
+                const unsigned int frameToleranceAfterLoad = 300;
+                if ((_pager->_frameNumber - databaseRequest->_frameNumberLastRequest) > frameToleranceAfterLoad)
                 {
-                    OSG_INFO<<_name<<": Warning DatabaseRquest no longer required."<<std::endl;
+                    OSG_INFO<<_name<<": Warning DatabaseRequest no longer required."<<std::endl;
                     loadedModel = 0;
                 }
             }
@@ -1455,6 +1502,7 @@ void DatabasePager::requestNode(std::function<void()> loadCallback,
                     databaseRequest->_timestampLastRequest = timestamp;
                     databaseRequest->_priorityLastRequest = priority;
                     databaseRequest->_group = group;
+                    databaseRequest->_groupExpired = false;
                     databaseRequest->_terrain = terrain;
                     databaseRequest->_loadOptions = loadOptions;
                     databaseRequest->_objectCache = 0;
@@ -1797,16 +1845,28 @@ void DatabasePager::removeExpiredSubgraphs(const osg::FrameStamp& frameStamp)
     unsigned int expiryFrame = frameStamp.getFrameNumber() - 1;
 
     // First traverse inactive PagedLODs, as their children will
-    // certainly have expired. Then traverse active nodes if we still
-    // need to prune.
+    // certainly have expired. Then traverse active nodes, but only if the
+    // inactive pass was starved of eligible content (exhausted
+    // its candidates without satisfying numToPrune) - not merely because
+    // _activePagedLODList->size() is still above target, since pruning a
+    // leaf child (no nested PagedLOD, e.g. a WS3.0 terrain tile) frees
+    // real content without shrinking that count. Using size() here would
+    // make this "last resort" escalation into active/in-view content run
+    // on every over-budget frame instead of only when truly necessary.
     //OSG_NOTICE<<"numToPrune "<<numToPrune;
-    if (numToPrune>0)
-        _activePagedLODList->removeExpiredChildren(
+    bool inactiveSupplyExhausted = false;
+    if (numToPrune>0) {
+        inactiveSupplyExhausted = _activePagedLODList->removeExpiredChildren(
             numToPrune, expiryTime, expiryFrame, childrenRemoved, false);
-    numToPrune = _activePagedLODList->size() - _targetMaximumNumberOfPageLOD;
-    if (numToPrune>0)
-        _activePagedLODList->removeExpiredChildren(
-            numToPrune, expiryTime, expiryFrame, childrenRemoved, true);
+    }
+
+    if (inactiveSupplyExhausted)
+    {
+        numToPrune = _activePagedLODList->size() - _targetMaximumNumberOfPageLOD;
+        if (numToPrune>0)
+            _activePagedLODList->removeExpiredChildren(
+                numToPrune, expiryTime, expiryFrame, childrenRemoved, true);
+    }
 
     osg::Timer_t end_b_Tick = osg::Timer::instance()->tick();
     double time_b = osg::Timer::instance()->delta_m(end_a_Tick,end_b_Tick);

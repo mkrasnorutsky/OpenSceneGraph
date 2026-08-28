@@ -161,11 +161,11 @@ class OSG_EXPORT PagedLOD : public LOD
 
 
 
-        /** Remove the children from the PagedLOD which haven't been visited since specified expiry time and expiry frame number.
-          * The removed children are added to the removeChildren list passed into the method,
-          * this allows the children to be deleted later at the caller's discretion.
-          * Return true if children are removed, false otherwise. */
-        virtual bool removeExpiredChildren(double expiryTime, unsigned int expiryFrame, NodeList& removedChildren);
+        /** Remove the highest index child from the PagedLOD if it hasen't been visited since specified expiry time and expiry frame number.
+          * Any removed child is added to the removeChildren list passed into the method,
+          * this allows the child to be deleted later at the caller's discretion.
+          * Return true if a child is removed, false otherwise. */
+        virtual bool removeExpiredChild(double expiryTime, unsigned int expiryFrame, NodeList& removedChildren);
 
     protected :
 

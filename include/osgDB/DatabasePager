@@ -280,7 +280,7 @@ class OSGDB_EXPORT DatabasePager : public osg::NodeVisitor::DatabaseRequestHandl
 
         /** Get the number of PagedLOD nodes that are currently active so the state can be monitored */
         unsigned int getActivePagedLODCount() const { return static_cast<unsigned int>(_activePagedLODList->size()); }
-        
+
         /** Reset the Stats variables.*/
         void resetStats();
 
@@ -291,16 +291,42 @@ class OSGDB_EXPORT DatabasePager : public osg::NodeVisitor::DatabaseRequestHandl
 
         typedef std::list<  osg::ref_ptr<osg::Object> > ObjectList;
 
+        /** One entry per currently-tracked PagedLOD, identifying it by the filename of its
+          * highest-index (pending-to-load, or just-loaded) child slot, plus enough state to
+          * judge why it is/isn't eligible for expiry. Intended for offline analysis of what's
+          * actually resident (e.g. counting entries by naming convention, by age, by whether
+          * they're still mid-load), not for hot-path use. */
+        struct PagedLODReportEntry
+        {
+            std::string  filename;
+            unsigned int numChildren = 0;
+            unsigned int numFileNames = 0;
+            double       timeStamp = 0.0;
+            double       minExpiryTime = 0.0;
+            unsigned int frameNumber = 0;
+            unsigned int frameNumberOfLastTraversal = 0;
+            float        priorityScale = 0.0f;
+        };
+
         struct PagedLODList : public osg::Referenced
         {
             virtual PagedLODList* clone() = 0;
             virtual void clear() = 0;
             virtual unsigned int size() = 0;
-            virtual void removeExpiredChildren(int numberChildrenToRemove, double expiryTime, unsigned int expiryFrame, ObjectList& childrenRemoved, bool visitActive) = 0;
+            // Returns true if the set of candidate PagedLODs was exhausted without
+            // satisfying numberChildrenToRemove (i.e. pruning is genuinely starved of
+            // eligible inactive content), false if the request was satisfied (or the
+            // set was empty) while candidates may still remain.
+            virtual bool removeExpiredChildren(int numberChildrenToRemove, double expiryTime, unsigned int expiryFrame, ObjectList& childrenRemoved, bool visitActive) = 0;
             virtual void removeNodes(osg::NodeList& nodesToRemove) = 0;
             virtual void insertPagedLOD(const osg::observer_ptr<osg::PagedLOD>& plod) = 0;
             virtual bool containsPagedLOD(const osg::observer_ptr<osg::PagedLOD>& plod) const = 0;
+            virtual void report(std::vector<PagedLODReportEntry>& report) = 0;
         };
+
+        /** Snapshot every currently-tracked PagedLOD into report (appended to, not cleared).
+          * See PagedLODReportEntry. */
+        void reportActivePagedLODs(std::vector<PagedLODReportEntry>& report) const { _activePagedLODList->report(report); }
 
         void setMarkerObject(osg::Object* mo) { _markerObject = mo; }
         osg::Object* getMarkerObject() { return _markerObject.get(); }

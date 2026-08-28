@@ -290,14 +290,14 @@ bool PagedLOD::removeChildren( unsigned int pos,unsigned int numChildrenToRemove
     return Group::removeChildren(pos,numChildrenToRemove);
 }
 
-bool PagedLOD::removeExpiredChildren(double expiryTime, unsigned int expiryFrame, NodeList& removedChildren)
+bool PagedLOD::removeExpiredChild(double expiryTime, unsigned int expiryFrame, NodeList& removedChildren)
 {
     if (_children.size()>_numChildrenThatCannotBeExpired)
     {
         unsigned cindex = _children.size() - 1;
-        if (!_perRangeDataList[cindex]._filename.empty() &&
-            _perRangeDataList[cindex]._timeStamp + _perRangeDataList[cindex]._minExpiryTime < expiryTime &&
-            _perRangeDataList[cindex]._frameNumber + _perRangeDataList[cindex]._minExpiryFrames < expiryFrame)
+        const auto minExpiryTime = _perRangeDataList[cindex]._timeStamp + _perRangeDataList[cindex]._minExpiryTime;
+        const auto minExpiryFrame = _perRangeDataList[cindex]._frameNumber + _perRangeDataList[cindex]._minExpiryFrames;
+        if (!_perRangeDataList[cindex]._filename.empty() && minExpiryTime < expiryTime && minExpiryFrame< expiryFrame)
         {
             osg::Node* nodeToRemove = _children[cindex].get();
             removedChildren.push_back(nodeToRemove);
