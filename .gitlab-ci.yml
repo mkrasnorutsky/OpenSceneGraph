@@ -35,6 +35,12 @@ linux-build:
     exclude:
       - $PREFIX_DIR/lib/pkgconfig/*
 
+linux-aarch64-build:
+  extends: linux-build
+  tags:
+    - saas-linux-medium-arm64
+  image: ${CI_REGISTRY}/flightgear/flightgear-ci-docker/flightgear-aarch64:latest
+
 linux-stable-build:
   image: ${CI_REGISTRY}/flightgear/flightgear-ci-docker/flightgear-qt5:latest
   stage: build
