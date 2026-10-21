@@ -1339,54 +1339,9 @@ void Image::readPixels(int x,int y,int width,int height,
 }
 
 
-void Image::readImageFromCurrentTexture(unsigned int contextID, bool copyMipMapsIfAvailable, GLenum type, unsigned int face)
-{
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GLES3_AVAILABLE)
-    // OSG_NOTICE<<"Image::readImageFromCurrentTexture()"<<std::endl;
-
-    const osg::GLExtensions* extensions = osg::GLExtensions::Get(contextID,true);
-
-    GLboolean binding1D = GL_FALSE, binding2D = GL_FALSE, bindingRect = GL_FALSE, binding3D = GL_FALSE, binding2DArray = GL_FALSE, bindingCubeMap = GL_FALSE;
-
-    glGetBooleanv(GL_TEXTURE_BINDING_1D, &binding1D);
-    glGetBooleanv(GL_TEXTURE_BINDING_2D, &binding2D);
-    glGetBooleanv(GL_TEXTURE_BINDING_RECTANGLE, &bindingRect);
-    glGetBooleanv(GL_TEXTURE_BINDING_3D, &binding3D);
-    glGetBooleanv(GL_TEXTURE_BINDING_CUBE_MAP, &bindingCubeMap);
-
-    if (extensions->isTexture2DArraySupported)
-    {
-        glGetBooleanv(GL_TEXTURE_BINDING_2D_ARRAY, &binding2DArray);
-    }
-
-    GLenum textureMode = binding1D ? GL_TEXTURE_1D : binding2D ? GL_TEXTURE_2D : bindingRect ? GL_TEXTURE_RECTANGLE : binding3D ? GL_TEXTURE_3D : binding2DArray ? GL_TEXTURE_2D_ARRAY : 0;
-    if (bindingCubeMap)
-    {
-        switch (face)
-        {
-            case TextureCubeMap::POSITIVE_X:
-                textureMode = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
-                break;
-            case TextureCubeMap::NEGATIVE_X:
-                textureMode = GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
-                break;
-            case TextureCubeMap::POSITIVE_Y:
-                textureMode = GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
-                break;
-            case TextureCubeMap::NEGATIVE_Y:
-                textureMode = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
-                break;
-            case TextureCubeMap::POSITIVE_Z:
-                textureMode = GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
-                break;
-            case TextureCubeMap::NEGATIVE_Z:
-                textureMode = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
-                break;
-        }
-    }
-
-    if (textureMode==0) return;
-
+void Image::readImageFromTextureTarget(const osg::GLExtensions* extensions, GLenum textureMode, bool copyMipMapsIfAvailable, GLenum type)
+{
     GLint internalformat;
     GLint width;
     GLint height;
@@ -1411,7 +1366,7 @@ void Image::readImageFromCurrentTexture(unsigned int contextID, bool copyMipMaps
         numMipMaps = 1;
     }
 
-    // OSG_NOTICE<<"Image::readImageFromCurrentTexture() : numMipMaps = "<<numMipMaps<<std::endl;
+    // OSG_NOTICE<<"Image::readImageFromTextureTarget() : numMipMaps = "<<numMipMaps<<std::endl;
 
 
     GLint compressed = 0;
@@ -1437,7 +1392,7 @@ void Image::readImageFromCurrentTexture(unsigned int contextID, bool copyMipMaps
             glGetTexLevelParameteriv(textureMode, 0, GL_TEXTURE_COMPRESSED_ARB,&compressed);
         }
     }
-    else if(bindingCubeMap)
+    else if (textureMode>=GL_TEXTURE_CUBE_MAP_POSITIVE_X && textureMode<=GL_TEXTURE_CUBE_MAP_NEGATIVE_Z)
     {
         if (extensions->isCompressedTexImage2DSupported())
         {
@@ -1469,7 +1424,7 @@ void Image::readImageFromCurrentTexture(unsigned int contextID, bool copyMipMaps
         unsigned char* data = new unsigned char[total_size];
         if (!data)
         {
-            OSG_WARN<<"Warning: Image::readImageFromCurrentTexture(..) out of memory, no image read."<<std::endl;
+            OSG_WARN<<"Warning: Image::readImageFromTextureTarget(..) out of memory, no image read."<<std::endl;
             return;
         }
 
@@ -1536,7 +1491,7 @@ void Image::readImageFromCurrentTexture(unsigned int contextID, bool copyMipMaps
         unsigned char* data = new unsigned char[total_size];
         if (!data)
         {
-            OSG_WARN<<"Warning: Image::readImageFromCurrentTexture(..) out of memory, no image read."<<std::endl;
+            OSG_WARN<<"Warning: Image::readImageFromTextureTarget(..) out of memory, no image read."<<std::endl;
             return;
         }
 
@@ -1566,8 +1521,75 @@ void Image::readImageFromCurrentTexture(unsigned int contextID, bool copyMipMaps
 
         dirty();
     }
+}
+#endif
+
+void Image::readImageFromCurrentTexture(unsigned int contextID, bool copyMipMapsIfAvailable, GLenum type, unsigned int face)
+{
+#if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GLES3_AVAILABLE)
+    // OSG_NOTICE<<"Image::readImageFromCurrentTexture()"<<std::endl;
+
+    const osg::GLExtensions* extensions = osg::GLExtensions::Get(contextID,true);
+
+    GLboolean binding1D = GL_FALSE, binding2D = GL_FALSE, bindingRect = GL_FALSE, binding3D = GL_FALSE, binding2DArray = GL_FALSE, bindingCubeMap = GL_FALSE;
+
+    glGetBooleanv(GL_TEXTURE_BINDING_1D, &binding1D);
+    glGetBooleanv(GL_TEXTURE_BINDING_2D, &binding2D);
+    glGetBooleanv(GL_TEXTURE_BINDING_RECTANGLE, &bindingRect);
+    glGetBooleanv(GL_TEXTURE_BINDING_3D, &binding3D);
+    glGetBooleanv(GL_TEXTURE_BINDING_CUBE_MAP, &bindingCubeMap);
+
+    if (extensions->isTexture2DArraySupported)
+    {
+        glGetBooleanv(GL_TEXTURE_BINDING_2D_ARRAY, &binding2DArray);
+    }
+
+    GLenum textureMode = binding1D ? GL_TEXTURE_1D : binding2D ? GL_TEXTURE_2D : bindingRect ? GL_TEXTURE_RECTANGLE : binding3D ? GL_TEXTURE_3D : binding2DArray ? GL_TEXTURE_2D_ARRAY : 0;
+    if (bindingCubeMap)
+    {
+        switch (face)
+        {
+            case TextureCubeMap::POSITIVE_X:
+                textureMode = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+                break;
+            case TextureCubeMap::NEGATIVE_X:
+                textureMode = GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
+                break;
+            case TextureCubeMap::POSITIVE_Y:
+                textureMode = GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
+                break;
+            case TextureCubeMap::NEGATIVE_Y:
+                textureMode = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
+                break;
+            case TextureCubeMap::POSITIVE_Z:
+                textureMode = GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
+                break;
+            case TextureCubeMap::NEGATIVE_Z:
+                textureMode = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
+                break;
+        }
+    }
+
+    if (textureMode==0) return;
+
+    readImageFromTextureTarget(extensions, textureMode, copyMipMapsIfAvailable, type);
 #else
     OSG_NOTICE<<"Warning: Image::readImageFromCurrentTexture() not supported."<<std::endl;
+#endif
+}
+
+void Image::readImageFromTexture2D(unsigned int contextID, bool copyMipMapsIfAvailable, GLenum type)
+{
+#if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GLES3_AVAILABLE)
+    const osg::GLExtensions* extensions = osg::GLExtensions::Get(contextID,true);
+
+    GLint binding2D = 0;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &binding2D);
+    if (binding2D==0) return;
+
+    readImageFromTextureTarget(extensions, GL_TEXTURE_2D, copyMipMapsIfAvailable, type);
+#else
+    OSG_NOTICE<<"Warning: Image::readImageFromTexture2D() not supported."<<std::endl;
 #endif
 }
 

@@ -251,6 +251,13 @@ class OSG_EXPORT Image : public BufferData
         */
         virtual void readImageFromCurrentTexture(unsigned int contextID, bool copyMipMapsIfAvailable, GLenum type = GL_UNSIGNED_BYTE, unsigned int face = 0);
 
+        /** Read the contents of the texture currently bound to GL_TEXTURE_2D on the active texture unit,
+          * handling compressed pixelFormats if present. Unlike readImageFromCurrentTexture() this ignores
+          * any texture bound to other targets (1D, 3D, cube map etc.) on the same unit.
+          * Create memory for storage if required, reuse existing pixel coords if possible.
+        */
+        virtual void readImageFromTexture2D(unsigned int contextID, bool copyMipMapsIfAvailable, GLenum type = GL_UNSIGNED_BYTE);
+
         /** swap the data and settings between two image objects.*/
         void swap(osg::Image& rhs);
 
@@ -556,6 +563,9 @@ class OSG_EXPORT Image : public BufferData
     protected :
 
         virtual ~Image();
+
+        /** Read the bound texture of the given target into this image. */
+        void readImageFromTextureTarget(const osg::GLExtensions* extensions, GLenum textureTarget, bool copyMipMapsIfAvailable, GLenum type);
 
         Image& operator = (const Image&) { return *this; }
 
