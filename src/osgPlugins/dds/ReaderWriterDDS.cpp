@@ -28,6 +28,7 @@
 #include <osg/Notify>
 
 #include <osgDB/Registry>
+#include <osgDB/ReadFile>
 #include <osgDB/FileNameUtils>
 #include <osgDB/FileUtils>
 #include <osgDB/fstream>
@@ -1377,6 +1378,15 @@ public:
         std::string fileName = osgDB::findDataFile( file, options );
 
         if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
+#if defined(OSG_GLES3_AVAILABLE)
+        // Mobile asset preparation supplies a decoded sidecar when the DDS
+        // format is not available on the GLES device.
+        const std::string sidecar = fileName + ".png";
+        if (osgDB::fileExists(sidecar)) {
+            osg::ref_ptr<osg::Image> image = osgDB::readImageFile(sidecar, options);
+            if (image) return image.release();
+        }
+#endif
 
         osgDB::ifstream stream(fileName.c_str(), std::ios::in | std::ios::binary);
         if(!stream) return ReadResult::FILE_NOT_HANDLED;

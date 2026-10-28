@@ -316,7 +316,18 @@ std::string& osg::getGLExtensionDisableString()
 
 OSG_INIT_SINGLETON_PROXY(GLExtensionDisableStringInitializationProxy, osg::getGLExtensionDisableString())
 
-#ifdef OSG_GL_LIBRARY_STATIC
+#if defined(__APPLE__) && defined(OSG_GLES3_AVAILABLE)
+    #include <EGL/egl.h>
+    void* osg::getGLExtensionFuncPtr(const char* funcName)
+    {
+        // ANGLE exposes entry points even when their core ES version is
+        // unavailable; use the enabled extension entry points on GLES 3.0.
+        if (!strcmp(funcName, "glObjectLabel")) funcName = "glObjectLabelKHR";
+        if (!strcmp(funcName, "glTexParameterIiv")) funcName = "glTexParameterIivEXT";
+        if (!strcmp(funcName, "glTexParameterIuiv")) funcName = "glTexParameterIuivEXT";
+        return reinterpret_cast<void*>(eglGetProcAddress(funcName));
+    }
+#elif defined(OSG_GL_LIBRARY_STATIC)
 
     #include "GLStaticLibrary.h"
 
@@ -890,12 +901,12 @@ GLExtensions::GLExtensions(unsigned int in_contextID):
     isGenerateMipMapSupported = validContext && (builtInSupport || isGLExtensionOrVersionSupported(contextID,"GL_SGIS_generate_mipmap", 1.4f));
     preferGenerateMipmapSGISForPowerOfTwo = (radeonHardwareDetected||fireGLHardwareDetected) ? false : true;
     isTextureMultisampledSupported = validContext && (isGLExtensionSupported(contextID,"GL_ARB_texture_multisample"));
-    isShadowSupported = validContext && (OSG_GL3_FEATURES || isGLExtensionSupported(contextID,"GL_ARB_shadow"));
+    isShadowSupported = validContext && (OSG_GLES3_FEATURES || OSG_GL3_FEATURES || isGLExtensionSupported(contextID,"GL_ARB_shadow"));
     isShadowAmbientSupported = validContext && (isGLExtensionSupported(contextID,"GL_ARB_shadow_ambient"));
     isClientStorageSupported = validContext && (isGLExtensionSupported(contextID,"GL_APPLE_client_storage"));
     isNonPowerOfTwoTextureMipMappedSupported = validContext && (builtInSupport || isGLExtensionSupported(contextID, "GL_OES_texture_npot") || isGLExtensionOrVersionSupported(contextID, "GL_ARB_texture_non_power_of_two", 2.0));
     isNonPowerOfTwoTextureNonMipMappedSupported = validContext && (isNonPowerOfTwoTextureMipMappedSupported || isGLExtensionSupported(contextID, "GL_APPLE_texture_2D_limited_npot"));
-    isTextureIntegerEXTSupported = validContext && (OSG_GL3_FEATURES || isGLExtensionSupported(contextID, "GL_EXT_texture_integer"));
+    isTextureIntegerEXTSupported = validContext && (OSG_GLES3_FEATURES || OSG_GL3_FEATURES || isGLExtensionSupported(contextID, "GL_EXT_texture_integer"));
 
     if (rendererString.find("GeForce FX")!=std::string::npos)
     {
@@ -920,6 +931,9 @@ GLExtensions::GLExtensions(unsigned int in_contextID):
     isTextureLODBiasSupported  = (glVersion >= 1.2f) || isGLExtensionSupported(contextID, "GL_EXT_texture_lod_bias");
 #endif
 
+#if defined(OSG_GLES3_AVAILABLE)
+    isTextureLODBiasSupported = false; // GLES has no GL_TEXTURE_LOD_BIAS parameter.
+#endif
     isTextureStorageEnabled = validContext && ((glVersion >= 4.2f) || isGLExtensionSupported(contextID, "GL_ARB_texture_storage"));
 
     if (isTextureStorageEnabled)
@@ -1154,7 +1168,7 @@ GLExtensions::GLExtensions(unsigned int in_contextID):
 
 
     isPackedDepthStencilSupported = validContext &&
-                                    (OSG_GL3_FEATURES ||
+                                    (OSG_GLES3_FEATURES || OSG_GL3_FEATURES ||
                                      (isGLExtensionSupported(contextID, "GL_EXT_packed_depth_stencil")) ||
                                      (isGLExtensionSupported(contextID, "GL_OES_packed_depth_stencil")));
 

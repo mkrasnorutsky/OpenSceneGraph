@@ -111,3 +111,10 @@ CLAUDE.md
 .claude/
 
 compile_commands.json
+
+# Apple builds and SwiftPM artifacts
+/out/
+/dist/
+/.build/
+/.swiftpm/
+.DS_Store

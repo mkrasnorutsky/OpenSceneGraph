@@ -1,0 +1,20 @@
+{
+  "libEGL": {
+    "url": "https://github.com/mkrasnorutsky/ANGLE/releases/download/0.1.0/libEGL.xcframework.zip",
+    "sha256": "894faf03eae77cefbb4008940d4a5e3927504a2544c5c86ad6ecf68bc0013cf1",
+    "package": "ANGLE",
+    "version": "0.1.0"
+  },
+  "libGLESv2": {
+    "url": "https://github.com/mkrasnorutsky/ANGLE/releases/download/0.1.0/libGLESv2.xcframework.zip",
+    "sha256": "acd2e421576fd13493689a1f30f8d08121e4e4a2fbcd9028ffb86d85fe2e114c",
+    "package": "ANGLE",
+    "version": "0.1.0"
+  },
+  "FreeType": {
+    "url": "https://github.com/mkrasnorutsky/FreeType/releases/download/0.1.0/FreeType.xcframework.zip",
+    "sha256": "78944338593587a4cdaf2ce6d39dc80fd51e2568e7648304ca1ebaba58779662",
+    "package": "FreeType",
+    "version": "0.1.0"
+  }
+}

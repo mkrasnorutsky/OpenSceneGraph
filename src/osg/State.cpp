@@ -108,6 +108,9 @@ State::State():
 #if OSG_GL3_FEATURES
     _forceVertexBufferObject = true;
     _forceVertexArrayObject = true;
+#elif OSG_GLES3_FEATURES
+    _forceVertexBufferObject = true;
+    _forceVertexArrayObject = false;
 #else
     _forceVertexBufferObject = false;
     _forceVertexArrayObject = false;
@@ -298,6 +301,14 @@ void State::initializeExtensionProcs()
     }
 
 
+#if defined(OSG_GLES3_AVAILABLE)
+    // Legacy aircraft effects can carry fixed-function modes; shaders implement these on GLES.
+    const GLenum legacyModes[]={0x0B50,0x0B57,0x0B60,0x0BC0,0x0BA1,0x803A,0x0DE0,0x0DE1,0x806F,0x8513};
+    for(GLenum mode:legacyModes)setModeValidity(mode,false);
+    for(GLenum light=0x4000;light<0x4008;++light)setModeValidity(light,false);
+    setModeValidity(0x2A02 /* desktop GL_POLYGON_OFFSET_LINE */, false);
+    setModeValidity(0x2A01 /* desktop GL_POLYGON_OFFSET_POINT */, false);
+#endif
     _extensionProcsInitialized = true;
 
     if (_graphicsCostEstimator.valid())

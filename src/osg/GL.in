@@ -113,7 +113,7 @@
 // FlightGear change: only include OpenGL/gl.h when building OSG itself
 // avoids warnings about including both headers
 #if defined(__APPLE__)
-    #if defined(OSG_LIBRARY)
+    #if defined(OSG_LIBRARY) || defined(OSG_GLES2_AVAILABLE) || defined(OSG_GLES3_AVAILABLE)
         @OPENGL_HEADER1@
     #endif
 #else 

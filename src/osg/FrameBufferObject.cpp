@@ -123,6 +123,12 @@ GLuint RenderBuffer::getObjectID(unsigned int contextID, const GLExtensions* ext
 
     if (dirty)
     {
+        GLenum storageFormat = _internalFormat;
+#if defined(OSG_GLES3_AVAILABLE)
+        if (storageFormat == GL_RGB) storageFormat = GL_RGB8;
+        if (storageFormat == GL_RGBA) storageFormat = GL_RGBA8;
+        if (storageFormat == GL_DEPTH_STENCIL_EXT) storageFormat = GL_DEPTH24_STENCIL8;
+#endif
         // bind and configure
         ext->glBindRenderbuffer(GL_RENDERBUFFER_EXT, objectID);
 
@@ -141,18 +147,18 @@ GLuint RenderBuffer::getObjectID(unsigned int contextID, const GLExtensions* ext
             int colorSamples = minimum(_colorSamples, samples);
 
             ext->glRenderbufferStorageMultisampleCoverageNV(GL_RENDERBUFFER_EXT,
-                samples, colorSamples, _internalFormat, _width, _height);
+                samples, colorSamples, storageFormat, _width, _height);
         }
         else if (_samples > 0 && ext->isRenderbufferMultisampleSupported())
         {
             int samples = minimum(_samples, getMaxSamples(contextID, ext));
 
             ext->glRenderbufferStorageMultisample(GL_RENDERBUFFER_EXT,
-                samples, _internalFormat, _width, _height);
+                samples, storageFormat, _width, _height);
         }
         else
         {
-            ext->glRenderbufferStorage(GL_RENDERBUFFER_EXT, _internalFormat, _width, _height);
+            ext->glRenderbufferStorage(GL_RENDERBUFFER_EXT, storageFormat, _width, _height);
         }
         dirty = 0;
     }

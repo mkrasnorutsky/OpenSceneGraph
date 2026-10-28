@@ -5,7 +5,7 @@ ENDIF()
 INCLUDE_DIRECTORIES(${FREETYPE_INCLUDE_DIRS} )
 
 IF(APPLE)
-    IF(NOT OSG_BUILD_PLATFORM_IPHONE)
+    IF(NOT OSG_BUILD_PLATFORM_IPHONE AND NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
         SET(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,-dylib_file,/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib")
     ENDIF()
 ENDIF()

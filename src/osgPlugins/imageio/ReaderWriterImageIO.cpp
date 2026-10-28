@@ -366,6 +366,17 @@ osg::Image* CreateOSGImageFromCGImage(CGImageRef image_ref)
             return NULL;
     }
 
+#if defined(OSG_GLES3_AVAILABLE)
+    // Apple's desktop BGRA representation is not a valid RGBA8 upload in
+    // GLES 3.0. Draw into portable RGBA bytes for the mobile renderer.
+    CGColorSpaceRelease(color_space);
+    color_space = CGColorSpaceCreateDeviceRGB();
+    internal_format = GL_RGBA8;
+    pixel_format = GL_RGBA;
+    data_type = GL_UNSIGNED_BYTE;
+    bytes_per_row = the_width * 4;
+    bitmap_info = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big;
+#endif
     void* image_data = calloc(the_width * 4, the_height);
     if (!image_data) {
         OSG_WARN << "Failed to allocate image data size " << the_width << "x" << the_height << std::endl;

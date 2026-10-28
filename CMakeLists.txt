@@ -159,7 +159,9 @@ IF (APPLE)
 
   # our deployment target is 10.9 for the moment (consistent with
   # CmakeLists for SimGear and FlightGear)
-  set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
+  if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
+  endif()
 
   # set this so we don't need to run install_name_tool during deployment phase
   set(CMAKE_OSX_RPATH 1)
@@ -270,7 +272,15 @@ IF (OSG_MAINTAINER)
 
 ENDIF(OSG_MAINTAINER)
 
-IF(NOT ANDROID)
+set(OSG_ANGLE_ROOT "" CACHE PATH "ANGLE source tree with out/iOS frameworks")
+IF(OSG_ANGLE_ROOT)
+    SET(OPENGL_INCLUDE_DIR "${OSG_ANGLE_ROOT}/include")
+    SET(OPENGL_gl_LIBRARY "${OSG_ANGLE_ROOT}/out/iOS/libGLESv2.framework/libGLESv2")
+    SET(EGL_LIBRARY "${OSG_ANGLE_ROOT}/out/iOS/libEGL.framework/libEGL")
+    SET(EGL_INCLUDE_DIR "${OSG_ANGLE_ROOT}/include")
+    SET(OPENGL_FOUND TRUE)
+    SET(OPENGL_LIBRARIES "${OPENGL_gl_LIBRARY}")
+ELSEIF(NOT ANDROID)
 IF(APPLE)
 
     IF(OSG_BUILD_PLATFORM_IPHONE)
@@ -725,7 +735,7 @@ CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/src/osg/Config.in"
 # Set OpenGL header file
 
 INCLUDE (CheckCXXSourceCompiles)
-#SET(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${OPENGL_INCLUDE_DIR})
+SET(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${OPENGL_INCLUDE_DIR})
 
 check_cxx_source_compiles(
     "${OPENGL_HEADER1}
