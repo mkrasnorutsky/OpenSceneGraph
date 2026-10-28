@@ -4,7 +4,7 @@ This repository preserves the FlightGear OpenSceneGraph source and upstream hist
 
 ## Add the package
 
-Add `https://github.com/mkrasnorutsky/OpenSceneGraph.git` in Xcode, select version **0.1.0** or later, and add the **OpenSceneGraph** product. ANGLE and FreeType **0.1.0** are declared transitive SPM dependencies; do not also link the old local copies. Minimum iOS is **18.0**. Supported architectures: **arm64 iPhone, arm64 Simulator and x86_64 Simulator**.
+Add `https://github.com/mkrasnorutsky/OpenSceneGraph.git` in Xcode, select version **0.1.0** or later, and add the **OpenSceneGraph** product. ANGLE **0.1.1** and FreeType **0.1.0** are declared transitive SPM dependencies; do not also link the old local copies. Minimum iOS is **18.0**. Supported architectures: **arm64 iPhone, arm64 Simulator and x86_64 Simulator**.
 
 [Release 0.1.0](https://github.com/mkrasnorutsky/OpenSceneGraph/releases/tag/0.1.0) provides the static XCFramework ZIP, checksum and build manifest. SPM integrates binaries; it does not run CMake while resolving the package.
 
