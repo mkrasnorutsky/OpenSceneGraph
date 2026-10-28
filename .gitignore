@@ -118,3 +118,5 @@ compile_commands.json
 /.build/
 /.swiftpm/
 .DS_Store
+
+/Package.resolved
