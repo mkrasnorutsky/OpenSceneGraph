@@ -9,19 +9,6 @@ USE_OSGPLUGIN(osg2)
 USE_OSGPLUGIN(rgb)
 USE_OSGPLUGIN(tga)
 USE_OSGPLUGIN(txf)
-USE_SERIALIZER_WRAPPER_LIBRARY(osg)
-USE_SERIALIZER_WRAPPER_LIBRARY(osgGA)
-USE_SERIALIZER_WRAPPER_LIBRARY(osgParticle)
-USE_SERIALIZER_WRAPPER_LIBRARY(osgSim)
-USE_SERIALIZER_WRAPPER_LIBRARY(osgTerrain)
-USE_SERIALIZER_WRAPPER_LIBRARY(osgText)
-USE_SERIALIZER_WRAPPER_LIBRARY(osgUtil)
-USE_SERIALIZER_WRAPPER_LIBRARY(osgViewer)
-USE_DOTOSGWRAPPER_LIBRARY(osg)
-USE_DOTOSGWRAPPER_LIBRARY(osgParticle)
-USE_DOTOSGWRAPPER_LIBRARY(osgSim)
-USE_DOTOSGWRAPPER_LIBRARY(osgTerrain)
-USE_DOTOSGWRAPPER_LIBRARY(osgText)
-USE_DOTOSGWRAPPER_LIBRARY(osgViewer)
+extern "C" void OSGSPMRegisterStaticWrappers(void);
 extern "C" const char *OSGSPMVersion(void) { return osgGetVersion(); }
-extern "C" void OSGSPMRegisterPlugins(void) { (void)osgDB::Registry::instance(); }
+extern "C" void OSGSPMRegisterPlugins(void) { OSGSPMRegisterStaticWrappers(); (void)osgDB::Registry::instance(); }

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the FlightGear OSG subset and static plugins as one iOS XCFramework."""
 from pathlib import Path
-import argparse,json,shutil,subprocess
+import argparse,json,shutil,subprocess,re
 from dependencies import ROOT,fetch,select
 PLUGINS=['dds','freetype','imageio','osg','rgb','tga','txf']
 def run(*args,**kw):
@@ -21,8 +21,8 @@ def main():
         include=ftfolder/ftentry['HeadersPath'];library=ftfolder/ftentry['LibraryPath']
         flags=['-DCMAKE_SYSTEM_NAME=iOS','-DCMAKE_OSX_SYSROOT='+sdk,'-DCMAKE_OSX_ARCHITECTURES='+arch,'-DCMAKE_OSX_DEPLOYMENT_TARGET=18.0',
             '-DCMAKE_POLICY_VERSION_MINIMUM=3.5','-DCMAKE_BUILD_TYPE=Release','-DCMAKE_INSTALL_PREFIX='+str(prefix),
-            '-DDYNAMIC_OPENSCENEGRAPH=OFF','-DDYNAMIC_OPENTHREADS=OFF','-DBUILD_OSG_APPLICATIONS=OFF','-DBUILD_OSG_EXAMPLES=OFF',
-            '-DBUILD_OSG_PLUGINS_BY_DEFAULT=OFF','-DBUILD_OSG_DEPRECATED_SERIALIZERS=ON','-DOSG_ANGLE_ROOT='+str(compat),'-DOPENGL_PROFILE=GLES3',
+            '-D_OPENTHREADS_ATOMIC_USE_GCC_BUILTINS_EXITCODE=0','-D_OPENTHREADS_ATOMIC_USE_BSD_ATOMIC_EXITCODE=0','-DDYNAMIC_OPENSCENEGRAPH=OFF','-DDYNAMIC_OPENTHREADS=OFF','-DBUILD_OSG_APPLICATIONS=OFF','-DBUILD_OSG_EXAMPLES=OFF',
+            '-DOSG_WINDOWING_SYSTEM=None','-DBUILD_OSG_PLUGINS_BY_DEFAULT=OFF','-DBUILD_OSG_DEPRECATED_SERIALIZERS=ON','-DOSG_ANGLE_ROOT='+str(compat),'-DOPENGL_PROFILE=GLES3',
             '-DOPENGL_HEADER1=#include <libGLESv2/gl32.h>','-DOPENGL_HEADER2=#include <libGLESv2/gl2ext.h>',
             '-DFREETYPE_INCLUDE_DIR_freetype2='+str(include),'-DFREETYPE_INCLUDE_DIR_ft2build='+str(include),'-DFREETYPE_LIBRARY='+str(library),
             '-DCMAKE_CXX_FLAGS=-F'+str(frameworks),'-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=BOTH','-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=BOTH']
@@ -33,7 +33,22 @@ def main():
         run('cmake','--install',build)
         archives=sorted((prefix/'lib').rglob('*.a'))
         assert archives,'No installed static libraries'
-        merged=build/'libOpenSceneGraph.a';run('xcrun','libtool','-static','-o',merged,*archives)
+        # This FlightGear fork lacks library-level static serializer anchors.
+        # Generate references to every public registration stub so the linker
+        # retains their translation units and static registration constructors.
+        symbols=set()
+        for archive in archives:
+            if 'serializers' in archive.name or 'deprecated' in archive.name:
+                output=subprocess.check_output(['xcrun','nm','-gU',str(archive)],text=True)
+                symbols.update(re.findall(r'\bT _(wrapper_serializer_\w+|dotosgwrapper_\w+)',output))
+        registration=build/'OSGSPMStaticRegistration.cpp'
+        registration.write_text(''.join('extern "C" void '+name+'(void);\n' for name in sorted(symbols))+
+            'extern "C" void OSGSPMRegisterStaticWrappers(void) {\n'+''.join(name+'();\n' for name in sorted(symbols))+'}\n')
+        obj=build/'OSGSPMStaticRegistration.o'
+        sysroot=subprocess.check_output(['xcrun','--sdk',sdk,'--show-sdk-path'],text=True).strip()
+        triple=arch+'-apple-ios18.0'+('-simulator' if sdk=='iphonesimulator' else '')
+        run('xcrun','clang++','-target',triple,'-isysroot',sysroot,'-std=c++11','-O2','-c',registration,'-o',obj)
+        merged=build/'libOpenSceneGraph.a';run('xcrun','libtool','-static','-o',merged,*archives,obj)
         built[label]={'prefix':prefix,'archive':merged,'archives':[x.name for x in archives]}
     out=ROOT/'dist';out.mkdir(exist_ok=True)
     staging=out/'staging'

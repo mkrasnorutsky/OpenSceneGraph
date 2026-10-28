@@ -1,0 +1,21 @@
+name: Apple XCFramework
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build OSG with pinned ANGLE and FreeType binaries
+        run: python3 apple/scripts/build_xcframework.py --jobs 3
+      - name: Link all iOS architectures and static plugin registration
+        run: python3 apple/scripts/validate_xcframework.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OpenSceneGraph-iOS-XCFramework
+          path: |
+            dist/OpenSceneGraph.xcframework
+            dist/build-manifest.json
