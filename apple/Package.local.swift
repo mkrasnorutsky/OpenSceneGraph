@@ -6,7 +6,7 @@ let package = Package(
     products: [.library(name: "OpenSceneGraph", targets: ["OpenSceneGraph"])],
     dependencies: [
         .package(url: "https://github.com/mkrasnorutsky/ANGLE.git", exact: "0.1.1"),
-        .package(url: "https://github.com/mkrasnorutsky/FreeType.git", exact: "0.1.0")
+        .package(url: "https://github.com/mkrasnorutsky/FreeType.git", exact: "0.1.1")
     ],
     targets: [
         .binaryTarget(name: "COpenSceneGraph", path: "dist/OpenSceneGraph.xcframework"),

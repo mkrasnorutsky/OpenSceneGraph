@@ -12,9 +12,9 @@
     "version": "0.1.0"
   },
   "FreeType": {
-    "url": "https://github.com/mkrasnorutsky/FreeType/releases/download/0.1.0/FreeType.xcframework.zip",
-    "sha256": "78944338593587a4cdaf2ce6d39dc80fd51e2568e7648304ca1ebaba58779662",
+    "url": "https://github.com/mkrasnorutsky/FreeType/releases/download/0.1.1/FreeType.xcframework.zip",
+    "sha256": "17cc8a2994007fa50cab824f8dee6ccd1585a6981c1bf467f1e8b2e01965c646",
     "package": "FreeType",
-    "version": "0.1.0"
+    "version": "0.1.1"
   }
 }

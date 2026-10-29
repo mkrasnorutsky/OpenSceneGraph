@@ -3,6 +3,8 @@
 from pathlib import Path
 import argparse,json,shutil,subprocess,re
 from dependencies import ROOT,fetch,select
+import os
+WORK=Path(os.environ.get("APPLE_BUILD_ROOT", str(ROOT))).expanduser().resolve()
 PLUGINS=['dds','freetype','imageio','osg','rgb','tga','txf']
 def run(*args,**kw):
     print('+',' '.join(map(str,args)),flush=True);return subprocess.run(list(map(str,args)),check=True,**kw)
@@ -10,7 +12,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--jobs',type=int,default=6);a=p.parse_args()
     dependencies=fetch();built={}
     for label,sdk,arch in [('ios-arm64','iphoneos','arm64'),('simulator-arm64','iphonesimulator','arm64'),('simulator-x86_64','iphonesimulator','x86_64')]:
-        build=ROOT/'out/apple'/label;prefix=build/'install';compat=build/'angle';frameworks=compat/'out/iOS';frameworks.mkdir(parents=True,exist_ok=True)
+        build=WORK/'out/apple'/label;prefix=build/'install';compat=build/'angle';frameworks=compat/'out/iOS';frameworks.mkdir(parents=True,exist_ok=True)
         for name in ['libEGL','libGLESv2']:
             folder,entry=select(dependencies[name],sdk=='iphonesimulator');source=folder/entry['LibraryPath'];destination=frameworks/source.name
             if not destination.exists():shutil.copytree(source,destination)
@@ -50,13 +52,14 @@ def main():
         run('xcrun','clang++','-target',triple,'-isysroot',sysroot,'-std=c++11','-O2','-c',registration,'-o',obj)
         merged=build/'libOpenSceneGraph.a';run('xcrun','libtool','-static','-o',merged,*archives,obj)
         built[label]={'prefix':prefix,'archive':merged,'archives':[x.name for x in archives]}
-    out=ROOT/'dist';out.mkdir(exist_ok=True)
+    out=WORK/'dist';out.mkdir(exist_ok=True)
     staging=out/'staging'
     if staging.exists():shutil.rmtree(staging)
     staging.mkdir();sim=staging/'libOpenSceneGraph.a'
     run('lipo','-create',built['simulator-arm64']['archive'],built['simulator-x86_64']['archive'],'-output',sim)
     headers=staging/'Headers';shutil.copytree(built['ios-arm64']['prefix']/'include',headers)
-    (headers/'module.modulemap').write_text('module COpenSceneGraph { requires cplusplus\n header "OSGSPMHeaders.h"\n export *\n}\n')
+    (headers/'COpenSceneGraph').mkdir(exist_ok=True)
+    (headers/'COpenSceneGraph/module.modulemap').write_text('module COpenSceneGraph { requires cplusplus\n header "../OSGSPMHeaders.h"\n export *\n}\n')
     (headers/'OSGSPMHeaders.h').write_text('#pragma once\n#include <osg/Group>\n#include <osgDB/Registry>\n')
     config=headers/'osg/Config';config.write_text('#ifndef OSG_LIBRARY_STATIC\n#define OSG_LIBRARY_STATIC\n#endif\n'+config.read_text())
     artifact=out/'OpenSceneGraph.xcframework'

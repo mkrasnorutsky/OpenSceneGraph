@@ -3,7 +3,9 @@
 from pathlib import Path
 import plistlib,subprocess,tempfile
 from dependencies import ROOT,fetch,select
-artifact=ROOT/'dist/OpenSceneGraph.xcframework';info=plistlib.loads((artifact/'Info.plist').read_bytes())
+import os
+WORK=Path(os.environ.get("APPLE_BUILD_ROOT", str(ROOT))).expanduser().resolve()
+artifact=WORK/'dist/OpenSceneGraph.xcframework';info=plistlib.loads((artifact/'Info.plist').read_bytes())
 assert len(info['AvailableLibraries'])==2
 packages=fetch()
 for entry in info['AvailableLibraries']:
